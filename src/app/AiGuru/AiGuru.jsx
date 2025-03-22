@@ -3,6 +3,7 @@ import React, { useState, useCallback, useEffect, useRef } from "react";
 import { motion } from "framer-motion";
 import Image from "next/image";
 import ai_teacher from "../../images/ai-teacher.jpg";
+import Head from "next/head";
 
 const QuestionAnyTopic = () => {
   const [topic, setTopic] = useState("");
@@ -110,10 +111,9 @@ const QuestionAnyTopic = () => {
                 role: "user",
                 parts: [
                   {
-                    text: `Create a basic, short and common interview question based on '${definition}' that has not been asked before.
-
-Here is the full history of previous questions:
-${pastQuestions}`,
+                    text: `Create a basic, short and common interview question based on 
+                    '${definition}' that has not been asked before.
+                    Here is the full history of previous questions:${pastQuestions}`,
                   },
                 ],
               },
@@ -157,22 +157,19 @@ ${pastQuestions}`,
                 role: "user",
                 parts: [
                   {
-                    text: `Evaluate the following conversation history and the user's answer:
-
-Latest Message:
-${
-  chatHistory.length > 0
-    ? "<motion.p key=" +
-      (chatHistory.length - 1) +
-      " className='p-3 rounded text-white " +
-      (chatHistory[chatHistory.length - 1].role === "user"
-        ? "bg-gray-600"
-        : "bg-blue-600") +
-      "'> " +
-      chatHistory[chatHistory.length - 1].text +
-      " </motion.p>"
-    : ""
-}
+                    text: `Evaluate the following conversation history and the user's answer:Latest Message:${
+                      chatHistory.length > 0
+                        ? "<motion.p key=" +
+                          (chatHistory.length - 1) +
+                          " className='p-3 rounded text-white " +
+                          (chatHistory[chatHistory.length - 1].role === "user"
+                            ? "bg-gray-600"
+                            : "bg-blue-600") +
+                          "'> " +
+                          chatHistory[chatHistory.length - 1].text +
+                          " </motion.p>"
+                        : ""
+                    }
 
 User's Answer: ${answer}
 
@@ -209,114 +206,121 @@ If the user's answer is correct or closely related, respond with 'It is correct.
   };
 
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center p-8 text-white bg-blue-950 relative">
-      {/* Background Image */}
-      <Image
-        src={ai_teacher}
-        alt="AI Teacher"
-        layout="fill"
-        objectFit="cover"
-        className="absolute z-0 top-0 w-full h-full opacity-20"
-      />
-
-      {/* Title */}
-      <motion.h1
-        initial={{ opacity: 0, y: -20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.6 }}
-        className="text-4xl font-bold mb-6 z-10 text-center"
-      >
-        AI Guru: Ask Anything!
-      </motion.h1>
-
-      {/* Main Card */}
-      <div className="p-8 w-full max-w-lg bg-gray-800/80 rounded-2xl shadow-lg z-10 backdrop-blur-md">
-        {/* Topic Input */}
-        <motion.input
-          type="text"
-          value={topic}
-          onChange={(e) => setTopic(e.target.value)}
-          placeholder="Enter a topic..."
-          className="w-full p-3 rounded-lg bg-gray-700 text-white focus:ring-2 focus:ring-blue-500"
-          whileFocus={{ scale: 1.05 }}
+    <>
+      <div className="min-h-screen flex flex-col items-center justify-center p-8 text-white bg-blue-950 relative">
+        {/* Background Image */}
+        <Image
+          src={ai_teacher}
+          alt="AI Teacher"
+          layout="fill"
+          objectFit="cover"
+          className="absolute z-0 top-0 w-full h-full opacity-20"
         />
 
-        {/* Get Definition Button */}
-        <motion.button
-          onClick={fetchDefinition}
-          disabled={isLoading}
-          whileHover={{ scale: 1.05 }}
-          className="mt-4 w-full bg-blue-600 hover:bg-blue-700 disabled:bg-gray-500 py-3 rounded-lg font-semibold transition-all"
+        {/* Title */}
+        <motion.h1
+          initial={{ opacity: 0, y: -20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6 }}
+          className="text-4xl font-bold mb-6 z-10 text-center"
         >
-          {isLoading ? "Loading..." : "Get Definition"}
-        </motion.button>
+          AI Guru: Ask Anything!
+        </motion.h1>
 
-        {/* Definition Display */}
-        {definition && (
-          <motion.p
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            className="mt-4 p-4 overflow-auto h-[15rem] text-white bg-gray-700 rounded-lg"
+        {/* Main Card */}
+        <div className="p-8 w-full max-w-lg bg-gray-800/80 rounded-2xl shadow-lg z-10 backdrop-blur-md">
+          {/* Topic Input */}
+          <motion.input
+            type="text"
+            value={topic}
+            onChange={(e) => setTopic(e.target.value)}
+            placeholder="Enter a topic..."
+            className="w-full p-3 rounded-lg bg-gray-700 text-white focus:ring-2 focus:ring-blue-500"
+            whileFocus={{ scale: 1.05 }}
+          />
+
+          {/* Get Definition Button */}
+          <motion.button
+            onClick={fetchDefinition}
+            disabled={isLoading}
+            whileHover={{ scale: 1.05 }}
+            className="mt-4 w-full bg-blue-600 hover:bg-blue-700 disabled:bg-gray-500 py-3 rounded-lg font-semibold transition-all"
           >
-            {definition}
-          </motion.p>
-        )}
+            {isLoading ? "Loading..." : "Get Definition"}
+          </motion.button>
 
-        {/* Chat History */}
-        {chatHistory.length > 0 && (
-          <motion.div
-            ref={chatContainerRef}
-            className="mt-6 space-y-2 overflow-y-auto h-[10rem] p-3 border border-gray-600 rounded-lg"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
+          {/* Definition Display */}
+          {definition && (
+            <motion.p
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, ease: "easeOut" }}
+              className="mt-4 p-4 overflow-y-auto h-[15rem] text-white bg-gray-800 
+                     rounded-xl shadow-lg backdrop-blur-md border border-gray-600 
+                     scrollbar-thin scrollbar-thumb-gray-500 scrollbar-track-gray-700"
+            >
+              {definition}
+            </motion.p>
+          )}
+
+          {/* Chat History */}
+          {chatHistory.length > 0 && (
+            <motion.div
+              ref={chatContainerRef}
+              className="mt-6 space-y-2 overflow-y-auto h-[10rem] p-3 border border-gray-600 rounded-lg"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+            >
+              {chatHistory.map((msg, index) => (
+                <motion.p
+                  key={index}
+                  className={`p-3 rounded-lg text-white ${
+                    msg.role === "user" ? "bg-gray-600" : "bg-blue-600"
+                  }`}
+                >
+                  {msg.text}
+                </motion.p>
+              ))}
+            </motion.div>
+          )}
+
+          {/* Ask AI Button */}
+          <motion.button
+            onClick={fetchAIQuestion}
+            disabled={isLoading || !definition}
+            whileHover={{ scale: 1.05 }}
+            className="mt-4 w-full bg-green-600 hover:bg-green-700 disabled:bg-gray-500 py-3 rounded-lg font-semibold transition-all"
           >
-            {chatHistory.map((msg, index) => (
-              <motion.p
-                key={index}
-                className={`p-3 rounded-lg text-white ${
-                  msg.role === "user" ? "bg-gray-600" : "bg-blue-600"
-                }`}
-              >
-                {msg.text}
-              </motion.p>
-            ))}
-          </motion.div>
+            {isLoading ? "Loading..." : "Ask Guru"}
+          </motion.button>
+
+          {/* Answer Input */}
+          <motion.input
+            type="text"
+            placeholder="Write your answer..."
+            className="mt-4 w-full p-3 rounded-lg bg-gray-700 text-white focus:ring-2 focus:ring-yellow-500"
+            value={answer}
+            onChange={(e) => setAnswer(e.target.value)}
+            onKeyDown={(e) => e.key === "Enter" && checkAnswer()}
+            whileFocus={{ scale: 1.05 }}
+          />
+
+          {/* Check Answer Button */}
+          <motion.button
+            className="mt-4 w-full bg-purple-600 hover:bg-purple-700 text-white font-semibold py-3 rounded-lg shadow-md transition-all"
+            onClick={checkAnswer}
+            whileHover={{ scale: 1.05 }}
+          >
+            Check Answer
+          </motion.button>
+        </div>
+
+        {/* Error Message */}
+        {error && (
+          <motion.p className="text-red-500 mt-4 z-10">{error}</motion.p>
         )}
-
-        {/* Ask AI Button */}
-        <motion.button
-          onClick={fetchAIQuestion}
-          disabled={isLoading || !definition}
-          whileHover={{ scale: 1.05 }}
-          className="mt-4 w-full bg-green-600 hover:bg-green-700 disabled:bg-gray-500 py-3 rounded-lg font-semibold transition-all"
-        >
-          {isLoading ? "Loading..." : "Ask AI"}
-        </motion.button>
-
-        {/* Answer Input */}
-        <motion.input
-          type="text"
-          placeholder="Write your answer..."
-          className="mt-4 w-full p-3 rounded-lg bg-gray-700 text-white focus:ring-2 focus:ring-yellow-500"
-          value={answer}
-          onChange={(e) => setAnswer(e.target.value)}
-          onKeyDown={(e) => e.key === "Enter" && checkAnswer()}
-          whileFocus={{ scale: 1.05 }}
-        />
-
-        {/* Check Answer Button */}
-        <motion.button
-          className="mt-4 w-full bg-purple-600 hover:bg-purple-700 text-white font-semibold py-3 rounded-lg shadow-md transition-all"
-          onClick={checkAnswer}
-          whileHover={{ scale: 1.05 }}
-        >
-          Check Answer
-        </motion.button>
       </div>
-
-      {/* Error Message */}
-      {error && <motion.p className="text-red-500 mt-4 z-10">{error}</motion.p>}
-    </div>
+    </>
   );
 };
 
