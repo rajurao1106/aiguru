@@ -8,10 +8,7 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <head>
-      <meta
-      name="google-site-verification"
-      content="6rxbbidY7MSJ_tZTc2ZrkrT7fiAAo_WUw3mbp_gu9e4"
-    />
+      <meta name="google-site-verification" content="pGAnPVO3GsiwCkgVCrHjQPo-Qjt5vZSCKmbUM6jAVG4" />
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <title>AI Guru - AI Learning Assistant</title>
