@@ -3,6 +3,8 @@ import React, { useState, useCallback, useEffect, useRef } from "react";
 import { motion } from "framer-motion";
 import { Send, Loader } from "lucide-react";
 import { FaArrowUp } from "react-icons/fa6";
+import { IoCreateOutline } from "react-icons/io5";
+
 
 const QuestionAnyTopic = () => {
   const [input, setInput] = useState("");
@@ -12,7 +14,8 @@ const QuestionAnyTopic = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [definition, setDefinition] = useState("");
   const [inputMode, setInputMode] = useState("topic");
-  const [height, setHeight] = useState(false)
+  const [height, setHeight] = useState(false);
+  const [titleName, setTitleName] = useState(false)
 
   const chatContainerRef = useRef(null);
 
@@ -68,7 +71,8 @@ const QuestionAnyTopic = () => {
     setInputMode("answer");
     setChatHistory([]); // Clear previous questions when new topic is set
     setAnswerHistory([]); // Clear answer history when new topic is set
-    setHeight(true)
+    setHeight(true);
+    setTitleName(true)
 
     try {
       const res = await fetch(
@@ -203,100 +207,140 @@ const QuestionAnyTopic = () => {
   );
 
   return (
-    <div className="h-[100vh] overflow-hidden flex flex-col items-center justify-end p-6 max-lg:p-0 bg-[#1D1E20] text-white">
-      <div className="w-[60vw] max-lg:w-full ">
-        <div className={` ${height?"h-[70vh]":"h-[0vh]"} overflow-y-auto`} ref={chatContainerRef}>
-          <div className=" space-y-4 flex items-center justify-center flex-col scrollbar-thin scrollbar-thumb-gray-500 scrollbar-track-gray-800 mb-3">
+    <div className="h-screen overflow-hidden flex flex-col items-center justify-center p-6 max-md:p-4 bg-gradient-to-b from-[#1D1E20] to-[#2A2B2D] text-white font-sans">
+     <div className={`relative top-[40%] ${titleName?"hidden":"block"}`}>
+     <h1 className="text-2xl md:text-4xl text-center font-bold max-md:mb-2 tracking-tight">
+      👩‍🎓 Hello Students 🧑‍🎓
+      </h1>
+      <h1 className="text-2xl  md:text-4xl text-center text-gray-400 font-semibold mb-16 max-md:mb-10 tracking-tight">
+      How can I help you today?
+      </h1>
+     </div>
+
+      <div className="w-full max-w-4xl flex-1 flex flex-col justify-end">
+        {/* Chat Container */}
+        <div
+          className={`flex-1 ${
+            height ? "max-h-[70vh]" : "max-h-0"
+          } overflow-y-auto transition-all duration-300`}
+          ref={chatContainerRef}
+        >
+          <div className="py-6 space-y-6 flex flex-col items-center scrollbar-thin scrollbar-thumb-gray-600 scrollbar-track-transparent">
             {definition && (
               <motion.div
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                className="p-4 rounded-xl"
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.3 }}
+                className="bg-[#2A2B2D] p-6 rounded-2xl shadow-lg max-w-2xl w-full"
                 dangerouslySetInnerHTML={{ __html: formatText(definition) }}
               />
             )}
             {chatHistory.map(renderChatBubble)}
-            {isLoading ? "Loading..." : ""}
+            {isLoading && (
+              <div className="flex items-center gap-2 text-gray-400">
+                <Loader className="animate-spin" size={20} />
+                <span>Loading...</span>
+              </div>
+            )}
           </div>
 
           {/* Answer History */}
           {answerHistory.length > 0 && (
-            <div className="p-4 rounded-xl">
-              <h3 className="text-lg font-semibold mb-2">Answer History</h3>
-              {answerHistory.map((item, index) => (
-                <div key={index} className="mb-2">
-                  <p>
-                    <strong>Q:</strong> {item.question}
-                  </p>
-                  <p>
-                    <strong>A:</strong> {item.answer}
-                  </p>
-                  <p>
-                    <strong>Feedback:</strong> {item.response}
-                  </p>
-                </div>
-              ))}
+            <div className="bg-[#2A2B2D] p-6 rounded-2xl mt-4 shadow-lg">
+              <h3 className="text-xl font-semibold mb-4 text-gray-200">
+                Previous Answers
+              </h3>
+              <div className="space-y-4">
+                {answerHistory.map((item, index) => (
+                  <div
+                    key={index}
+                    className="border-b border-gray-700 pb-4 last:border-0"
+                  >
+                    <p className="text-sm text-gray-300">
+                      <strong className="text-white">Q:</strong> {item.question}
+                    </p>
+                    <p className="text-sm text-gray-300">
+                      <strong className="text-white">A:</strong> {item.answer}
+                    </p>
+                    <p className="text-sm text-gray-300">
+                      <strong className="text-white">Feedback:</strong>{" "}
+                      {item.response}
+                    </p>
+                  </div>
+                ))}
+              </div>
             </div>
           )}
         </div>
 
-        <div className="bg-[#36383A] rounded-3xl p-3 gap-3 ">
-          <input
-            type="text"
-            value={input}
-            onChange={(e) => setInput(e.target.value)}
-            placeholder={
-              inputMode === "topic" ? "Enter a topic..." : "Your answer..."
-            }
-            className="flex-1 w-full p-3 rounded-lg h-[4rem] text-white placeholder-gray-400 outline-none"
-            onKeyDown={(e) =>
-              inputMode === "answer" && e.key === "Enter" && checkAnswer()
-            }
-          />
-          
-        
+        {/* Input Section */}
+        <div className="mt-6 bg-[#36383A] rounded-3xl p-4 shadow-xl">
+          <div className="flex items-center flex-col justify-between  gap-4 max-md:flex-col">
+            <input
+              type="text"
+              value={input}
+              onChange={(e) => setInput(e.target.value)}
+              placeholder={
+                inputMode === "topic" ? "Enter a topic..." : "Your answer..."
+              }
+              className=" w-full p-4 rounded-xl  text-white placeholder-gray-300 border-none  outline-none transition-all duration-200"
+              onKeyDown={(e) =>
+                inputMode === "answer" && e.key === "Enter" && checkAnswer()
+              }
+            />
 
-        <div className="flex justify-between gap-3 max-lg:mb-32 ">
-          <motion.button
-            onClick={fetchAIQuestion}
-            disabled={isLoading || !definition}
-            
-            className="flex-1 py-2 px-4 bg-gray-500 rounded-full hover:bg-gray-600 disabled:bg-gray-500"
-          >
-            {isLoading ? "Questions Is Loading..." : "Ask Questions"}
-          </motion.button>
-          {inputMode === "answer" && (
-            <motion.button
-              onClick={checkAnswer}
-              
-              className="flex-1 py-2 px-4 bg-gray-500 rounded-full hover:bg-gray-600"
+            <div className=" w-full">
+            <div className="flex w-full gap-3 items-center justify-between">
+              <motion.button
+                
+                disabled={isLoading || !definition}
+                
+                className=" w-full p-3 bg-gray-600 rounded-full text-sm font-medium hover:bg-gray-700 disabled:bg-gray-800 disabled:cursor-not-allowed transition-colors"
+              >
+                {isLoading ? "Loading..." : "Ask Questions"}
+              </motion.button>
+
+              <motion.button
+                  onClick={checkAnswer}
+                  disabled={isLoading || !definition}
+                  
+                  className="w-full p-3 bg-gray-600 rounded-full text-sm font-medium hover:bg-gray-700  transition-colors"
+                >
+                  Check Answer
+                </motion.button>
+
+              <motion.button
+                onClick={fetchDefinition}
+                disabled={isLoading}
+                whileHover={{ scale: 1.1 }}
+                whileTap={{ scale: 0.9 }}
+                className="p-3 bg-white text-black rounded-full disabled:opacity-50"
+              >
+                {isLoading ? (
+                  <IoCreateOutline className="" size={20} />
+                ) : (
+                  <FaArrowUp size={20} />
+                )}
+              </motion.button>
+            </div>
+            </div>
+          </div>
+
+          {error && (
+            <motion.p
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              className="text-red-400 text-sm text-center mt-3"
             >
-              Check Answer
-            </motion.button>
+              {error}
+            </motion.p>
           )}
-          <motion.button
-            onClick={fetchDefinition}
-            disabled={isLoading}
-            whileHover={{ scale: 1.05 }}
-            className="p-3 bg-white text-black rounded-full disabled:bg-gray-500"
-          >
-            {isLoading ? (
-              <Loader className="animate-spin" size={20} />
-            ) : (
-              <FaArrowUp/>
-            )}
-          </motion.button>
-        </div>
 
-        {error && (
-          <motion.p
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            className="text-red-400 text-sm text-center"
-          >
-            {error}
-          </motion.p>
-        )}
+          <p className="text-xs text-center text-gray-400 mt-4 hidden max-lg:block">
+            Explore AI in education with the best free AI tools for students.
+            Get AI for research papers, plagiarism checking, and smart study
+            solutions for better learning!
+          </p>
         </div>
       </div>
     </div>
