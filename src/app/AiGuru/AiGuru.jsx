@@ -2,6 +2,7 @@
 import React, { useState, useCallback, useEffect, useRef } from "react";
 import { motion } from "framer-motion";
 import { Send, Loader } from "lucide-react";
+import { FaArrowUp } from "react-icons/fa6";
 
 const QuestionAnyTopic = () => {
   const [input, setInput] = useState("");
@@ -195,31 +196,32 @@ const QuestionAnyTopic = () => {
       initial={{ opacity: 0, y: 10 }}
       animate={{ opacity: 1, y: 0 }}
       className={`p-3 rounded-lg text-white ${
-        msg.role === "user" ? "bg-gray-600" : "bg-blue-600"
+        msg.role === "user" ? "bg-gray-600" : "bg-gray-600 m-4"
       }`}
       dangerouslySetInnerHTML={{ __html: formatText(msg.text) }}
     />
   );
 
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center p-6 bg-gradient-to-b from-blue-950 to-gray-900 text-white">
-      <div className="w-full max-w-2xl bg-gray-800 rounded-2xl shadow-xl p-6 space-y-4">
-        <div className={` ${height?"h-[50vh]":"h-[0vh]"} overflow-y-auto`} ref={chatContainerRef}>
-          <div className=" space-y-4 scrollbar-thin scrollbar-thumb-gray-500 scrollbar-track-gray-800 mb-3">
+    <div className="h-[100vh] overflow-hidden flex flex-col items-center justify-end p-6 max-lg:p-0 bg-[#1D1E20] text-white">
+      <div className="w-[60%] max-lg:w-full ">
+        <div className={` ${height?"h-[70vh]":"h-[0vh]"} overflow-y-auto`} ref={chatContainerRef}>
+          <div className=" space-y-4 flex items-center justify-center flex-col scrollbar-thin scrollbar-thumb-gray-500 scrollbar-track-gray-800 mb-3">
             {definition && (
               <motion.div
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
-                className="p-4 bg-gray-700 rounded-xl"
+                className="p-4 rounded-xl"
                 dangerouslySetInnerHTML={{ __html: formatText(definition) }}
               />
             )}
             {chatHistory.map(renderChatBubble)}
+            {isLoading ? "Loading..." : ""}
           </div>
 
           {/* Answer History */}
           {answerHistory.length > 0 && (
-            <div className="p-4 bg-gray-700 rounded-xl">
+            <div className="p-4 rounded-xl">
               <h3 className="text-lg font-semibold mb-2">Answer History</h3>
               {answerHistory.map((item, index) => (
                 <div key={index} className="mb-2">
@@ -238,7 +240,7 @@ const QuestionAnyTopic = () => {
           )}
         </div>
 
-        <div className="flex items-center gap-3">
+        <div className="bg-[#36383A] rounded-3xl p-3 gap-3 ">
           <input
             type="text"
             value={input}
@@ -246,43 +248,44 @@ const QuestionAnyTopic = () => {
             placeholder={
               inputMode === "topic" ? "Enter a topic..." : "Your answer..."
             }
-            className="flex-1 p-3 rounded-lg bg-gray-700 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="flex-1 w-full p-3 rounded-lg h-[4rem] text-white placeholder-gray-400 outline-none"
             onKeyDown={(e) =>
               inputMode === "answer" && e.key === "Enter" && checkAnswer()
             }
           />
-          <motion.button
-            onClick={fetchDefinition}
-            disabled={isLoading}
-            whileHover={{ scale: 1.05 }}
-            className="p-3 bg-blue-600 rounded-lg disabled:bg-gray-500 hover:bg-blue-700"
-          >
-            {isLoading ? (
-              <Loader className="animate-spin" size={20} />
-            ) : (
-              <Send size={20} />
-            )}
-          </motion.button>
-        </div>
+          
+        
 
-        <div className="flex justify-between gap-3">
+        <div className="flex justify-between gap-3 max-lg:mb-32 ">
           <motion.button
             onClick={fetchAIQuestion}
             disabled={isLoading || !definition}
-            whileHover={{ scale: 1.05 }}
-            className="flex-1 py-2 px-4 bg-green-600 rounded-lg hover:bg-green-700 disabled:bg-gray-500"
+            
+            className="flex-1 py-2 px-4 bg-gray-500 rounded-full hover:bg-gray-600 disabled:bg-gray-500"
           >
-            {isLoading ? "Loading..." : "Ask Guru"}
+            {isLoading ? "Questions Is Loading..." : "Ask Questions"}
           </motion.button>
           {inputMode === "answer" && (
             <motion.button
               onClick={checkAnswer}
-              whileHover={{ scale: 1.05 }}
-              className="flex-1 py-2 px-4 bg-purple-600 rounded-lg hover:bg-purple-700"
+              
+              className="flex-1 py-2 px-4 bg-gray-500 rounded-full hover:bg-gray-600"
             >
               Check Answer
             </motion.button>
           )}
+          <motion.button
+            onClick={fetchDefinition}
+            disabled={isLoading}
+            whileHover={{ scale: 1.05 }}
+            className="p-3 bg-white text-black rounded-full disabled:bg-gray-500"
+          >
+            {isLoading ? (
+              <Loader className="animate-spin" size={20} />
+            ) : (
+              <FaArrowUp/>
+            )}
+          </motion.button>
         </div>
 
         {error && (
@@ -294,6 +297,7 @@ const QuestionAnyTopic = () => {
             {error}
           </motion.p>
         )}
+        </div>
       </div>
     </div>
   );
