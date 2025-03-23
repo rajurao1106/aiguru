@@ -283,7 +283,7 @@
                     .replace(/\n/g, "<br>") // Add line breaks
                     .replace(
                       /\*(.*?)/g,
-                      "<ul class='list-disc flex ml-5'><li>$1</li></ul>"
+                      "<p>$1</p>"
                     ), // Bullet points
                 }}
               />
