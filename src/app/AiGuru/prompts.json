@@ -1,0 +1,6 @@
+{
+    "definition_prompt": "Provide a detailed definition of '{topic}', covering all key aspects, subtopics, and related concepts for a comprehensive understanding.",
+    "question_prompt": "Create a basic, short and common interview question based on '{definition}' that has not been asked before. Here is the full history of previous questions: {pastQuestions}",
+    "answer_evaluation_prompt": "Evaluate the following question and the user's answer:\n\nLatest Question: {latestQuestion}\nUser's Answer: {answer}\n\nIf the user's answer is correct, respond with 'It is correct.' Otherwise, respond with 'It is not correct' and provide the correct answer."
+  }
+  

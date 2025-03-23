@@ -3,7 +3,8 @@ import React, { useState, useCallback, useEffect, useRef } from "react";
 import { motion } from "framer-motion";
 import Image from "next/image";
 import ai_teacher from "../../images/ai-teacher.jpg";
-import Head from "next/head";
+import prompts from "./prompts.json"; // Adjust the path as needed
+
 
 const QuestionAnyTopic = () => {
   const [topic, setTopic] = useState("");
@@ -44,6 +45,11 @@ const QuestionAnyTopic = () => {
     setError(null);
     setIsLoading(true);
 
+    const formatPrompt = (template, values) => {
+  return template.replace(/\{(\w+)\}/g, (_, key) => values[key] || "");
+};
+
+
     try {
       const res = await fetch(
         `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${process.env.NEXT_PUBLIC_GEMINI_API_KEY}`,
@@ -56,7 +62,7 @@ const QuestionAnyTopic = () => {
                 role: "user",
                 parts: [
                   {
-                    text: `Provide a detailed definition of '${topic}', covering all key aspects, subtopics, and related concepts for a comprehensive understanding.`,
+                    text: formatPrompt(prompts.definition_prompt, { topic }),
                   },
                 ],
               },
@@ -251,16 +257,30 @@ If the user's answer is correct or closely related, respond with 'It is correct.
 
           {/* Definition Display */}
           {definition && (
-            <motion.p
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, ease: "easeOut" }}
-              className="mt-4 p-4 overflow-y-auto h-[15rem] text-white bg-gray-800 
-                     rounded-xl shadow-lg backdrop-blur-md border border-gray-600 
-                     scrollbar-thin scrollbar-thumb-gray-500 scrollbar-track-gray-700"
-            >
-              {definition}
-            </motion.p>
+         <motion.p
+         className="mt-4 p-4 overflow-y-auto h-[15rem] text-white bg-gray-800 
+                    rounded-xl shadow-lg backdrop-blur-md border border-gray-600 
+                    scrollbar-thin scrollbar-thumb-gray-500 scrollbar-track-gray-700"
+         dangerouslySetInnerHTML={{
+           __html: definition
+             .replace(/\*\*(.*?)\*\*/g, "<strong>$1</strong>") // Bold
+             .replace(/\*(.*?)\*/g, "<em>$1</em>") // Italic
+             .replace(/__([^_]+)__/g, "<u>$1</u>") // Underline
+             .replace(/~~(.*?)~~/g, "<del>$1</del>") // Strikethrough
+             .replace(/`([^`]+)`/g, "<code class='bg-gray-700 p-1 rounded'>$1</code>") // Inline Code
+             .replace(/### (.*?)\n/g, "<h3 class='text-xl font-semibold'>$1</h3>") // H3
+             .replace(/## (.*?)\n/g, "<h2 class='text-2xl font-bold'>$1</h2>") // H2
+             .replace(/# (.*?)\n/g, "<h1 class='text-3xl font-extrabold'>$1</h1>") // H1
+             .replace(/\n- (.*?)\n/g, "<ul class='list-disc ml-5'><li>$1</li></ul>") // Unordered List
+             .replace(/\n\d+\. (.*?)\n/g, "<ol class='list-decimal ml-5'><li>$1</li></ol>") // Ordered List
+             .replace(/\n>\s(.*?)\n/g, "<blockquote class='border-l-4 border-blue-500 pl-4 italic'>$1</blockquote>") // Blockquote
+             .replace(/\[([^\]]+)\]\(([^)]+)\)/g, "<a href='$2' class='text-blue-400 underline'>$1</a>") // Links
+             .replace(/\n/g, "<br>") // Add line breaks
+             .replace(/\*(.*?)/g, "<ul class='list-disc flex ml-5'><li>$1</li></ul>") // Bullet points
+         }}
+       />
+       
+          
           )}
 
           {/* Chat History */}
@@ -287,7 +307,7 @@ If the user's answer is correct or closely related, respond with 'It is correct.
           {/* Ask AI Button */}
           <motion.button
             onClick={fetchAIQuestion}
-            disabled={isLoading || !definition}
+            disabled={isLoading || !definition}  
             whileHover={{ scale: 1.05 }}
             className="mt-4 w-full bg-green-600 hover:bg-green-700 disabled:bg-gray-500 py-3 rounded-lg font-semibold transition-all"
           >
