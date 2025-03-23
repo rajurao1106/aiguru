@@ -204,7 +204,7 @@ const QuestionAnyTopic = () => {
 
   return (
     <div className="h-[100vh] overflow-hidden flex flex-col items-center justify-end p-6 max-lg:p-0 bg-[#1D1E20] text-white">
-      <div className="w-[60%] max-lg:w-full ">
+      <div className="w-[60vw] max-lg:w-full ">
         <div className={` ${height?"h-[70vh]":"h-[0vh]"} overflow-y-auto`} ref={chatContainerRef}>
           <div className=" space-y-4 flex items-center justify-center flex-col scrollbar-thin scrollbar-thumb-gray-500 scrollbar-track-gray-800 mb-3">
             {definition && (
