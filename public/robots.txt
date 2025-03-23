@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://aiguru.vercel.app/sitemap.xml
