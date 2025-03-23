@@ -8,10 +8,14 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <head>
-      <meta name="google-site-verification" content="pGAnPVO3GsiwCkgVCrHjQPo-Qjt5vZSCKmbUM6jAVG4" />
+        <meta
+          name="google-site-verification"
+          content="pGAnPVO3GsiwCkgVCrHjQPo-Qjt5vZSCKmbUM6jAVG4"
+        />
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <title>AI Guru - AI Learning Assistant</title>
+        <link rel="icon" href="/favicon.ico" />
         <meta
           name="description"
           content="Explore AI in education with the best free AI tools for students. Get AI for research papers, plagiarism checking, and smart study solutions for better learning!"
@@ -36,11 +40,6 @@ export default function RootLayout({ children }) {
         <meta property="og:image:width" content="1200" />
         <meta property="og:image:height" content="630" />
         <meta property="og:image:alt" content="AI Guru" />
-        <meta
-          name="google-site-verification"
-          content="GvlapF8Ytg-lBlDMjHK9cDjpNMdic_GkB1Nv2X3g06g"
-        />
-        
       </head>
       <body className={geist.className}>{children}</body>
     </html>
