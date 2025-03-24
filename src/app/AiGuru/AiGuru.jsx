@@ -5,7 +5,6 @@ import { Send, Loader } from "lucide-react";
 import { FaArrowUp } from "react-icons/fa6";
 import { IoCreateOutline } from "react-icons/io5";
 
-
 const QuestionAnyTopic = () => {
   const [input, setInput] = useState("");
   const [chatHistory, setChatHistory] = useState([]);
@@ -15,7 +14,7 @@ const QuestionAnyTopic = () => {
   const [definition, setDefinition] = useState("");
   const [inputMode, setInputMode] = useState("topic");
   const [height, setHeight] = useState(false);
-  const [titleName, setTitleName] = useState(false)
+  const [titleName, setTitleName] = useState(false);
 
   const chatContainerRef = useRef(null);
 
@@ -68,11 +67,11 @@ const QuestionAnyTopic = () => {
     }
     setError(null);
     setIsLoading(true);
-    setInputMode("answer");
+    
     setChatHistory([]); // Clear previous questions when new topic is set
     setAnswerHistory([]); // Clear answer history when new topic is set
     setHeight(true);
-    setTitleName(true)
+    setTitleName(true);
 
     try {
       const res = await fetch(
@@ -81,7 +80,16 @@ const QuestionAnyTopic = () => {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
-            contents: [{ role: "user", parts: [{ text: `Provide a detailed definition of '${input}', covering all key aspects, subtopics, and related concepts for a comprehensive understanding.` }] }],
+            contents: [
+              {
+                role: "user",
+                parts: [
+                  {
+                    text: `Generate a detailed definition of '${input}' that includes all key aspects, subtopics, and related concepts for a comprehensive understanding. Then, provide a specific, clickable YouTube video link (in the format Video Title) related to '${input}' for visual learning. The video should be clear, educational, and from a reputable source like Traversy Media, freeCodeCamp.org, The Net Ninja, or Academind. Avoid vague suggestions—select one concrete video example with a title and URL.`,
+                  },
+                ],
+              },
+            ],
           }),
         }
       );
@@ -104,6 +112,7 @@ const QuestionAnyTopic = () => {
     if (!definition) return;
     setError(null);
     setIsLoading(true);
+    setInputMode("answer");
 
     try {
       const pastQuestions = chatHistory
@@ -148,6 +157,8 @@ const QuestionAnyTopic = () => {
 
   const checkAnswer = async () => {
     if (!chatHistory.length || !input.trim()) return;
+
+    setInputMode("topic");
 
     try {
       const latestQuestion = chatHistory[chatHistory.length - 1].text;
@@ -208,17 +219,17 @@ const QuestionAnyTopic = () => {
 
   return (
     <div className="h-screen overflow-hidden flex flex-col items-center justify-center p-6 max-md:p-4 bg-gradient-to-b from-[#1D1E20] to-[#2A2B2D] text-white font-sans">
-     {/* Title */}
-     <div className={`relative top-[40%] ${titleName?"hidden":"block"}`}>
-     <h1 className="text-2xl md:text-4xl text-center font-bold max-md:mb-2 tracking-tight">
-      👩‍🎓 Hello Students 🧑‍🎓
-      </h1>
-      <h1 className="text-2xl  md:text-4xl text-center text-gray-400 font-semibold mb-16 max-md:mb-10 tracking-tight">
-      How can I help you today?
-      </h1>
-     </div>
+      {/* Title */}
+      <div className={`relative top-[40%] ${titleName ? "hidden" : "block"}`}>
+        <h1 className="text-2xl md:text-4xl text-center font-bold max-md:mb-2 tracking-tight">
+          👩‍🎓 Hello Students 🧑‍🎓
+        </h1>
+        <h1 className="text-2xl  md:text-4xl text-center text-gray-400 font-semibold mb-16 max-md:mb-10 tracking-tight">
+          How can I help you today?
+        </h1>
+      </div>
 
-     {/* container */}
+      {/* container */}
 
       <div className="w-full max-w-3xl flex-1 flex flex-col justify-end">
         {/* Chat Container */}
@@ -228,10 +239,8 @@ const QuestionAnyTopic = () => {
           }  transition-all duration-300 overflow-y-scroll scrollbar scrollbar-thin scrollbar-thumb-gray-400 scrollbar-track-gray-100 h-64`}
           ref={chatContainerRef}
         >
-          
-
           {/* Answer History */}
-          {answerHistory.length > 0 && (
+          {/* {answerHistory.length > 0 && (
             <div className=" p-6 rounded-2xl mt-4 shadow-lg">
               <h3 className="text-xl font-semibold mb-4 text-gray-200">
                 Previous Answers
@@ -256,7 +265,7 @@ const QuestionAnyTopic = () => {
                 ))}
               </div>
             </div>
-          )}
+          )} */}
           {/* definition */}
           <div className="  flex flex-col items-center">
             {definition && (
@@ -287,52 +296,58 @@ const QuestionAnyTopic = () => {
               value={input}
               onChange={(e) => setInput(e.target.value)}
               placeholder={
-                inputMode === "topic" ? "Enter a Topic or Chapter Name..." : "Your answer..."
+                inputMode === "topic"
+                  ? "Enter a Topic or Chapter Name..."
+                  : "Your answer..."
               }
               className=" w-full p-3 rounded-xl  text-white placeholder-gray-300 border-none  outline-none transition-all duration-200"
-              onKeyDown={(e) =>
-                inputMode === "answer" && e.key === "Enter" && checkAnswer()
-              }
+              onKeyDown={(e) => {
+                if (e.key === "Enter") {
+                  if (inputMode === "topic") {
+                    fetchDefinition();
+                  } else if (inputMode === "answer") {
+                    checkAnswer();
+                  }
+                }
+              }}
             />
 
             <div className=" w-full">
-            <div className="flex w-full gap-3 items-center justify-between">
-              <div className="flex w-[50%] max-lg:w-[100%] gap-5">
-                {/* Ask Question */}
-              <motion.button
-                onClick={fetchAIQuestion} 
-                disabled={isLoading || !definition}
-                
-                className=" w-full p-3 border border-gray-500 rounded-full text-sm font-medium  hover:bg-gray-700 transition-colors"
-              >
-                {isLoading ? "Loading..." : "Ask Questions"}
-              </motion.button>
+              <div className="flex w-full gap-3 items-center justify-between">
+                <div className="flex w-[50%] max-lg:w-[100%] gap-5">
+                  {/* Ask Question */}
+                  <motion.button
+                    onClick={fetchAIQuestion}
+                    disabled={isLoading || !definition}
+                    className=" w-full p-3 border border-gray-500 rounded-full text-sm font-medium  hover:bg-gray-700 transition-colors"
+                  >
+                    {isLoading ? "Loading..." : "Ask Questions"}
+                  </motion.button>
 
-                {/* Check Answer */}
-              <motion.button
-                  onClick={checkAnswer}
-                  disabled={isLoading || !definition}
-                  
-                  className="w-full p-3 border border-gray-500 rounded-full text-sm font-medium hover:bg-gray-700  transition-colors"
+                  {/* Check Answer */}
+                  <motion.button
+                    onClick={checkAnswer}
+                    disabled={isLoading || !definition}
+                    className="w-full p-3 border border-gray-500 rounded-full text-sm font-medium hover:bg-gray-700  transition-colors"
+                  >
+                    Check Answer
+                  </motion.button>
+                </div>
+
+                {/* Search Button */}
+                <motion.button
+                  onClick={fetchDefinition}
+                  disabled={isLoading}
+                  whileTap={{ scale: 0.9 }}
+                  className="p-3 bg-white text-black rounded-full disabled:opacity-50"
                 >
-                  Check Answer
+                  {isLoading ? (
+                    <IoCreateOutline className="" size={20} />
+                  ) : (
+                    <FaArrowUp size={18} />
+                  )}
                 </motion.button>
               </div>
-
-              {/* Search Button */}
-              <motion.button
-                onClick={fetchDefinition}
-                disabled={isLoading}
-                whileTap={{ scale: 0.9 }}
-                className="p-3 bg-white text-black rounded-full disabled:opacity-50"
-              >
-                {isLoading ? (
-                  <IoCreateOutline className="" size={20} />
-                ) : (
-                  <FaArrowUp size={18} />
-                )}
-              </motion.button>
-            </div>
             </div>
           </div>
 
@@ -347,9 +362,9 @@ const QuestionAnyTopic = () => {
           )}
 
           <p className="text-xs text-center text-gray-400 mt-4 hidden max-lg:block">
-            Explore AI in education with the best free AI tools for students.
-            Get AI for research papers, plagiarism checking, and smart study
-            solutions for better learning!
+            Explore AI and education with our artificial intelligence in
+            education platform! Solve doubts instantly using our math problem
+            solver powered by artificial intelligence on education.
           </p>
         </div>
       </div>
