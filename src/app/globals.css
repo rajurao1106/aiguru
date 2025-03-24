@@ -2,17 +2,19 @@
 
 /* In your CSS file */
 .custom-scrollbar {
-    @apply overflow-y-scroll h-64;
+    overflow-y: scroll;
+    height: 16rem; /* Equivalent to h-64 in Tailwind CSS */
   }
   
   .custom-scrollbar::-webkit-scrollbar {
     width: 5px; /* Adjust width */
   }
-  
   .custom-scrollbar::-webkit-scrollbar-thumb {
-    @apply bg-gray-500 rounded-full; /* Custom thumb color and shape */
+    background-color: #6b7280; /* Equivalent to bg-gray-500 in Tailwind CSS */
+    border-radius: 9999px; /* Equivalent to rounded-full in Tailwind CSS */
   }
   
+  
   .custom-scrollbar::-webkit-scrollbar-track {
-    @apply bg-[#80808000]; /* Custom track color */
+    background-color: #80808000; /* Custom track color */
   }

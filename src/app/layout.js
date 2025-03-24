@@ -14,15 +14,15 @@ export default function RootLayout({ children }) {
         />
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <title>AI Guru - AI Learning Assistant</title>
+        <title>AI-Guru: Doubt Solver with AI in Education</title>
         <link rel="icon" href="/favicon.ico" />
         <meta
           name="description"
-          content="Explore AI in education with the best free AI tools for students. Get AI for research papers, plagiarism checking, and smart study solutions for better learning!"
+          content="Explore AI and education with our artificial intelligence in education platform! Solve doubts instantly using our math problem solver powered by artificial intelligence on education."
         />
         <meta
           name="keywords"
-          content="ai in education, education in ai, ai on education, best ai tool for students, free ai tools for students, ai for research papers, ai plagiarism checker free, ai research papers"
+          content="ai in education, education in ai, ai on education, ai for education, artificial intelligence in education, ai and education, artificial intelligence and education, artificial intelligence on education, math problem solver"
         />
         <meta name="author" content="D. Raju Rao" />
         <meta name="robots" content="index, follow" />
