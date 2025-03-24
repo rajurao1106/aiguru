@@ -14,7 +14,7 @@ export default function RootLayout({ children }) {
         />
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <title>AI-Guru: Doubt Solver with AI in Education</title>
+        <title>AI-Guru: Doubt Solver with AI for Education</title>
         <link rel="icon" href="/favicon.ico" />
         <meta
           name="description"
