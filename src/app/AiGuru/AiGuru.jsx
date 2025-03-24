@@ -279,8 +279,8 @@ const QuestionAnyTopic = () => {
             )}
             {chatHistory.map(renderChatBubble)}
             {isLoading && (
-              <div className="flex items-center gap-2 text-white">
-                <Loader className="animate-spin" size={20} />
+              <div className="flex items-center gap-2  text-white">
+                <Loader className="animate-spin py-5" size={20} />
                 <span>Loading...</span>
               </div>
             )}
@@ -361,7 +361,7 @@ const QuestionAnyTopic = () => {
             </motion.p>
           )}
 
-          <p className="text-xs text-center text-gray-400 mt-4 hidden max-lg:block">
+          <p className="text-xs max-lg:pb-5 text-center text-gray-400 mt-4 hidden max-lg:block">
             Explore AI and education with our artificial intelligence in
             education platform! Solve doubts instantly using our math problem
             solver powered by artificial intelligence on education.
