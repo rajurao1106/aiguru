@@ -288,6 +288,9 @@ const QuestionAnyTopic = () => {
                 </motion.button>
               </div>
             </div>
+            <p className="text-xs text-center text-gray-400 hidden max-lg:block">
+            Explore AI in education! Instantly solve doubts with our AI-powered math solver.
+          </p>
           </div>
           {error && (
             <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="text-red-400 text-sm text-center mt-3">
