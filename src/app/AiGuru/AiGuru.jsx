@@ -25,7 +25,8 @@ const QuestionAnyTopic = () => {
 
   useEffect(() => {
     if (chatContainerRef.current) {
-      chatContainerRef.current.scrollTop = chatContainerRef.current.scrollHeight;
+      chatContainerRef.current.scrollTop =
+        chatContainerRef.current.scrollHeight;
     }
   }, [chatHistory]);
 
@@ -39,39 +40,65 @@ const QuestionAnyTopic = () => {
   };
 
   const formatText = (text) => {
-    return text
-      // Bold: **text** -> <strong>
-      .replace(/\*\*(.*?)\*\*/g, "<strong class='font-bold text-white'>$1</strong>")
-      // Italics: *text* -> <em>
-      .replace(/\*(.*?)\*/g, "<em class='italic text-gray-200'>$1</em>")
-      // Underline: __text__ -> <u>
-      .replace(/__([^_]+)__/g, "<u class='underline'>$1</u>")
-      // Strikethrough: ~~text~~ -> <del>
-      .replace(/~~(.*?)~~/g, "<del class='line-through text-gray-400'>$1</del>")
-      // Code: `text` -> <code>
-      .replace(
-        /`([^`]+)`/g,
-        "<code class='bg-gray-800 text-yellow-200 px-2 py-0.5 rounded-md font-mono text-sm shadow-sm border border-gray-700'>$1</code>"
-      )
-      // Headings: #, ##, ### -> <h1>, <h2>, <h3>
-      .replace(/### (.*?)(?:\n|$)/g, "<h3 class='text-xl font-semibold text-white mt-4 mb-2'>$1</h3>")
-      .replace(/## (.*?)(?:\n|$)/g, "<h2 class='text-2xl font-bold text-white mt-6 mb-3'>$1</h2>")
-      .replace(/# (.*?)(?:\n|$)/g, "<h1 class='text-3xl font-extrabold text-white mt-8 mb-4'>$1</h1>")
-      // Unordered List: - item -> <ul><li>
-      .replace(/(?:\n|^)- (.*?)(?=\n|$)/g, (match, p1) => {
-        return "<ul class='list-disc ml-6 text-gray-200'><li>$1</li></ul>";
-      })
-      .replace(/\*(.*?)/g, "<ul><li class='text-xl font-semibold text-white mt-4 mb-2'></li></ul>")
-     
-      // Blockquote: > text -> <blockquote>
-      .replace(/\n>\s(.*?)(?=\n|$)/g, "<blockquote class='border-l-4 border-blue-500 pl-4 italic text-gray-300 my-2'>$1</blockquote>")
-      // Links: [text](url) -> <a>
-      .replace(/\[([^\]]+)\]\(([^)]+)\)/g, "<a href='$2' class='text-blue-400 underline hover:text-blue-300 transition-colors'>$1</a>")
-      // Line breaks: \n -> <br>
-      .replace(/\n/g, "<br>")
-      // Clean up multiple <ul> or <ol> tags into a single list (post-processing)
-      .replace(/(<\/ul><ul class='list-disc ml-6 text-gray-200'>)+/g, "")
-      .replace(/(<\/ol><ol class='list-decimal ml-6 text-gray-200'>)+/g, "");
+    return (
+      text
+        // Bold: **text** -> <strong>
+        .replace(
+          /\*\*(.*?)\*\*/g,
+          "<strong class='font-bold text-white'>$1</strong>"
+        )
+        // Italics: *text* -> <em>
+        .replace(/\*(.*?)\*/g, "<em class='italic text-gray-200'>$1</em>")
+        // Underline: __text__ -> <u>
+        .replace(/__([^_]+)__/g, "<u class='underline'>$1</u>")
+        // Strikethrough: ~~text~~ -> <del>
+        .replace(
+          /~~(.*?)~~/g,
+          "<del class='line-through text-gray-400'>$1</del>"
+        )
+        // Code: `text` -> <code>
+        .replace(
+          /`([^`]+)`/g,
+          "<code class='bg-gray-800 text-yellow-200 px-2 py-0.5 rounded-md font-mono text-sm shadow-sm border border-gray-700'>$1</code>"
+        )
+        // Headings: #, ##, ### -> <h1>, <h2>, <h3>
+        .replace(
+          /### (.*?)(?:\n|$)/g,
+          "<h3 class='text-xl font-semibold text-white mt-4 mb-2'>$1</h3>"
+        )
+        .replace(
+          /## (.*?)(?:\n|$)/g,
+          "<h2 class='text-2xl font-bold text-white mt-6 mb-3'>$1</h2>"
+        )
+        .replace(
+          /# (.*?)(?:\n|$)/g,
+          "<h1 class='text-3xl font-extrabold text-white mt-8 mb-4'>$1</h1>"
+        )
+        // Unordered List: - item -> <ul><li>
+        .replace(/(?:\n|^)- (.*?)(?=\n|$)/g, (match, p1) => {
+          return "<ul class='list-disc ml-6 text-gray-200'><li>$1</li></ul>";
+        })
+        .replace(
+          /\*(.*?)/g,
+          "<ul><li class='text-xl font-semibold text-white mt-4 mb-2'></li></ul>"
+        )
+
+        // Blockquote: > text -> <blockquote>
+        .replace(
+          /\n>\s(.*?)(?=\n|$)/g,
+          "<blockquote class='border-l-4 border-blue-500 pl-4 italic text-gray-300 my-2'>$1</blockquote>"
+        )
+        // Links: [text](url) -> <a>
+        .replace(
+          /\[([^\]]+)\]\(([^)]+)\)/g,
+          "<a href='$2' class='text-blue-400 underline hover:text-blue-300 transition-colors'>$1</a>"
+        )
+        // Line breaks: \n -> <br>
+        .replace(/\n/g, "<br>")
+        // Clean up multiple <ul> or <ol> tags into a single list (post-processing)
+        .replace(/(<\/ul><ul class='list-disc ml-6 text-gray-200'>)+/g, "")
+        .replace(/(<\/ol><ol class='list-decimal ml-6 text-gray-200'>)+/g, "")
+    );
   };
 
   const fetchYouTubeVideo = async (topic) => {
@@ -81,7 +108,7 @@ const QuestionAnyTopic = () => {
       "Traversy Media": "UC29ju8bIPH5as8OGnQzwJyA",
       "freeCodeCamp.org": "UC8butISFwT-Wl7EV0hUK0BQ",
       "The Net Ninja": "UCW5YeuERMmlnqo4oq8vwUpg",
-      "Academind": "UCSJbGtTlrDami-tDGPUV9-w",
+      Academind: "UCSJbGtTlrDami-tDGPUV9-w",
     };
 
     try {
@@ -102,7 +129,8 @@ const QuestionAnyTopic = () => {
       const reputableVideos = videos.filter((video) =>
         Object.values(reputableChannels).includes(video.snippet.channelId)
       );
-      const bestVideo = reputableVideos.length > 0 ? reputableVideos[0] : videos[0];
+      const bestVideo =
+        reputableVideos.length > 0 ? reputableVideos[0] : videos[0];
 
       return {
         title: bestVideo.snippet.title,
@@ -144,13 +172,14 @@ const QuestionAnyTopic = () => {
                 ],
               },
             ],
-          })
+          }),
         }
       );
       if (!res.ok) throw new Error("Failed to fetch definition.");
       const data = await res.json();
       const aiDefinition =
-        data?.candidates?.[0]?.content?.parts?.[0]?.text?.trim() || "Definition not found.";
+        data?.candidates?.[0]?.content?.parts?.[0]?.text?.trim() ||
+        "Definition not found.";
       setDefinition(aiDefinition);
       speakText(aiDefinition);
 
@@ -192,14 +221,18 @@ const QuestionAnyTopic = () => {
                 ],
               },
             ],
-          })
+          }),
         }
       );
       if (!res.ok) throw new Error("Failed to fetch question.");
       const data = await res.json();
       const aiQuestion =
-        data?.candidates?.[0]?.content?.parts?.[0]?.text?.trim() || "No question available.";
-      setChatHistory((prev) => [...prev, { role: "assistant", text: aiQuestion }]);
+        data?.candidates?.[0]?.content?.parts?.[0]?.text?.trim() ||
+        "No question available.";
+      setChatHistory((prev) => [
+        ...prev,
+        { role: "assistant", text: aiQuestion },
+      ]);
       speakText(aiQuestion);
     } catch (error) {
       setError(`⚠️ ${error.message}`);
@@ -230,13 +263,14 @@ const QuestionAnyTopic = () => {
                 ],
               },
             ],
-          })
+          }),
         }
       );
       if (!res.ok) throw new Error("Failed to validate answer.");
       const data = await res.json();
       const aiResponse =
-        data?.candidates?.[0]?.content?.parts?.[0]?.text?.trim() || "Could not validate answer.";
+        data?.candidates?.[0]?.content?.parts?.[0]?.text?.trim() ||
+        "Could not validate answer.";
       setChatHistory((prev) => [
         ...prev,
         { role: "user", text: input },
@@ -289,7 +323,9 @@ const QuestionAnyTopic = () => {
       key={index}
       initial={{ opacity: 0, y: 10 }}
       animate={{ opacity: 1, y: 0 }}
-      className={`p-3 rounded-lg text-white ${msg.role === "user" ? "text-left w-full p-3" : "bg-gray-700 m-4"}`}
+      className={`p-3 rounded-lg text-white ${
+        msg.role === "user" ? "text-left w-full p-3" : "bg-gray-700 m-4"
+      }`}
       dangerouslySetInnerHTML={{ __html: formatText(msg.text) }}
     />
   );
@@ -320,7 +356,9 @@ const QuestionAnyTopic = () => {
                 transition={{ duration: 0.3 }}
                 className="p-6 max-lg:p-4 rounded-2xl shadow-lg w-full"
               >
-                <div dangerouslySetInnerHTML={{ __html: formatText(definition) }} />
+                <div
+                  dangerouslySetInnerHTML={{ __html: formatText(definition) }}
+                />
                 <motion.button
                   onClick={downloadDefinitionAsWord}
                   whileTap={{ scale: 0.9 }}
@@ -338,7 +376,12 @@ const QuestionAnyTopic = () => {
                 className="p-6 max-lg:p-4 rounded-2xl shadow-lg w-full"
               >
                 <p>Recommended Video:</p>
-                <a href={video.url} target="_blank" rel="noopener noreferrer" className="text-blue-400 underline">
+                <a
+                  href={video.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-blue-400 underline"
+                >
                   {video.title}
                 </a>
                 <p className="text-gray-400">by {video.channel}</p>
@@ -354,13 +397,17 @@ const QuestionAnyTopic = () => {
           </div>
         </div>
 
-        <div className="bg-[#36383A] border-gray-500 rounded-3xl p-4 shadow-xl">
-          <div className="flex items-center flex-col justify-between gap-4 max-md:flex-col">
+        <div className="bg-[#36383A] border-gray-500 rounded-3xl px-4 py-2 shadow-xl">
+          <div className="flex items-center flex-col justify-between gap-2 max-md:flex-col">
             <input
               type="text"
               value={input}
               onChange={(e) => setInput(e.target.value)}
-              placeholder={inputMode === "topic" ? "Enter a Topic or Doubt..." : "Your answer..."}
+              placeholder={
+                inputMode === "topic"
+                  ? "Enter a Topic or Doubt..."
+                  : "Your answer..."
+              }
               className="w-full p-3 rounded-xl text-white placeholder-gray-300 border-none outline-none transition-all duration-200"
               onKeyDown={(e) => {
                 if (e.key === "Enter") {
@@ -370,8 +417,8 @@ const QuestionAnyTopic = () => {
               }}
             />
             <div className="w-full">
-              <div className="flex w-full gap-3 items-center justify-between">
-                <div className="flex w-[50%] max-lg:w-[100%] gap-5">
+              <div className="flex w-full gap-3 items-center justify-between mb-2">
+                <div className="flex w-[50%] max-lg:w-[100%] gap-5 ">
                   <motion.button
                     onClick={fetchAIQuestion}
                     disabled={isLoading || !definition}
@@ -393,16 +440,26 @@ const QuestionAnyTopic = () => {
                   whileTap={{ scale: 0.9 }}
                   className="p-3 bg-white text-black rounded-full disabled:opacity-50"
                 >
-                  {isLoading ? <IoCreateOutline size={20} /> : <FaArrowUp size={18} />}
+                  {isLoading ? (
+                    <IoCreateOutline size={20} />
+                  ) : (
+                    <FaArrowUp size={18} />
+                  )}
                 </motion.button>
               </div>
             </div>
             <p className="text-xs text-center text-gray-400 hidden max-lg:block">
-              Explore AI in education! Instantly solve doubts with our AI-powered math solver.
+              Explore AI and education with our artificial intelligence in
+              education platform! Solve doubts instantly using our math problem
+              solver powered by artificial intelligence on education.
             </p>
           </div>
           {error && (
-            <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="text-red-400 text-sm text-center mt-3">
+            <motion.p
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              className="text-red-400 text-sm text-center mt-3"
+            >
               {error}
             </motion.p>
           )}
