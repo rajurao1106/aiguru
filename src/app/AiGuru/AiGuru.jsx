@@ -1,4 +1,4 @@
-"use client"
+"use client";
 
 import React, { useState, useCallback, useEffect, useRef } from "react";
 import { motion } from "framer-motion";
@@ -6,6 +6,8 @@ import { Send, Loader } from "lucide-react";
 import { FaArrowUp } from "react-icons/fa6";
 import { IoCreateOutline } from "react-icons/io5";
 import axios from "axios";
+import { Document, Packer, Paragraph, TextRun } from "docx"; // Import docx
+import { saveAs } from "file-saver"; // Import file-saver
 
 const QuestionAnyTopic = () => {
   const [input, setInput] = useState("");
@@ -14,7 +16,7 @@ const QuestionAnyTopic = () => {
   const [error, setError] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const [definition, setDefinition] = useState("");
-  const [video, setVideo] = useState(null); // New state for YouTube video
+  const [video, setVideo] = useState(null);
   const [inputMode, setInputMode] = useState("topic");
   const [height, setHeight] = useState(false);
   const [titleName, setTitleName] = useState(false);
@@ -38,22 +40,40 @@ const QuestionAnyTopic = () => {
 
   const formatText = (text) => {
     return text
-      .replace(/\*\*(.*?)\*\*/g, "<strong>$1</strong>")
-      .replace(/\*(.*?)\*/g, "<em>$1</em>")
-      .replace(/__([^_]+)__/g, "<u>$1</u>")
-      .replace(/~~(.*?)~~/g, "<del>$1</del>")
-      .replace(/`([^`]+)`/g, "<code class='bg-gray-700 p-1 rounded'>$1</code>")
-      .replace(/### (.*?)\n/g, "<h3 class='text-xl font-semibold'>$1</h3>")
-      .replace(/## (.*?)\n/g, "<h2 class='text-2xl font-bold'>$1</h2>")
-      .replace(/# (.*?)\n/g, "<h1 class='text-3xl font-extrabold'>$1</h1>")
-      .replace(/\n- (.*?)\n/g, "<ul class='list-disc ml-5'><li>$1</li></ul>")
-      .replace(/\n\d+\. (.*?)\n/g, "<ol class='list-decimal ml-5'><li>$1</li></ol>")
-      .replace(/\n>\s(.*?)\n/g, "<blockquote class='border-l-4 border-blue-500 pl-4 italic'>$1</blockquote>")
-      .replace(/\[([^\]]+)\]\(([^)]+)\)/g, "<a href='$2' class='text-blue-400 underline'>$1</a>")
-      .replace(/\n/g, "<br>");
+      // Bold: **text** -> <strong>
+      .replace(/\*\*(.*?)\*\*/g, "<strong class='font-bold text-white'>$1</strong>")
+      // Italics: *text* -> <em>
+      .replace(/\*(.*?)\*/g, "<em class='italic text-gray-200'>$1</em>")
+      // Underline: __text__ -> <u>
+      .replace(/__([^_]+)__/g, "<u class='underline'>$1</u>")
+      // Strikethrough: ~~text~~ -> <del>
+      .replace(/~~(.*?)~~/g, "<del class='line-through text-gray-400'>$1</del>")
+      // Code: `text` -> <code>
+      .replace(
+        /`([^`]+)`/g,
+        "<code class='bg-gray-800 text-yellow-200 px-2 py-0.5 rounded-md font-mono text-sm shadow-sm border border-gray-700'>$1</code>"
+      )
+      // Headings: #, ##, ### -> <h1>, <h2>, <h3>
+      .replace(/### (.*?)(?:\n|$)/g, "<h3 class='text-xl font-semibold text-white mt-4 mb-2'>$1</h3>")
+      .replace(/## (.*?)(?:\n|$)/g, "<h2 class='text-2xl font-bold text-white mt-6 mb-3'>$1</h2>")
+      .replace(/# (.*?)(?:\n|$)/g, "<h1 class='text-3xl font-extrabold text-white mt-8 mb-4'>$1</h1>")
+      // Unordered List: - item -> <ul><li>
+      .replace(/(?:\n|^)- (.*?)(?=\n|$)/g, (match, p1) => {
+        return "<ul class='list-disc ml-6 text-gray-200'><li>$1</li></ul>";
+      })
+      .replace(/\*(.*?)/g, "<ul><li class='text-xl font-semibold text-white mt-4 mb-2'></li></ul>")
+     
+      // Blockquote: > text -> <blockquote>
+      .replace(/\n>\s(.*?)(?=\n|$)/g, "<blockquote class='border-l-4 border-blue-500 pl-4 italic text-gray-300 my-2'>$1</blockquote>")
+      // Links: [text](url) -> <a>
+      .replace(/\[([^\]]+)\]\(([^)]+)\)/g, "<a href='$2' class='text-blue-400 underline hover:text-blue-300 transition-colors'>$1</a>")
+      // Line breaks: \n -> <br>
+      .replace(/\n/g, "<br>")
+      // Clean up multiple <ul> or <ol> tags into a single list (post-processing)
+      .replace(/(<\/ul><ul class='list-disc ml-6 text-gray-200'>)+/g, "")
+      .replace(/(<\/ol><ol class='list-decimal ml-6 text-gray-200'>)+/g, "");
   };
 
-  // Fetch YouTube video based on topic
   const fetchYouTubeVideo = async (topic) => {
     const apiKey = "AIzaSyDnlqKMLVXtf3_JPMwZxHePYjWTwhovoJM";
     const baseUrl = "https://www.googleapis.com/youtube/v3/search";
@@ -61,7 +81,7 @@ const QuestionAnyTopic = () => {
       "Traversy Media": "UC29ju8bIPH5as8OGnQzwJyA",
       "freeCodeCamp.org": "UC8butISFwT-Wl7EV0hUK0BQ",
       "The Net Ninja": "UCW5YeuERMmlnqo4oq8vwUpg",
-      "Academind": "UCSJbGtTlrDami-tDGPUV9-w"
+      "Academind": "UCSJbGtTlrDami-tDGPUV9-w",
     };
 
     try {
@@ -72,14 +92,14 @@ const QuestionAnyTopic = () => {
           type: "video",
           maxResults: 10,
           order: "relevance",
-          key: apiKey
-        }
+          key: apiKey,
+        },
       });
 
       const videos = response.data.items;
       if (!videos || videos.length === 0) return null;
 
-      const reputableVideos = videos.filter(video =>
+      const reputableVideos = videos.filter((video) =>
         Object.values(reputableChannels).includes(video.snippet.channelId)
       );
       const bestVideo = reputableVideos.length > 0 ? reputableVideos[0] : videos[0];
@@ -87,7 +107,7 @@ const QuestionAnyTopic = () => {
       return {
         title: bestVideo.snippet.title,
         url: `https://www.youtube.com/watch?v=${bestVideo.id.videoId}`,
-        channel: bestVideo.snippet.channelTitle
+        channel: bestVideo.snippet.channelTitle,
       };
     } catch (error) {
       console.error("Error fetching YouTube video:", error.message);
@@ -114,17 +134,26 @@ const QuestionAnyTopic = () => {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
-            contents: [{ role: "user", parts: [{ text: `Generate a detailed definition of '${input}' that includes all key aspects, subtopics, and related concepts for a comprehensive understanding.` }] }]
+            contents: [
+              {
+                role: "user",
+                parts: [
+                  {
+                    text: `Generate a detailed definition of '${input}' that includes all key aspects, subtopics, and related concepts for a comprehensive understanding.`,
+                  },
+                ],
+              },
+            ],
           })
         }
       );
       if (!res.ok) throw new Error("Failed to fetch definition.");
       const data = await res.json();
-      const aiDefinition = data?.candidates?.[0]?.content?.parts?.[0]?.text?.trim() || "Definition not found.";
+      const aiDefinition =
+        data?.candidates?.[0]?.content?.parts?.[0]?.text?.trim() || "Definition not found.";
       setDefinition(aiDefinition);
       speakText(aiDefinition);
 
-      // Fetch YouTube video after setting definition
       const videoResult = await fetchYouTubeVideo(input);
       setVideo(videoResult);
 
@@ -143,21 +172,34 @@ const QuestionAnyTopic = () => {
     setInputMode("answer");
 
     try {
-      const pastQuestions = chatHistory.filter(msg => msg.role === "assistant").map(msg => msg.text).join("\n");
+      const pastQuestions = chatHistory
+        .filter((msg) => msg.role === "assistant")
+        .map((msg) => msg.text)
+        .join("\n");
       const res = await fetch(
         `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${process.env.NEXT_PUBLIC_GEMINI_API_KEY}`,
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
-            contents: [{ role: "user", parts: [{ text: `Create a basic, short and common interview question based on '${definition}' that has not been asked before. Here is the full history of previous questions: ${pastQuestions}` }] }]
+            contents: [
+              {
+                role: "user",
+                parts: [
+                  {
+                    text: `Create a basic, short and common interview question based on '${definition}' that has not been asked before. Here is the full history of previous questions: ${pastQuestions}`,
+                  },
+                ],
+              },
+            ],
           })
         }
       );
       if (!res.ok) throw new Error("Failed to fetch question.");
       const data = await res.json();
-      const aiQuestion = data?.candidates?.[0]?.content?.parts?.[0]?.text?.trim() || "No question available.";
-      setChatHistory(prev => [...prev, { role: "assistant", text: aiQuestion }]);
+      const aiQuestion =
+        data?.candidates?.[0]?.content?.parts?.[0]?.text?.trim() || "No question available.";
+      setChatHistory((prev) => [...prev, { role: "assistant", text: aiQuestion }]);
       speakText(aiQuestion);
     } catch (error) {
       setError(`⚠️ ${error.message}`);
@@ -178,20 +220,68 @@ const QuestionAnyTopic = () => {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
-            contents: [{ role: "user", parts: [{ text: `Evaluate:\nQuestion: ${latestQuestion}\nAnswer: ${input}\nRespond with 'It is correct.' if correct, or 'It is not correct' with the correct answer if wrong.` }] }]
+            contents: [
+              {
+                role: "user",
+                parts: [
+                  {
+                    text: `Evaluate:\nQuestion: ${latestQuestion}\nAnswer: ${input}\nRespond with 'It is correct.' if correct, or 'It is not correct' with the correct answer if wrong.`,
+                  },
+                ],
+              },
+            ],
           })
         }
       );
       if (!res.ok) throw new Error("Failed to validate answer.");
       const data = await res.json();
-      const aiResponse = data?.candidates?.[0]?.content?.parts?.[0]?.text?.trim() || "Could not validate answer.";
-      setChatHistory(prev => [...prev, { role: "user", text: input }, { role: "assistant", text: aiResponse }]);
-      setAnswerHistory(prev => [...prev, { question: latestQuestion, answer: input, response: aiResponse }]);
+      const aiResponse =
+        data?.candidates?.[0]?.content?.parts?.[0]?.text?.trim() || "Could not validate answer.";
+      setChatHistory((prev) => [
+        ...prev,
+        { role: "user", text: input },
+        { role: "assistant", text: aiResponse },
+      ]);
+      setAnswerHistory((prev) => [
+        ...prev,
+        { question: latestQuestion, answer: input, response: aiResponse },
+      ]);
       speakText(aiResponse);
       setInput("");
     } catch (error) {
       setError(`⚠️ ${error.message}`);
     }
+  };
+
+  // Function to download definition as Word document
+  const downloadDefinitionAsWord = () => {
+    if (!definition) return;
+
+    const doc = new Document({
+      sections: [
+        {
+          properties: {},
+          children: [
+            new Paragraph({
+              children: [
+                new TextRun({
+                  text: "Definition",
+                  bold: true,
+                  size: 32, // Font size in half-points (32 = 16pt)
+                }),
+              ],
+            }),
+            new Paragraph({
+              children: [new TextRun({ text: definition, size: 24 })], // Font size 12pt
+            }),
+          ],
+        },
+      ],
+    });
+
+    Packer.toBlob(doc).then((blob) => {
+      saveAs(blob, "definition.docx");
+    });
   };
 
   const renderChatBubble = (msg, index) => (
@@ -205,33 +295,52 @@ const QuestionAnyTopic = () => {
   );
 
   return (
-    <div className="h-screen overflow-hidden flex flex-col items-center justify-center p-6 max-md:p-4 bg-gradient-to-b from-[#1D1E20] to-[#2A2B2D] text-white font-sans">
+    <div className="h-screen overflow-hidden flex flex-col items-center justify-center  bg-gradient-to-b from-[#1D1E20] to-[#2A2B2D] text-white font-sans">
       <div className={`relative top-[40%] ${titleName ? "hidden" : "block"}`}>
-        <h1 className="text-2xl md:text-4xl text-center font-bold max-md:mb-2 tracking-tight">👩‍🎓 Hello Students 🧑‍🎓</h1>
-        <h1 className="text-2xl md:text-4xl text-center text-gray-400 font-semibold mb-16 max-md:mb-10 tracking-tight">How can I help you today?</h1>
+        <h1 className="text-2xl md:text-4xl text-center font-bold max-md:mb-2 tracking-tight">
+          👩‍🎓 Hello Students 🧑‍🎓
+        </h1>
+        <h1 className="text-2xl md:text-4xl text-center text-gray-400 font-semibold mb-16 max-md:mb-10 tracking-tight">
+          How can I help you today?
+        </h1>
       </div>
 
       <div className="w-full max-w-3xl flex-1 flex flex-col justify-end">
-        <div className={`custom-scrollbar flex-1 ${height ? "max-h-[70vh]" : "max-h-0"} transition-all duration-300 overflow-y-scroll scrollbar scrollbar-thin scrollbar-thumb-gray-400 scrollbar-track-gray-100 h-64`} ref={chatContainerRef}>
+        <div
+          className={`custom-scrollbar flex-1 ${
+            height ? "max-h-[76vh]" : "max-h-0"
+          } transition-all duration-300 overflow-y-scroll scrollbar scrollbar-thin scrollbar-thumb-gray-400 scrollbar-track-gray-100 h-64`}
+          ref={chatContainerRef}
+        >
           <div className="flex flex-col items-center">
             {definition && (
               <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.3 }}
-                className="p-6 max-lg:p-1 rounded-2xl shadow-lg w-full"
-                dangerouslySetInnerHTML={{ __html: formatText(definition) }}
-              />
+                className="p-6 max-lg:p-4 rounded-2xl shadow-lg w-full"
+              >
+                <div dangerouslySetInnerHTML={{ __html: formatText(definition) }} />
+                <motion.button
+                  onClick={downloadDefinitionAsWord}
+                  whileTap={{ scale: 0.9 }}
+                  className="mt-4 p-2 bg-blue-500 text-white rounded-full hover:bg-blue-600 transition-colors"
+                >
+                  Download as Word
+                </motion.button>
+              </motion.div>
             )}
             {video && (
               <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.3 }}
-                className="p-6 max-lg:p-1 rounded-2xl shadow-lg w-full"
+                className="p-6 max-lg:p-4 rounded-2xl shadow-lg w-full"
               >
                 <p>Recommended Video:</p>
-                <a href={video.url} target="_blank" rel="noopener noreferrer" className="text-blue-400 underline">{video.title}</a>
+                <a href={video.url} target="_blank" rel="noopener noreferrer" className="text-blue-400 underline">
+                  {video.title}
+                </a>
                 <p className="text-gray-400">by {video.channel}</p>
               </motion.div>
             )}
@@ -245,7 +354,7 @@ const QuestionAnyTopic = () => {
           </div>
         </div>
 
-        <div className="mt-6 bg-[#36383A] border border-gray-500 rounded-3xl p-2 shadow-xl">
+        <div className="bg-[#36383A] border-gray-500 rounded-3xl p-4 shadow-xl">
           <div className="flex items-center flex-col justify-between gap-4 max-md:flex-col">
             <input
               type="text"
@@ -289,8 +398,8 @@ const QuestionAnyTopic = () => {
               </div>
             </div>
             <p className="text-xs text-center text-gray-400 hidden max-lg:block">
-            Explore AI in education! Instantly solve doubts with our AI-powered math solver.
-          </p>
+              Explore AI in education! Instantly solve doubts with our AI-powered math solver.
+            </p>
           </div>
           {error && (
             <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="text-red-400 text-sm text-center mt-3">
