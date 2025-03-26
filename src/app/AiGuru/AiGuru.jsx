@@ -68,7 +68,7 @@ const QuestionAnyTopic = () => {
         )
         .replace(
           /## (.*?)(?:\n|$)/g,
-          "<h2 class='text-2xl font-bold text-white mt-6 mb-3'>$1</h2>"
+          "<h2 class='text-2xl font-bold text-white mb-3'>$1</h2>"
         )
         .replace(
           /# (.*?)(?:\n|$)/g,
@@ -227,7 +227,7 @@ const QuestionAnyTopic = () => {
       if (!res.ok) throw new Error("Failed to fetch question.");
       const data = await res.json();
       const aiQuestion =
-        data?.candidates?.[0]?.content?.parts?.[0]?.text?.trim() ||
+        data?.candidates?.[0]?.content?.parts?.[0]?.text?.trim() || 
         "No question available.";
       setChatHistory((prev) => [
         ...prev,
