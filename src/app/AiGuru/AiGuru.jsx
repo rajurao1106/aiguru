@@ -3,7 +3,8 @@
 import React, { useState, useCallback, useEffect, useRef } from "react";
 import { motion } from "framer-motion";
 import { Loader } from "lucide-react";
-import { FaArrowUp, FaCamera, FaImage } from "react-icons/fa6";
+import { FaArrowUp, FaCamera, FaImage, FaPlus } from "react-icons/fa6";
+import { RxCross2 } from "react-icons/rx";
 import { IoCreateOutline } from "react-icons/io5";
 import { MdRefresh } from "react-icons/md";
 import axios from "axios";
@@ -45,49 +46,44 @@ const QuestionAnyTopic = () => {
   };
 
   const formatText = (text) => {
-    return (
-      text
-        .replace(
-          /\*\*(.*?)\*\*/g,
-          "<strong class='font-bold text-white'>$1</strong>"
-        )
-        .replace(/\*(.*?)\*/g, "<em class='italic text-gray-200'>$1</em>")
-        .replace(/__([^_]+)__/g, "<u class='underline'>$1</u>")
-        .replace(
-          /~~(.*?)~~/g,
-          "<del class='line-through text-gray-400'>$1</del>"
-        )
-        .replace(
-          /`([^`]+)`/g,
-          "<code class='bg-gray-800 text-yellow-200 px-2 py-0.5 rounded-md font-mono text-sm shadow-sm border border-gray-700'>$1</code>"
-        )
-        .replace(
-          /### (.*?)(?:\n|$)/g,
-          "<h3 class='text-xl font-semibold text-white mt-4 mb-2'>$1</h3>"
-        )
-        .replace(
-          /## (.*?)(?:\n|$)/g,
-          "<h2 class='text-2xl font-bold text-white mb-3'>$1</h2>"
-        )
-        .replace(
-          /# (.*?)(?:\n|$)/g,
-          "<h1 class='text-3xl font-extrabold text-white mt-8 mb-4'>$1</h1>"
-        )
-        .replace(/(?:\n|^)- (.*?)(?=\n|$)/g, (match, p1) => {
-          return "<ul class='list-disc ml-6 text-gray-200'><li>$1</li></ul>";
-        })
-        .replace(
-          /\n>\s(.*?)(?=\n|$)/g,
-          "<blockquote class='border-l-4 border-blue-500 pl-4 italic text-gray-300 my-2'>$1</blockquote>"
-        )
-        .replace(
-          /\[([^\]]+)\]\(([^)]+)\)/g,
-          "<a href='$2' class='text-blue-400 underline hover:text-blue-300 transition-colors'>$1</a>"
-        )
-        .replace(/\n/g, "<br>")
-        .replace(/(<\/ul><ul class='list-disc ml-6 text-gray-200'>)+/g, "")
-        .replace(/(<\/ol><ol class='list-decimal ml-6 text-gray-200'>)+/g, "")
-    );
+    return text
+      .replace(
+        /\*\*(.*?)\*\*/g,
+        "<strong class='font-bold text-white'>$1</strong>"
+      )
+      .replace(/\*(.*?)\*/g, "<em class='italic text-gray-200'>$1</em>")
+      .replace(/__([^_]+)__/g, "<u class='underline'>$1</u>")
+      .replace(/~~(.*?)~~/g, "<del class='line-through text-gray-400'>$1</del>")
+      .replace(
+        /`([^`]+)`/g,
+        "<code class='bg-gray-800 text-yellow-200 px-2 py-0.5 rounded-md font-mono text-sm shadow-sm border border-gray-700'>$1</code>"
+      )
+      .replace(
+        /### (.*?)(?:\n|$)/g,
+        "<h3 class='text-xl font-semibold text-white mt-4 mb-2'>$1</h3>"
+      )
+      .replace(
+        /## (.*?)(?:\n|$)/g,
+        "<h2 class='text-2xl font-bold text-white mb-3'>$1</h2>"
+      )
+      .replace(
+        /# (.*?)(?:\n|$)/g,
+        "<h1 class='text-3xl font-extrabold text-white mt-8 mb-4'>$1</h1>"
+      )
+      .replace(/(?:\n|^)- (.*?)(?=\n|$)/g, (match, p1) => {
+        return "<ul class='list-disc ml-6 text-gray-200'><li>$1</li></ul>";
+      })
+      .replace(
+        /\n>\s(.*?)(?=\n|$)/g,
+        "<blockquote class='border-l-4 border-blue-500 pl-4 italic text-gray-300 my-2'>$1</blockquote>"
+      )
+      .replace(
+        /\[([^\]]+)\]\(([^)]+)\)/g,
+        "<a href='$2' class='text-blue-400 underline hover:text-blue-300 transition-colors'>$1</a>"
+      )
+      .replace(/\n/g, "<br>")
+      .replace(/(<\/ul><ul class='list-disc ml-6 text-gray-200'>)+/g, "")
+      .replace(/(<\/ol><ol class='list-decimal ml-6 text-gray-200'>)+/g, "");
   };
 
   const fetchYouTubeVideo = async (topic) => {
@@ -135,7 +131,9 @@ const QuestionAnyTopic = () => {
   const scanImageForQuestion = async (imageFile) => {
     setIsLoading(true);
     try {
-      const { data: { text } } = await Tesseract.recognize(
+      const {
+        data: { text },
+      } = await Tesseract.recognize(
         imageFile,
         "eng",
         { logger: (m) => console.log(m) } // Optional: Log progress
@@ -195,7 +193,7 @@ const QuestionAnyTopic = () => {
       const aiDefinition =
         data?.candidates?.[0]?.content?.parts?.[0]?.text?.trim() ||
         "Definition not found.";
-      
+
       setConversationHistory((prev) => [
         ...prev,
         { type: "definition", text: aiDefinition, question: query },
@@ -337,7 +335,11 @@ const QuestionAnyTopic = () => {
         formattedParagraphs.push(
           new Paragraph({
             children: [
-              new TextRun({ text: line.replace("# ", ""), bold: true, size: 36 }),
+              new TextRun({
+                text: line.replace("# ", ""),
+                bold: true,
+                size: 36,
+              }),
             ],
             spacing: { after: 300 },
           })
@@ -346,7 +348,11 @@ const QuestionAnyTopic = () => {
         formattedParagraphs.push(
           new Paragraph({
             children: [
-              new TextRun({ text: line.replace("## ", ""), bold: true, size: 28 }),
+              new TextRun({
+                text: line.replace("## ", ""),
+                bold: true,
+                size: 28,
+              }),
             ],
             spacing: { after: 250 },
           })
@@ -355,7 +361,11 @@ const QuestionAnyTopic = () => {
         formattedParagraphs.push(
           new Paragraph({
             children: [
-              new TextRun({ text: line.replace("### ", ""), bold: true, size: 24 }),
+              new TextRun({
+                text: line.replace("### ", ""),
+                bold: true,
+                size: 24,
+              }),
             ],
             spacing: { after: 200 },
           })
@@ -372,7 +382,11 @@ const QuestionAnyTopic = () => {
         formattedParagraphs.push(
           new Paragraph({
             children: [
-              new TextRun({ text: line.replace(/\*\*/g, ""), bold: true, size: 24 }),
+              new TextRun({
+                text: line.replace(/\*\*/g, ""),
+                bold: true,
+                size: 24,
+              }),
             ],
           })
         );
@@ -380,7 +394,11 @@ const QuestionAnyTopic = () => {
         formattedParagraphs.push(
           new Paragraph({
             children: [
-              new TextRun({ text: line.replace(/\*/g, ""), italics: true, size: 24 }),
+              new TextRun({
+                text: line.replace(/\*/g, ""),
+                italics: true,
+                size: 24,
+              }),
             ],
           })
         );
@@ -388,7 +406,11 @@ const QuestionAnyTopic = () => {
         formattedParagraphs.push(
           new Paragraph({
             children: [
-              new TextRun({ text: line.replace(/__/g, ""), underline: {}, size: 24 }),
+              new TextRun({
+                text: line.replace(/__/g, ""),
+                underline: {},
+                size: 24,
+              }),
             ],
           })
         );
@@ -542,17 +564,72 @@ const QuestionAnyTopic = () => {
             <div className="w-full">
               <div className="flex w-full gap-3 items-center justify-between mb-2">
                 <div className="flex w-[70%] max-lg:w-[100%] gap-3">
-                  <motion.button
-                    onClick={fetchDefinition}
-                    disabled={isLoading}
-                    className="w-full p-3 border border-gray-500 rounded-full text-sm font-medium hover:bg-gray-700 transition-colors disabled:bg-gray-400 disabled:cursor-not-allowed"
-                  >
-                    {isLoading ? "Loading..." : "Definition"}
-                  </motion.button>
+                  <div className="relative ">
+                    <div className="absolute z-0 right-[0px] bottom-32">
+                      {/* Upload Modal */}
+                      {isUploadModalOpen && (
+                        <motion.div
+                          initial={{ opacity: 0 }}
+                          animate={{ opacity: 1 }}
+                          className=" inset-0 bg-opacity-50 flex items-center justify-center z-50"
+                        >
+                          <div className="bg-gray-800 flex-col gap-5 rounded-lg shadow-lg flex">
+                            <motion.button
+                              onClick={() => fileInputRef.current.click()}
+                              whileTap={{ scale: 0.9 }}
+                              className="p-3 text-white rounded-full transition-colors"
+                            >
+                              <FaImage size={20} className="inline" />
+                            </motion.button>
+                            <motion.button
+                              onClick={() => cameraInputRef.current.click()}
+                              whileTap={{ scale: 0.9 }}
+                              className="p-3 text-white rounded-full transition-colors"
+                            >
+                              <FaCamera size={20} className="inline" />
+                            </motion.button>
+                            <motion.button
+                              onClick={() => fileInputRef.current.click()}
+                              whileTap={{ scale: 0.9 }}
+                              className="p-3 text-white rounded-full transition-colors"
+                            >
+                              <MdRefresh size={20} />
+                            </motion.button>
+                           
+                            <input
+                              type="file"
+                              ref={fileInputRef}
+                              onChange={handleImageUpload}
+                              accept="image/*"
+                              className="hidden"
+                            />
+                            <input
+                              type="file"
+                              ref={cameraInputRef}
+                              onChange={handleImageUpload}
+                              accept="image/*"
+                              capture="environment" // Opens camera on mobile
+                              className="hidden"
+                            />
+                          </div>
+                        </motion.div>
+                      )}
+                    </div>
+                    <motion.button
+                      onClick={() => setIsUploadModalOpen(prev => !prev)}
+                      whileTap={{ scale: 0.9 }}
+                      className=" p-3 border border-gray-500 rounded-full bg-gray-500 text-white font-medium hover:bg-gray-700 transition-colors"
+                    >
+                      {isUploadModalOpen?<RxCross2 size={18} className="z-10"/>:<FaPlus size={18} className="z-10" />}
+                      
+                    </motion.button>
+                  </div>
+
+                  
                   <motion.button
                     onClick={fetchAIQuestion}
                     disabled={isLoading || !conversationHistory.length}
-                    className="w-full p-3 border border-gray-500 rounded-full text-sm font-medium hover:bg-gray-700 transition-colors disabled:bg-gray-400 disabled:cursor-not-allowed"
+                    className="w-full border border-gray-500 rounded-full text-sm font-medium hover:bg-gray-700 transition-colors disabled:bg-gray-400 disabled:cursor-not-allowed"
                   >
                     {isLoading ? "Loading..." : "Ask Questions"}
                   </motion.button>
@@ -561,27 +638,21 @@ const QuestionAnyTopic = () => {
                     disabled={
                       isLoading ||
                       isCheckingAnswer ||
-                      !conversationHistory.some((item) => item.type === "question")
+                      !conversationHistory.some(
+                        (item) => item.type === "question"
+                      )
                     }
-                    className="w-full p-3 border border-gray-500 rounded-full text-sm font-medium hover:bg-gray-700 transition-colors disabled:bg-gray-400 disabled:cursor-not-allowed"
+                    className="w-full border border-gray-500 rounded-full text-sm font-medium hover:bg-gray-700 transition-colors disabled:bg-gray-400 disabled:cursor-not-allowed"
                   >
                     {isCheckingAnswer ? "Checking..." : "Check Answer"}
                   </motion.button>
-                  <motion.button
-                    onClick={() => setIsUploadModalOpen(true)}
-                    whileTap={{ scale: 0.9 }}
-                    className="w-full p-3 border border-gray-500 rounded-full text-sm font-medium hover:bg-gray-700 transition-colors"
-                  >
-                    <FaImage size={18} className="inline mr-2" />
-                    Upload
-                  </motion.button>
                 </div>
                 <motion.button
-                  onClick={refreshConversation}
-                  whileTap={{ scale: 0.9 }}
-                  className="p-3 bg-red-500 text-white rounded-full hover:bg-red-600 transition-colors"
+                  onClick={fetchDefinition}
+                  disabled={isLoading}
+                  className=" p-3 border border-gray-500 bg-white text-black rounded-full font-medium disabled:bg-gray-400 disabled:cursor-not-allowed"
                 >
-                  <MdRefresh size={20} />
+                  {isLoading ? <IoCreateOutline /> : <FaArrowUp />}
                 </motion.button>
               </div>
             </div>
@@ -601,59 +672,6 @@ const QuestionAnyTopic = () => {
             </motion.p>
           )}
         </div>
-
-        {/* Upload Modal */}
-        {isUploadModalOpen && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50"
-          >
-            <div className="bg-gray-800 p-6 rounded-lg shadow-lg">
-              <h2 className="text-xl font-bold mb-4">Upload Image</h2>
-              <div className="flex gap-4">
-                <motion.button
-                  onClick={() => fileInputRef.current.click()}
-                  whileTap={{ scale: 0.9 }}
-                  className="p-3 bg-blue-500 text-white rounded-full hover:bg-blue-600 transition-colors"
-                >
-                  <FaImage size={20} className="inline mr-2" />
-                  Media
-                </motion.button>
-                <motion.button
-                  onClick={() => cameraInputRef.current.click()}
-                  whileTap={{ scale: 0.9 }}
-                  className="p-3 bg-green-500 text-white rounded-full hover:bg-green-600 transition-colors"
-                >
-                  <FaCamera size={20} className="inline mr-2" />
-                  Camera
-                </motion.button>
-              </div>
-              <motion.button
-                onClick={() => setIsUploadModalOpen(false)}
-                whileTap={{ scale: 0.9 }}
-                className="mt-4 p-2 px-4 bg-red-500 text-white rounded-full hover:bg-red-600 transition-colors"
-              >
-                Cancel
-              </motion.button>
-              <input
-                type="file"
-                ref={fileInputRef}
-                onChange={handleImageUpload}
-                accept="image/*"
-                className="hidden"
-              />
-              <input
-                type="file"
-                ref={cameraInputRef}
-                onChange={handleImageUpload}
-                accept="image/*"
-                capture="environment" // Opens camera on mobile
-                className="hidden"
-              />
-            </div>
-          </motion.div>
-        )}
       </div>
     </div>
   );
