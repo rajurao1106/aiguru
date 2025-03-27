@@ -7,12 +7,12 @@ const geist = Geist({ subsets: ["latin"], weight: "400" });
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
-      <head>
+      <Head>
+        <meta charSet="UTF-8" /> {/* Moved to the first meta tag */}
         <meta
           name="google-site-verification"
           content="pGAnPVO3GsiwCkgVCrHjQPo-Qjt5vZSCKmbUM6jAVG4"
         />
-        <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <link rel="canonical" href="https://aiguru.vercel.app/" />
         <title>AI Guru: Doubt Solver with AI for Education</title>
@@ -27,10 +27,11 @@ export default function RootLayout({ children }) {
         />
         <meta name="author" content="D. Raju Rao" />
         <meta name="robots" content="index, follow" />
-        <meta property="og:title" content="AI Guru - AI Learning Assistant" />
+        {/* Open Graph Meta Tags */}
+        <meta property="og:title" content="AI Guru: Doubt Solver with AI for Education" />
         <meta
           property="og:description"
-          content="Explore AI in education with the best free AI tools for students. Get AI for research papers, plagiarism checking, and smart study solutions for better learning!"
+          content="Explore AI and education with our artificial intelligence in education platform! Solve doubts instantly using our math problem solver powered by artificial intelligence on education."
         />
         <meta property="og:url" content="https://aiguru.vercel.app/" />
         <meta property="og:type" content="website" />
@@ -41,7 +42,7 @@ export default function RootLayout({ children }) {
         <meta property="og:image:width" content="1200" />
         <meta property="og:image:height" content="630" />
         <meta property="og:image:alt" content="AI Guru" />
-      </head>
+      </Head>
       <body className={geist.className}>{children}</body>
     </html>
   );

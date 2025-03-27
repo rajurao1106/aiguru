@@ -167,7 +167,7 @@ const QuestionAnyTopic = () => {
                 role: "user",
                 parts: [
                   {
-                    text: `Generate a detailed definition of '${input}' that includes all key aspects, subtopics, and related concepts for a comprehensive understanding.`,
+                    text: `Generate a detailed and student-friendly definition of '${input}' that encompasses all key aspects, subtopics, and related concepts. Include relatable examples or practical applications to illustrate the topic, and address common doubts, misconceptions, or frequently asked questions associated with '${input}' to ensure a thorough and engaging understanding.`,
                   },
                 ],
               },
@@ -227,7 +227,7 @@ const QuestionAnyTopic = () => {
       if (!res.ok) throw new Error("Failed to fetch question.");
       const data = await res.json();
       const aiQuestion =
-        data?.candidates?.[0]?.content?.parts?.[0]?.text?.trim() || 
+        data?.candidates?.[0]?.content?.parts?.[0]?.text?.trim() ||
         "No question available.";
       setChatHistory((prev) => [
         ...prev,
@@ -290,33 +290,83 @@ const QuestionAnyTopic = () => {
   // Function to download definition as Word document
   const downloadDefinitionAsWord = () => {
     if (!definition) return;
-
-    const doc = new Document({
-      sections: [
-        {
-          properties: {},
-          children: [
-            new Paragraph({
-              children: [
-                new TextRun({
-                  text: "Definition",
-                  bold: true,
-                  size: 32, // Font size in half-points (32 = 16pt)
-                }),
-              ],
-            }),
-            new Paragraph({
-              children: [new TextRun({ text: definition, size: 24 })], // Font size 12pt
-            }),
-          ],
-        },
-      ],
+  
+    // Convert formatted text into paragraphs with proper styles
+    const formattedParagraphs = [];
+    const lines = definition.split("\n");
+  
+    lines.forEach((line) => {
+      if (line.startsWith("# ")) {
+        // H1
+        formattedParagraphs.push(
+          new Paragraph({
+            children: [new TextRun({ text: line.replace("# ", ""), bold: true, size: 36 })],
+            spacing: { after: 300 },
+          })
+        );
+      } else if (line.startsWith("## ")) {
+        // H2
+        formattedParagraphs.push(
+          new Paragraph({
+            children: [new TextRun({ text: line.replace("## ", ""), bold: true, size: 28 })],
+            spacing: { after: 250 },
+          })
+        );
+      } else if (line.startsWith("### ")) {
+        // H3
+        formattedParagraphs.push(
+          new Paragraph({
+            children: [new TextRun({ text: line.replace("### ", ""), bold: true, size: 24 })],
+            spacing: { after: 200 },
+          })
+        );
+      } else if (line.startsWith("- ")) {
+        // Bullet list
+        formattedParagraphs.push(
+          new Paragraph({
+            text: line.replace("- ", ""),
+            bullet: { level: 0 },
+            spacing: { after: 150 },
+          })
+        );
+      } else if (/\*\*(.*?)\*\*/.test(line)) {
+        // Bold Text
+        formattedParagraphs.push(
+          new Paragraph({
+            children: [new TextRun({ text: line.replace(/\*\*/g, ""), bold: true, size: 24 })],
+          })
+        );
+      } else if (/\*(.*?)\*/.test(line)) {
+        // Italic Text
+        formattedParagraphs.push(
+          new Paragraph({
+            children: [new TextRun({ text: line.replace(/\*/g, ""), italics: true, size: 24 })],
+          })
+        );
+      } else if (/__(.*?)__/.test(line)) {
+        // Underline Text
+        formattedParagraphs.push(
+          new Paragraph({
+            children: [new TextRun({ text: line.replace(/__/g, ""), underline: {}, size: 24 })],
+          })
+        );
+      } else {
+        // Normal Paragraph
+        formattedParagraphs.push(new Paragraph({ text: line, spacing: { after: 100 } }));
+      }
     });
-
+  
+    // Create a Word document
+    const doc = new Document({
+      sections: [{ properties: {}, children: formattedParagraphs }],
+    });
+  
+    // Generate and download the Word file
     Packer.toBlob(doc).then((blob) => {
       saveAs(blob, "definition.docx");
     });
   };
+  
 
   const renderChatBubble = (msg, index) => (
     <motion.div
@@ -334,7 +384,7 @@ const QuestionAnyTopic = () => {
     <div className="h-screen overflow-hidden flex flex-col items-center justify-center  bg-gradient-to-b from-[#1D1E20] to-[#2A2B2D] text-white font-sans">
       <div className={`relative top-[40%] ${titleName ? "hidden" : "block"}`}>
         <h1 className="text-2xl md:text-4xl text-center font-bold max-md:mb-2 tracking-tight">
-          👩‍🎓 Hello Students 🧑‍🎓
+          👩‍🎓 Hello Student 🧑‍🎓
         </h1>
         <h1 className="text-2xl md:text-4xl text-center text-gray-400 font-semibold mb-16 max-md:mb-10 tracking-tight">
           How can I help you today?
@@ -348,7 +398,7 @@ const QuestionAnyTopic = () => {
           } transition-all duration-300 overflow-y-scroll scrollbar scrollbar-thin scrollbar-thumb-gray-400 scrollbar-track-gray-100 h-64`}
           ref={chatContainerRef}
         >
-          <div className="flex flex-col items-center">
+          <div className="flex flex-col items-center ">
             {definition && (
               <motion.div
                 initial={{ opacity: 0, y: 20 }}
@@ -362,31 +412,32 @@ const QuestionAnyTopic = () => {
                 <motion.button
                   onClick={downloadDefinitionAsWord}
                   whileTap={{ scale: 0.9 }}
-                  className="mt-4 p-2 bg-blue-500 text-white rounded-full hover:bg-blue-600 transition-colors"
+                  className="mt-4 p-2 px-4 bg-blue-500 text-white rounded-full hover:bg-blue-600 transition-colors"
                 >
                   Download as Word
                 </motion.button>
+                {video && (
+                  <motion.div
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.3 }}
+                    className="py-6 w-full"
+                  >
+                    <p>Recommended Video:</p>
+                    <a
+                      href={video.url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-blue-400 underline"
+                    >
+                      {video.title}
+                    </a>
+                    <p className="text-gray-400">by {video.channel}</p>
+                  </motion.div>
+                )}
               </motion.div>
             )}
-            {video && (
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.3 }}
-                className="p-6 max-lg:p-4 rounded-2xl shadow-lg w-full"
-              >
-                <p>Recommended Video:</p>
-                <a
-                  href={video.url}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-blue-400 underline"
-                >
-                  {video.title}
-                </a>
-                <p className="text-gray-400">by {video.channel}</p>
-              </motion.div>
-            )}
+
             {chatHistory.map(renderChatBubble)}
             {isLoading && (
               <div className="flex items-center gap-2 text-white">
@@ -422,16 +473,16 @@ const QuestionAnyTopic = () => {
                   <motion.button
                     onClick={fetchAIQuestion}
                     disabled={isLoading || !definition}
-                    className="w-full p-3 border border-gray-500 rounded-full text-sm font-medium hover:bg-gray-700 transition-colors"
+                    className="w-full p-3 border border-gray-500 rounded-full text-sm font-medium hover:bg-gray-700 transition-colors disabled:bg-gray-400 disabled:cursor-not-allowed"
                   >
                     {isLoading ? "Loading..." : "Ask Questions"}
                   </motion.button>
                   <motion.button
                     onClick={checkAnswer}
                     disabled={isLoading || !definition}
-                    className="w-full p-3 border border-gray-500 rounded-full text-sm font-medium hover:bg-gray-700 transition-colors"
+                    className="w-full p-3 border border-gray-500 rounded-full text-sm font-medium hover:bg-gray-700 transition-colors disabled:bg-gray-400 disabled:cursor-not-allowed"
                   >
-                    Check Answer
+                   {isLoading ? "Loading..." : " Check Answer"}
                   </motion.button>
                 </div>
                 <motion.button
