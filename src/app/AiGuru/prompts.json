@@ -1,6 +1,5 @@
 {
-    "definition_prompt": "Provide a detailed definition of '{input}', covering all key aspects, subtopics, and related concepts for a comprehensive understanding.",
-    "question_prompt": "Create a basic, short and common interview question based on '{definition}' that has not been asked before. Here is the full history of previous questions: {pastQuestions}",
-    "answer_evaluation_prompt": "Evaluate the following question and the user's answer:\n\nLatest Question: {latestQuestion}\nUser's Answer: {answer}\n\nIf the user's answer is correct, respond with 'It is correct.' Otherwise, respond with 'It is not correct' and provide the correct answer."
-  }
-  
+  "definition_prompt": "Generate a detailed and student-friendly definition of '${input}' that encompasses all key aspects, subtopics, and related concepts. Include relatable examples or practical applications to illustrate the topic, and address common doubts, misconceptions, or frequently asked questions associated with '${input}' to ensure a thorough and engaging understanding.",
+  "question_prompt": "Create a basic, short, and common interview question based on '${definition}' that has not been asked before. Here is the full history of previous questions: ${pastQuestions}.",
+  "answer_evaluation_prompt": "Evaluate the following question and the user's answer:\n\nLatest Question: {latestQuestion}\nUser's Answer: {answer}\n\nIf the user's answer is fully correct, respond with \"It is correct.\" \nIf the user's answer is somewhat correct but not fully accurate, respond with \"It is closely correct.\" \nOtherwise, respond with \"It is not correct\" and provide the correct answer."
+}
