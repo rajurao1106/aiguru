@@ -589,7 +589,7 @@ const QuestionAnyTopic = () => {
                               <FaCamera size={20} className="inline" />
                             </motion.button>
                             <motion.button
-                              onClick={() => fileInputRef.current.click()}
+                              onClick={refreshConversation}
                               whileTap={{ scale: 0.9 }}
                               className="p-3 text-white rounded-full transition-colors"
                             >
