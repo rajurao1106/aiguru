@@ -3,12 +3,13 @@
 import React, { useState, useCallback, useEffect, useRef } from "react";
 import { motion } from "framer-motion";
 import { Loader } from "lucide-react";
-import { FaArrowUp } from "react-icons/fa6";
+import { FaArrowUp, FaCamera, FaImage } from "react-icons/fa6";
 import { IoCreateOutline } from "react-icons/io5";
-import { MdRefresh } from "react-icons/md"; // Import refresh icon
+import { MdRefresh } from "react-icons/md";
 import axios from "axios";
 import { Document, Packer, Paragraph, TextRun } from "docx";
 import { saveAs } from "file-saver";
+import Tesseract from "tesseract.js"; // Import Tesseract.js for OCR
 
 const QuestionAnyTopic = () => {
   const [input, setInput] = useState("");
@@ -20,8 +21,12 @@ const QuestionAnyTopic = () => {
   const [inputMode, setInputMode] = useState("topic");
   const [height, setHeight] = useState(false);
   const [titleName, setTitleName] = useState(false);
+  const [isUploadModalOpen, setIsUploadModalOpen] = useState(false);
+  const [scannedQuestion, setScannedQuestion] = useState(null);
 
   const chatContainerRef = useRef(null);
+  const fileInputRef = useRef(null);
+  const cameraInputRef = useRef(null);
 
   useEffect(() => {
     if (chatContainerRef.current) {
@@ -127,9 +132,37 @@ const QuestionAnyTopic = () => {
     }
   };
 
+  const scanImageForQuestion = async (imageFile) => {
+    setIsLoading(true);
+    try {
+      const { data: { text } } = await Tesseract.recognize(
+        imageFile,
+        "eng",
+        { logger: (m) => console.log(m) } // Optional: Log progress
+      );
+      const scannedText = text.trim() || "No question detected.";
+      setScannedQuestion(scannedText);
+      setInput(scannedText); // Populate input with the scanned question
+    } catch (error) {
+      setError(`⚠️ Error scanning image: ${error.message}`);
+      setScannedQuestion(null);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const handleImageUpload = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      scanImageForQuestion(file);
+      setIsUploadModalOpen(false);
+    }
+  };
+
   const fetchDefinition = useCallback(async () => {
-    if (!input.trim()) {
-      setError("⚠️ Please enter a topic.");
+    const query = scannedQuestion || input.trim();
+    if (!query) {
+      setError("⚠️ Please enter a topic or upload an image with a question.");
       return;
     }
     setError(null);
@@ -149,7 +182,7 @@ const QuestionAnyTopic = () => {
                 role: "user",
                 parts: [
                   {
-                    text: `Generate a detailed and student-friendly definition of '${input}' that encompasses all key aspects, subtopics, and related concepts. Include relatable examples or practical applications to illustrate the topic, and address common doubts, misconceptions, or frequently asked questions associated with '${input}' to ensure a thorough and engaging understanding.`,
+                    text: `Generate a detailed and student-friendly explanation or solution for '${query}' that encompasses all key aspects. If it's a math problem, provide a step-by-step solution. If it's a science question, include key concepts, examples, and practical applications. Address common doubts or misconceptions to ensure a thorough understanding.`,
                   },
                 ],
               },
@@ -165,20 +198,21 @@ const QuestionAnyTopic = () => {
       
       setConversationHistory((prev) => [
         ...prev,
-        { type: "definition", text: aiDefinition },
+        { type: "definition", text: aiDefinition, question: query },
       ]);
       speakText(aiDefinition);
 
-      const videoResult = await fetchYouTubeVideo(input);
+      const videoResult = await fetchYouTubeVideo(query);
       setVideo(videoResult);
 
       setInput("");
+      setScannedQuestion(null); // Reset scanned question after use
     } catch (error) {
       setError(`⚠️ ${error.message}`);
     } finally {
       setIsLoading(false);
     }
-  }, [input]);
+  }, [input, scannedQuestion]);
 
   const fetchAIQuestion = useCallback(async () => {
     if (!conversationHistory.some((item) => item.type === "definition")) return;
@@ -286,6 +320,7 @@ const QuestionAnyTopic = () => {
     setHeight(false);
     setTitleName(false);
     setError(null);
+    setScannedQuestion(null);
   };
 
   const downloadDefinitionAsWord = () => {
@@ -506,15 +541,14 @@ const QuestionAnyTopic = () => {
             />
             <div className="w-full">
               <div className="flex w-full gap-3 items-center justify-between mb-2">
-                <div className="flex w-[60%] max-lg:w-[100%] gap-3">
-                  
+                <div className="flex w-[70%] max-lg:w-[100%] gap-3">
                   <motion.button
-                  onClick={refreshConversation}
-                  whileTap={{ scale: 0.9 }}
-                  className="p-3 bg-red-500 text-white rounded-full hover:bg-red-600 transition-colors"
-                >
-                  <MdRefresh size={20} />
-                </motion.button>
+                    onClick={fetchDefinition}
+                    disabled={isLoading}
+                    className="w-full p-3 border border-gray-500 rounded-full text-sm font-medium hover:bg-gray-700 transition-colors disabled:bg-gray-400 disabled:cursor-not-allowed"
+                  >
+                    {isLoading ? "Loading..." : "Definition"}
+                  </motion.button>
                   <motion.button
                     onClick={fetchAIQuestion}
                     disabled={isLoading || !conversationHistory.length}
@@ -533,14 +567,22 @@ const QuestionAnyTopic = () => {
                   >
                     {isCheckingAnswer ? "Checking..." : "Check Answer"}
                   </motion.button>
+                  <motion.button
+                    onClick={() => setIsUploadModalOpen(true)}
+                    whileTap={{ scale: 0.9 }}
+                    className="w-full p-3 border border-gray-500 rounded-full text-sm font-medium hover:bg-gray-700 transition-colors"
+                  >
+                    <FaImage size={18} className="inline mr-2" />
+                    Upload
+                  </motion.button>
                 </div>
                 <motion.button
-                    onClick={fetchDefinition}
-                    disabled={isLoading}
-                    className=" p-3 border border-gray-500 rounded-full font-medium bg-white text-black transition-colors disabled:bg-gray-400 disabled:cursor-not-allowed"
-                  >
-                    {isLoading ? <IoCreateOutline/> : <FaArrowUp/>}
-                  </motion.button>
+                  onClick={refreshConversation}
+                  whileTap={{ scale: 0.9 }}
+                  className="p-3 bg-red-500 text-white rounded-full hover:bg-red-600 transition-colors"
+                >
+                  <MdRefresh size={20} />
+                </motion.button>
               </div>
             </div>
             <p className="text-xs text-center text-gray-400 hidden max-lg:block">
@@ -559,6 +601,59 @@ const QuestionAnyTopic = () => {
             </motion.p>
           )}
         </div>
+
+        {/* Upload Modal */}
+        {isUploadModalOpen && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50"
+          >
+            <div className="bg-gray-800 p-6 rounded-lg shadow-lg">
+              <h2 className="text-xl font-bold mb-4">Upload Image</h2>
+              <div className="flex gap-4">
+                <motion.button
+                  onClick={() => fileInputRef.current.click()}
+                  whileTap={{ scale: 0.9 }}
+                  className="p-3 bg-blue-500 text-white rounded-full hover:bg-blue-600 transition-colors"
+                >
+                  <FaImage size={20} className="inline mr-2" />
+                  Media
+                </motion.button>
+                <motion.button
+                  onClick={() => cameraInputRef.current.click()}
+                  whileTap={{ scale: 0.9 }}
+                  className="p-3 bg-green-500 text-white rounded-full hover:bg-green-600 transition-colors"
+                >
+                  <FaCamera size={20} className="inline mr-2" />
+                  Camera
+                </motion.button>
+              </div>
+              <motion.button
+                onClick={() => setIsUploadModalOpen(false)}
+                whileTap={{ scale: 0.9 }}
+                className="mt-4 p-2 px-4 bg-red-500 text-white rounded-full hover:bg-red-600 transition-colors"
+              >
+                Cancel
+              </motion.button>
+              <input
+                type="file"
+                ref={fileInputRef}
+                onChange={handleImageUpload}
+                accept="image/*"
+                className="hidden"
+              />
+              <input
+                type="file"
+                ref={cameraInputRef}
+                onChange={handleImageUpload}
+                accept="image/*"
+                capture="environment" // Opens camera on mobile
+                className="hidden"
+              />
+            </div>
+          </motion.div>
+        )}
       </div>
     </div>
   );
