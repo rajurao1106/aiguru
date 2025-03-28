@@ -1,5 +1,5 @@
 import React from 'react'
-import AiGuru from './AiGuru/AiGuru'
+import AiGuru from './QuestionAnyTopic'
 
 export default function page() {
   return (
