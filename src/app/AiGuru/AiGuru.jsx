@@ -662,7 +662,7 @@ const QuestionAnyTopic = () => {
               solver powered by artificial intelligence on education.
             </p>
           </div>
-          {error && (
+          {/* {error && (
             <motion.p
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
@@ -670,7 +670,7 @@ const QuestionAnyTopic = () => {
             >
               {error}
             </motion.p>
-          )}
+          )} */}
         </div>
       </div>
     </div>
