@@ -74,12 +74,13 @@ export default function RootLayout({ children }) {
         <meta property="og:image:alt" content="AI Guru" />
       </head>
       <body className={geist.className}>
+         {/* Google Tag Manager (noscript) - Must be inside <body> */}
         <noscript>
           <iframe
             src="https://www.googletagmanager.com/ns.html?id=GTM-NRSCH6XG"
             height="0"
             width="0"
-            style="display:none;visibility:hidden"
+            style={{ display: "none", visibility: "hidden" }}
           ></iframe>
         </noscript>
         {children}

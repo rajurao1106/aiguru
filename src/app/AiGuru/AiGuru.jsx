@@ -513,9 +513,9 @@ const QuestionAnyTopic = () => {
         <h1 className="text-2xl md:text-4xl text-center font-bold max-md:mb-2 tracking-tight">
           👩‍🎓 Hello Student 🧑‍🎓
         </h1>
-        <h1 className="text-2xl md:text-4xl text-center text-gray-400 font-semibold mb-16 max-md:mb-10 tracking-tight">
+        <h2 className="text-2xl md:text-4xl text-center text-gray-400 font-semibold mb-16 max-md:mb-10 tracking-tight">
           How can I help you today?
-        </h1>
+        </h2>
       </div>
 
       <div className="w-full max-w-3xl flex-1 flex flex-col justify-end">
