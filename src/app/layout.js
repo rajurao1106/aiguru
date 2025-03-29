@@ -89,10 +89,6 @@ export default function RootLayout({ children }) {
           ></iframe>
         </noscript>
         {children}
-        {/* Social Media Link */}
-        <footer>
-          <p>Follow us on <a href="https://www.instagram.com/your_instagram_username" target="_blank" rel="noopener noreferrer">Instagram</a></p>
-        </footer>
       </body>
     </html>
   );
