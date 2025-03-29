@@ -76,7 +76,7 @@ export default function RootLayout({ children }) {
         <meta property="og:image:alt" content="AI Guru" />
         {/* Instagram Link */}
         <meta property="og:site_name" content="AI Guru" />
-        <meta property="og:social" content="https://www.instagram.com/your_instagram_username" />
+        <meta property="og:social" content="https://www.instagram.com/aiguru_for_learning/" />
       </head>
       <body className={geist.className}>
          {/* Google Tag Manager (noscript) - Must be inside <body> */}
