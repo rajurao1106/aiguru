@@ -8,11 +8,8 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <head>
-        <meta charSet="UTF-8" /> {/* Moved to the first meta tag */}
-        <meta
-          name="google-site-verification"
-          content="pGAnPVO3GsiwCkgVCrHjQPo-Qjt5vZSCKmbUM6jAVG4"
-        />
+        <meta charSet="UTF-8" /> 
+        
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <link rel="canonical" href="https://aiguru.vercel.app/" />
         <title>AI Guru: Doubt Solver with AI for Education</title>
@@ -24,6 +21,11 @@ export default function RootLayout({ children }) {
         <meta
           name="keywords"
           content="ai in education, education in ai, ai on education, ai for education, artificial intelligence in education, ai and education, artificial intelligence and education, artificial intelligence on education, math problem solver"
+        />
+        {/* Moved to the first meta tag */}
+        <meta
+          name="google-site-verification"
+          content="pGAnPVO3GsiwCkgVCrHjQPo-Qjt5vZSCKmbUM6jAVG4"
         />
         {/* Google Tag Manager */}
         <script
@@ -72,6 +74,9 @@ export default function RootLayout({ children }) {
         <meta property="og:image:width" content="1200" />
         <meta property="og:image:height" content="630" />
         <meta property="og:image:alt" content="AI Guru" />
+        {/* Instagram Link */}
+        <meta property="og:site_name" content="AI Guru" />
+        <meta property="og:social" content="https://www.instagram.com/your_instagram_username" />
       </head>
       <body className={geist.className}>
          {/* Google Tag Manager (noscript) - Must be inside <body> */}
@@ -84,6 +89,10 @@ export default function RootLayout({ children }) {
           ></iframe>
         </noscript>
         {children}
+        {/* Social Media Link */}
+        <footer>
+          <p>Follow us on <a href="https://www.instagram.com/your_instagram_username" target="_blank" rel="noopener noreferrer">Instagram</a></p>
+        </footer>
       </body>
     </html>
   );
