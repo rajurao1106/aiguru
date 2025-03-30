@@ -610,10 +610,10 @@ const QuestionAnyTopic = () => {
         <div 
           className={`custom-scrollbar flex-1 ${height ? "max-h-[76vh]" : "max-h-0"} transition-all duration-300 
           overflow-y-scroll scrollbar scrollbar-thin scrollbar-thumb-gray-400 scrollbar-track-gray-100 
-          w-full justify-center items-center flex h-64`} 
+          w-full justify-center items-start flex h-64 `} 
           ref={chatContainerRef}
         >
-          <div className="flex flex-col items-center w-3xl">
+          <div className="flex flex-col justify-center items-center w-3xl">
             {conversationHistory.map(renderConversationItem)}
             {isLoading && (
               <div className="flex items-center gap-2 text-white">
