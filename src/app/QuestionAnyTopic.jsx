@@ -606,12 +606,14 @@ const QuestionAnyTopic = () => {
         <h2 className="text-2xl md:text-4xl text-center text-gray-400 font-semibold mb-16 max-md:mb-10 tracking-tight">How can I help you today?</h2>
       </div>
 
-      <div className="w-full max-w-3xl flex-1 flex flex-col justify-end">
+      <div className="w-full flex-1 flex flex-col justify-end">
         <div 
-          className={`custom-scrollbar flex-1 ${height ? "max-h-[76vh]" : "max-h-0"} transition-all duration-300 overflow-y-scroll scrollbar scrollbar-thin scrollbar-thumb-gray-400 scrollbar-track-gray-100 h-64`} 
+          className={`custom-scrollbar flex-1 ${height ? "max-h-[76vh]" : "max-h-0"} transition-all duration-300 
+          overflow-y-scroll scrollbar scrollbar-thin scrollbar-thumb-gray-400 scrollbar-track-gray-100 
+          w-full justify-center items-center flex h-64`} 
           ref={chatContainerRef}
         >
-          <div className="flex flex-col items-center">
+          <div className="flex flex-col items-center w-3xl">
             {conversationHistory.map(renderConversationItem)}
             {isLoading && (
               <div className="flex items-center gap-2 text-white">
@@ -631,7 +633,8 @@ const QuestionAnyTopic = () => {
           </div>
         </div>
 
-        <div className="bg-[#36383A] border-gray-500 rounded-3xl px-4 py-2 shadow-xl">
+        <div className="justify-center flex items-center">
+        <div className="bg-[#36383A] border-gray-500 lg:rounded-3xl rounded-t-3xl px-4 py-2 shadow-xl w-3xl">
           <div className="flex items-center flex-col justify-between gap-2 max-md:flex-col">
             <input
               type="text"
@@ -737,6 +740,7 @@ const QuestionAnyTopic = () => {
               Explore AI and education with our artificial intelligence in education platform! Solve doubts instantly using our math problem solver powered by artificial intelligence on education.
             </p>
           </div>
+        </div>
         </div>
       </div>
     </div>
