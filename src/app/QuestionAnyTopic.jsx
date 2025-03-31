@@ -161,7 +161,7 @@ const QuestionAnyTopic = () => {
                 role: "user",
                 parts: [
                   {
-                    text: `Provide a clear and accurate response to '${query}'. If it is a factual question, give a direct answer. If it requires a conceptual explanation, include key aspects, related concepts, and real-world examples. Address common doubts and misconceptions where relevant.`,
+                    text: `Generate a detailed and student-friendly definition of '${query}' that encompasses all key aspects, subtopics, and related concepts. Include relatable examples or practical applications to illustrate the topic, and address common doubts, misconceptions, or frequently asked questions associated with '${query}' to ensure a thorough and engaging understanding.`,
                   },
                 ],
               },
