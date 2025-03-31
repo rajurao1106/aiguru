@@ -56,7 +56,7 @@ const QuestionAnyTopic = () => {
       .replace(/\\boxed\{([^}]+)\}/g, "<code class='bg-gray-800 text-yellow-200 px-2 py-0.5 rounded-md font-mono text-sm shadow-sm border border-gray-700'>$1</code>")
       .replace(/__([^_]+)__/g, "<u class='underline'>$1</u>")
       .replace(/~~(.*?)~~/g, "<del class='line-through text-gray-400'>$1</del>")
-      .replace(/`([^`]+)`/g, "<div class='bg-black p-4 rounded-xl'><code class=' text-yellow-200 px-2 py-0.5 rounded-md font-mono text-sm shadow-sm'>$1</code></div>")
+      .replace(/`([^`]+)`/g, "<code class=' text-yellow-200 px-2 py-0.5 rounded-md font-mono text-sm shadow-sm'>$1</code>")
       .replace(/### (.*?)(?:\n|$)/g, "<h3 class='text-xl font-semibold text-white mt-4 mb-2'>$1</h3>")
       .replace(/## (.*?)(?:\n|$)/g, "<h2 class='text-2xl font-bold text-white mb-3'>$1</h2>")
       .replace(/# (.*?)(?:\n|$)/g, "<h1 class='text-3xl font-extrabold text-white mt-8 mb-4'>$1</h1>")
