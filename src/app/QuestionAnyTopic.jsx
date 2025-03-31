@@ -208,7 +208,7 @@ const QuestionAnyTopic = () => {
                 role: "user",
                 parts: [
                   {
-                    text: `Create a basic, short, and common interview question based on '${latestDefinition}' that has not been asked before. Here is the full history of previous questions: ${pastQuestions}`,
+                    text: `Create a basic, short, and common question based on '${latestDefinition}' that has not been asked before. Here is the full history of previous questions: ${pastQuestions}`,
                   },
                 ],
               },
