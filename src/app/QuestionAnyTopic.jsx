@@ -52,9 +52,11 @@ const QuestionAnyTopic = () => {
     return text
       .replace(/\*\*(.*?)\*\*/g, "<strong class='font-bold text-white'>$1</strong>")
       .replace(/\*(.*?)\*/g, "<em class='italic text-gray-200'>$1</em>")
+      .replace(/\*(.*?)/g, "<p class='italic text-gray-200'>$1<br/></p>")
+      .replace(/\\boxed\{([^}]+)\}/g, "<code class='bg-gray-800 text-yellow-200 px-2 py-0.5 rounded-md font-mono text-sm shadow-sm border border-gray-700'>$1</code>")
       .replace(/__([^_]+)__/g, "<u class='underline'>$1</u>")
       .replace(/~~(.*?)~~/g, "<del class='line-through text-gray-400'>$1</del>")
-      .replace(/`([^`]+)`/g, "<code class='bg-gray-800 text-yellow-200 px-2 py-0.5 rounded-md font-mono text-sm shadow-sm border border-gray-700'>$1</code>")
+      .replace(/`([^`]+)`/g, "<div class='bg-black p-4 rounded-xl'><code class=' text-yellow-200 px-2 py-0.5 rounded-md font-mono text-sm shadow-sm'>$1</code></div>")
       .replace(/### (.*?)(?:\n|$)/g, "<h3 class='text-xl font-semibold text-white mt-4 mb-2'>$1</h3>")
       .replace(/## (.*?)(?:\n|$)/g, "<h2 class='text-2xl font-bold text-white mb-3'>$1</h2>")
       .replace(/# (.*?)(?:\n|$)/g, "<h1 class='text-3xl font-extrabold text-white mt-8 mb-4'>$1</h1>")
@@ -63,7 +65,11 @@ const QuestionAnyTopic = () => {
       .replace(/\[([^\]]+)\]\(([^)]+)\)/g, "<a href='$2' class='text-blue-400 underline hover:text-blue-300 transition-colors'>$1</a>")
       .replace(/\n/g, "<br>")
       .replace(/(<\/ul><ul class='list-disc ml-6 text-gray-200'>)+/g, "")
-      .replace(/(<\/ol><ol class='list-decimal ml-6 text-gray-200'>)+/g, "");
+      .replace(/(<\/ol><ol class='list-decimal ml-6 text-gray-200'>)+/g, "")
+      .replace(/(?:\n|^)- (.*?)(?=\n|$)/g, "<li class='text-gray-200'>$1</li>")
+      .replace(/(?:<li.*?>.*?<\/li>)+/g, "<ul class='list-disc ml-6'>$&</ul>")
+      .replace(/\n>\s(.*?)(?=\n|$)/g, "<blockquote class='border-l-4 border-blue-500 pl-4 italic text-gray-300 my-2'>$1</blockquote>")
+      .replace(/\[(.*?)\]\((.*?)\)/g, "<a href='$2' class='text-blue-400 underline hover:text-blue-300 transition-colors'>$1</a>");
   };
 
   const fetchYouTubeVideo = async (topic) => {
@@ -145,7 +151,7 @@ const QuestionAnyTopic = () => {
 
     try {
       const res = await fetch(
-        `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${process.env.NEXT_PUBLIC_GEMINI_API_KEY}`,
+        `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${process.env.NEXT_PUBLIC_GEMINI_API_KEY}`,
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },
@@ -155,7 +161,7 @@ const QuestionAnyTopic = () => {
                 role: "user",
                 parts: [
                   {
-                    text: `Generate a detailed and student-friendly definition of '${query}' that encompasses all key aspects, subtopics, and related concepts. Include relatable examples or practical applications to illustrate the topic, and address common doubts, misconceptions, or frequently asked questions associated with '${query}' to ensure a thorough and engaging understanding.`,
+                    text: `Provide a clear and accurate response to '${query}'. If it is a factual question, give a direct answer. If it requires a conceptual explanation, include key aspects, related concepts, and real-world examples. Address common doubts and misconceptions where relevant.`,
                   },
                 ],
               },
@@ -192,7 +198,7 @@ const QuestionAnyTopic = () => {
       const pastQuestions = conversationHistory.filter((item) => item.type === "question").map((item) => item.text).join("\n");
       const latestDefinition = conversationHistory.filter((item) => item.type === "definition").slice(-1)[0]?.text || "";
       const res = await fetch(
-        `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${process.env.NEXT_PUBLIC_GEMINI_API_KEY}`,
+        `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${process.env.NEXT_PUBLIC_GEMINI_API_KEY}`,
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },
@@ -238,7 +244,7 @@ const QuestionAnyTopic = () => {
 
     try {
       const res = await fetch(
-        `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${process.env.NEXT_PUBLIC_GEMINI_API_KEY}`,
+        `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${process.env.NEXT_PUBLIC_GEMINI_API_KEY}`,
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },
@@ -248,7 +254,7 @@ const QuestionAnyTopic = () => {
                 role: "user",
                 parts: [
                   {
-                    text: `Evaluate this answer: "${input.trim()}" for the question: "${currentQuestion}". Provide feedback on whether the answer is correct, partially correct, or incorrect, and explain why.`,
+                    text: `Evaluate the following question and the user's answer:\n\nLatest Question: ${currentQuestion}\nUser's Answer: ${input}\n\nIf the user's answer is correct, respond with 'It is correct.' Otherwise, respond with 'It is not correct' and provide the correct answer.`,
                   },
                 ],
               },
@@ -291,7 +297,7 @@ const QuestionAnyTopic = () => {
       const pastMcqQuestions = previousMcqQuestions.join("\n");
       
       const res = await fetch(
-        `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${process.env.NEXT_PUBLIC_GEMINI_API_KEY}`,
+        `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${process.env.NEXT_PUBLIC_GEMINI_API_KEY}`,
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },
@@ -471,7 +477,7 @@ const QuestionAnyTopic = () => {
     });
 
     const doc = new Document({ sections: [{ properties: {}, children: formattedParagraphs }] });
-    Packer.toBlob(doc).then((blob) => saveAs(blob, "definition.docx"));
+    Packer.toBlob(doc).then((blob) => saveAs(blob, "Notes.docx"));
   };
 
   const renderConversationItem = (item, index) => {
@@ -707,7 +713,7 @@ const QuestionAnyTopic = () => {
                     <motion.button 
                       onClick={() => setIsUploadModalOpen((prev) => !prev)} 
                       whileTap={{ scale: 0.9 }} 
-                      className=" p-3 border border-gray-500 rounded-full bg-gray-500 text-white font-medium hover:bg-gray-700 transition-colors"
+                      className="p-3 border border-gray-500 rounded-full bg-gray-500 text-white font-medium hover:bg-gray-700 transition-colors"
                     >
                       {isUploadModalOpen ? <RxCross2 size={18} className="z-10" /> : <FaPlus size={18} className="z-10" />}
                     </motion.button>
