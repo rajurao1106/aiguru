@@ -11,6 +11,9 @@ import axios from "axios";
 import { Document, Packer, Paragraph, TextRun } from "docx";
 import { saveAs } from "file-saver";
 import Tesseract from "tesseract.js";
+import Link from "next/link";
+import { BsSpeedometer2 } from "react-icons/bs";
+
 
 const QuestionAnyTopic = () => {
   const [input, setInput] = useState("");
@@ -823,6 +826,15 @@ If the user requests an explanation (e.g., by saying 'Explain it,' 'I don’t kn
                             className=" inset-0 bg-opacity-50 flex items-center justify-center z-50"
                           >
                             <div className="bg-gray-800 flex-col gap-5 rounded-lg shadow-lg flex">
+                              <Link href={'/ReactionTime'} aria-label={"Speed Test"}>
+                                <motion.button
+                                  
+                                  whileTap={{ scale: 0.9 }}
+                                  className="p-3 text-white rounded-full transition-colors"
+                                >
+                                  <BsSpeedometer2 size={20} className="inline" />
+                                </motion.button>
+                              </Link>
                               <motion.button
                                 onClick={() => fileInputRef.current.click()}
                                 whileTap={{ scale: 0.9 }}
