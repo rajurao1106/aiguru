@@ -26,7 +26,7 @@ export default function WillpowerMonitor() {
   return (
     <div
     onClick={startTime ? endTest : startTest}
-      className={`flex flex-col items-center justify-center h-screen ${
+      className={`flex flex-col items-center justify-center py-20 ${
         startTime ? "bg-red-500" : "bg-green-500"
       }`}
     >
@@ -41,14 +41,44 @@ export default function WillpowerMonitor() {
       {reactionTime && (
         <p className="mt-4 text-lg">Reaction Time: {reactionTime} ms</p>
       )}
-       <div className="mt-6 bg-white p-4 rounded-lg shadow-lg text-center max-w-sm">
-        <strong className="text-lg">Reaction Time Comparison</strong>
-        <p className="mt-2 text-gray-700">
-          <strong className="text-green-600">200-250 ms:</strong> Super Fast (Pro gamers, athletes) <br />
-          <strong className="text-yellow-600">250-350 ms:</strong> Average (Normal adults) <br />
-          <strong className="text-red-600">350+ ms:</strong> Slow (Needs more practice)
-        </p>
+
+<div className="mt-6 bg-white p-4 rounded-lg shadow-lg text-center max-w-sm">
+        <h2 className="text-lg font-bold text-gray-800">Measurement Notice</h2>
+        <p className="mt-2 text-gray-700">This test measures your brain’s reaction speed in milliseconds (ms).</p>
+        <p className="mt-2 text-gray-700"><strong>⚡ 200-250 ms:</strong> Super Fast (Like a pro gamer or athlete!)</p>
+        <p className="mt-2 text-gray-700"><strong>🏃‍♂️ 250-350 ms:</strong> Normal Speed (Most people fall here.)</p>
+        <p className="mt-2 text-gray-700"><strong>🐢 350+ ms:</strong> Slow (You can improve with practice!)</p>
+        <p className="mt-4 text-gray-700 font-bold">⚠️ Important Factors Affecting Reaction Time:</p>
+        <p className="text-gray-700">✅ Sleep | ✅ Focus | ✅ Stress | ✅ Practice</p>
+        <p className="mt-2 text-gray-700">🔄 Tip: Take multiple tests and try improving your score!</p>
       </div>
+       
+       <div className="mt-8 bg-white p-6 rounded-lg shadow-lg text-center max-w-md">
+        
+        <h2 className="text-xl font-bold text-gray-800">Willpower & Reaction Time Test</h2>
+        <p className="mt-4 text-gray-700">
+          🧠 <strong>1. Builds Self-Control & Patience:</strong> You have to wait before clicking, which helps train self-control.
+        </p>
+        <p className="mt-2 text-gray-700">
+          ⚡ <strong>2. Improves Thinking Speed:</strong> Helps you react faster, useful for gaming, sports, and driving.
+        </p>
+        <p className="mt-2 text-gray-700">
+          🎯 <strong>3. Helps You Focus Better:</strong> Training attention improves performance in studies.
+        </p>
+        <p className="mt-2 text-gray-700">
+          🏆 <strong>4. Strengthens Your Brain Like a Gym Workout:</strong> Each test boosts neuroplasticity.
+        </p>
+        <p className="mt-2 text-gray-700">
+          🏁 <strong>5. Gives You a Challenge & Motivation:</strong> Compete with yourself and improve over time.
+        </p>
+        <p className="mt-2 text-gray-700">
+          🚀 <strong>6. Helps You in Real Life:</strong> Fast reflexes benefit gaming, sports, and safe driving.
+        </p>
+        <p className="mt-4 text-gray-800 font-bold">🔥 Final Thoughts:</p>
+        <p className="text-gray-700">A simple test that enhances focus, reaction speed, and mental agility!</p>
+      </div>
+      
+      
     </div>
   );
 }
