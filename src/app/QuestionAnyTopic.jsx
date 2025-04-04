@@ -12,7 +12,8 @@ import { Document, Packer, Paragraph, TextRun } from "docx";
 import { saveAs } from "file-saver";
 import Tesseract from "tesseract.js";
 import Link from "next/link";
-import { BsSpeedometer2 } from "react-icons/bs";
+import { RiPsychotherapyFill } from "react-icons/ri";
+
 
 
 const QuestionAnyTopic = () => {
@@ -30,11 +31,20 @@ const QuestionAnyTopic = () => {
   const [mcq, setMcq] = useState(null);
   const [selectedOption, setSelectedOption] = useState("");
   const [previousMcqQuestions, setPreviousMcqQuestions] = useState([]);
-  const [currentQuestion, setCurrentQuestion] = useState(null); // New state for current question
+  const [currentQuestion, setCurrentQuestion] = useState(null);
+  const [userName, setUserName] = useState("");
+  const [lastTopic, setLastTopic] = useState(null); // New state to track the last topic
 
   const chatContainerRef = useRef(null);
   const fileInputRef = useRef(null);
   const cameraInputRef = useRef(null);
+
+  useEffect(() => {
+    const storedName = sessionStorage.getItem("userName");
+    if (storedName) {
+      setUserName(storedName);
+    }
+  }, []);
 
   useEffect(() => {
     if (chatContainerRef.current) {
@@ -178,18 +188,32 @@ const QuestionAnyTopic = () => {
     }
   };
 
-  const fetchDefinition = useCallback(async () => {
-    const query = scannedQuestion || input.trim();
-    if (!query) {
-      setError("⚠️ Please enter a topic or upload an image with a question.");
-      return;
-    }
-    setError(null);
-    setIsLoading(true);
-    setHeight(true);
-    setTitleName(true);
-    setPreviousMcqQuestions([]);
+  const isQuestionOrDoubt = (text) => {
+    const questionWords = [
+      "what",
+      "why",
+      "how",
+      "when",
+      "where",
+      "who",
+      "is",
+      "are",
+      "does",
+      "do",
+      "can",
+      "could",
+      "should",
+      "would",
+    ];
+    const lowerText = text.toLowerCase().trim();
+    return (
+      lowerText.endsWith("?") ||
+      questionWords.some((word) => lowerText.startsWith(word))
+    );
+  };
 
+  const fetchClarification = async (doubt, topic) => {
+    setIsLoading(true);
     try {
       const res = await fetch(
         `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${process.env.NEXT_PUBLIC_GEMINI_API_KEY}`,
@@ -202,7 +226,7 @@ const QuestionAnyTopic = () => {
                 role: "user",
                 parts: [
                   {
-                    text: `Generate a detailed and student-friendly definition of '${query}' that encompasses all key aspects, subtopics, and related concepts. Include relatable examples or practical applications to illustrate the topic, and address common doubts, misconceptions, or frequently asked questions associated with '${query}' to ensure a thorough and engaging understanding.`,
+                    text: `The student has a doubt: "${doubt}" related to the topic "${topic}. Provide a clear, concise, and student-friendly explanation to address this doubt in the context of ${topic}. Avoid giving a generic definition of the doubt itself; instead, focus on clarifying it with respect to ${topic}. Include examples if applicable.`,
                   },
                 ],
               },
@@ -210,29 +234,127 @@ const QuestionAnyTopic = () => {
           }),
         }
       );
-      if (!res.ok) throw new Error("Failed to fetch definition.");
+      if (!res.ok) throw new Error("Failed to fetch clarification.");
       const data = await res.json();
-      const aiDefinition =
+      const clarification =
         data?.candidates?.[0]?.content?.parts?.[0]?.text?.trim() ||
-        "Definition not found.";
-
+        "No clarification available.";
       setConversationHistory((prev) => [
         ...prev,
-        { type: "definition", text: aiDefinition, question: query },
+        { type: "user", text: doubt },
+        { type: "response", text: clarification },
       ]);
-      speakText(aiDefinition);
-
-      const videoResult = await fetchYouTubeVideo(query);
-      setVideo(videoResult);
-
-      setInput("");
-      setScannedQuestion(null);
+      speakText(clarification);
     } catch (error) {
       setError(`⚠️ ${error.message}`);
     } finally {
       setIsLoading(false);
     }
-  }, [input, scannedQuestion]);
+  };
+
+  const fetchDefinition = useCallback(
+    async (queryOverride = null) => {
+      const query = queryOverride || scannedQuestion || input.trim();
+      if (!query) {
+        setError("⚠️ Please enter a topic or upload an image with a question.");
+        return;
+      }
+      if (query.toLowerCase().startsWith("my name is ")) {
+        const name = query.substring(11).trim();
+        setUserName(name);
+        sessionStorage.setItem("userName", name);
+        setConversationHistory((prev) => [
+          ...prev,
+          { type: "user", text: query },
+          {
+            type: "response",
+            text: `Nice to meet you, ${name}! How can I assist you today?`,
+          },
+        ]);
+        setInput("");
+        return;
+      }
+      if (query.toLowerCase() === "what is my name") {
+        if (userName) {
+          setConversationHistory((prev) => [
+            ...prev,
+            { type: "user", text: query },
+            { type: "response", text: `Your name is ${userName}.` },
+          ]);
+        } else {
+          setConversationHistory((prev) => [
+            ...prev,
+            { type: "user", text: query },
+            {
+              type: "response",
+              text: "You haven't told me your name yet! Please tell me by saying 'My name is [your name]'.",
+            },
+          ]);
+        }
+        setInput("");
+        return;
+      }
+
+      setError(null);
+      setIsLoading(true);
+      setHeight(true);
+      setTitleName(true);
+
+      // Check if the input is a question/doubt and there's a previous topic
+      if (lastTopic && isQuestionOrDoubt(query)) {
+        await fetchClarification(query, lastTopic);
+        setInput("");
+        setScannedQuestion(null);
+        return;
+      }
+
+      try {
+        const res = await fetch(
+          `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${process.env.NEXT_PUBLIC_GEMINI_API_KEY}`,
+          {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              contents: [
+                {
+                  role: "user",
+                  parts: [
+                    {
+                      text: `Generate a detailed and student-friendly definition of '${query}' that encompasses all key aspects, subtopics, and related concepts. Include relatable examples or practical applications to illustrate the topic, and address common doubts, misconceptions, or frequently asked questions associated with '${query}' to ensure a thorough and engaging understanding.`,
+                    },
+                  ],
+                },
+              ],
+            }),
+          }
+        );
+        if (!res.ok) throw new Error("Failed to fetch definition.");
+        const data = await res.json();
+        const aiDefinition =
+          data?.candidates?.[0]?.content?.parts?.[0]?.text?.trim() ||
+          "Definition not found.";
+
+        setConversationHistory((prev) => [
+          ...prev,
+          { type: "definition", text: aiDefinition, question: query },
+        ]);
+        setLastTopic(query); // Set the current topic as the last topic
+        setPreviousMcqQuestions([]);
+        speakText(aiDefinition);
+
+        const videoResult = await fetchYouTubeVideo(query);
+        setVideo(videoResult);
+
+        setInput("");
+        setScannedQuestion(null);
+      } catch (error) {
+        setError(`⚠️ ${error.message}`);
+      } finally {
+        setIsLoading(false);
+      }
+    },
+    [input, scannedQuestion, userName, lastTopic]
+  );
 
   const fetchAIQuestion = useCallback(async () => {
     if (!conversationHistory.some((item) => item.type === "definition")) return;
@@ -277,7 +399,7 @@ const QuestionAnyTopic = () => {
         ...prev,
         { type: "question", text: aiQuestion },
       ]);
-      setCurrentQuestion(aiQuestion); // Set the current question
+      setCurrentQuestion(aiQuestion);
       speakText(aiQuestion);
     } catch (error) {
       setError(`⚠️ ${error.message}`);
@@ -321,7 +443,7 @@ If the user's answer is correct, respond with 'It is correct.'
 
 Otherwise, if the user's answer is incorrect, respond with 'It is not correct' and provide the correct answer.
 
-If the user requests an explanation (e.g., by saying 'Explain it,' 'I don’t know,' 'Clarify it,' 'How do I solve it,' or 'How does it work'), do not say 'It is not correct.' Instead, start with 'I can explain it to you.' Then, provide a detailed explanation along with the correct answer.`,
+If the user requests an explanation (e.g., by saying 'Explain it,' 'I don’t know,' 'Clarify it,' 'How do I solve it,' or 'How does it work'), do not say 'It is not correct.' Instead, start with 'I can explain it to you.' Then, provide a detailed explanation along with the correct answer`,
                   },
                 ],
               },
@@ -342,8 +464,8 @@ If the user requests an explanation (e.g., by saying 'Explain it,' 'I don’t kn
       ]);
       speakText(feedback);
       setInput("");
-      setInputMode("topic"); // Reset to topic mode after answering
-      setCurrentQuestion(null); // Clear current question
+      setInputMode("topic");
+      setCurrentQuestion(null);
     } catch (error) {
       setError(`⚠️ ${error.message}`);
     } finally {
@@ -513,6 +635,7 @@ If the user requests an explanation (e.g., by saying 'Explain it,' 'I don’t kn
     setIsCheckingAnswer(false);
     setPreviousMcqQuestions([]);
     setCurrentQuestion(null);
+    setLastTopic(null); // Reset last topic
   };
 
   const downloadDefinitionAsWord = () => {
@@ -747,6 +870,16 @@ If the user requests an explanation (e.g., by saying 'Explain it,' 'I don’t kn
           />
         );
         break;
+      case "user":
+        content = (
+          <motion.div
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="text-left w-full p-3 rounded-lg text-white"
+            dangerouslySetInnerHTML={{ __html: formatText(item.text) }}
+          />
+        );
+        break;
       default:
         content = null;
     }
@@ -757,7 +890,7 @@ If the user requests an explanation (e.g., by saying 'Explain it,' 'I don’t kn
     <div className="h-screen overflow-hidden flex flex-col items-center justify-center bg-gradient-to-b from-[#1D1E20] to-[#2A2B2D] text-white font-sans">
       <div className={`relative top-[40%] ${titleName ? "hidden" : "block"}`}>
         <h1 className="text-2xl md:text-4xl text-center font-bold max-md:mb-2 tracking-tight">
-          👩‍🎓 Hello Student 🧑‍🎓
+          👩‍🎓 Hello {userName || "Student"} 🧑‍🎓
         </h1>
         <h2 className="text-2xl md:text-4xl text-center text-gray-400 font-semibold mb-16 max-md:mb-10 tracking-tight">
           How can I help you today?
@@ -826,13 +959,18 @@ If the user requests an explanation (e.g., by saying 'Explain it,' 'I don’t kn
                             className=" inset-0 bg-opacity-50 flex items-center justify-center z-50"
                           >
                             <div className="bg-gray-800 flex-col gap-5 rounded-lg shadow-lg flex">
-                              <Link href={'/ReactionTime'} aria-label={"Speed Test"}>
+                              <Link
+                                href={"/Councilor"}
+                                aria-label={"Speed Test"}
+                              >
                                 <motion.button
-                                  
                                   whileTap={{ scale: 0.9 }}
                                   className="p-3 text-white rounded-full transition-colors"
                                 >
-                                  <BsSpeedometer2 size={20} className="inline" />
+                                  <RiPsychotherapyFill 
+                                    size={20}
+                                    className="inline"
+                                  />
                                 </motion.button>
                               </Link>
                               <motion.button
@@ -908,7 +1046,7 @@ If the user requests an explanation (e.g., by saying 'Explain it,' 'I don’t kn
                     </motion.button>
                   </div>
                   <motion.button
-                    onClick={fetchDefinition}
+                    onClick={() => fetchDefinition()}
                     disabled={isLoading}
                     className=" p-3 border border-gray-500 bg-white text-black rounded-full font-medium disabled:bg-gray-400 disabled:cursor-not-allowed"
                   >
