@@ -13,8 +13,9 @@ import { saveAs } from "file-saver";
 import Tesseract from "tesseract.js";
 import Link from "next/link";
 import { RiPsychotherapyFill } from "react-icons/ri";
-
-
+import loading from '../images/loading.gif';
+import question from '../images/question.png';
+import Image from "next/image";
 
 const QuestionAnyTopic = () => {
   const [input, setInput] = useState("");
@@ -33,7 +34,7 @@ const QuestionAnyTopic = () => {
   const [previousMcqQuestions, setPreviousMcqQuestions] = useState([]);
   const [currentQuestion, setCurrentQuestion] = useState(null);
   const [userName, setUserName] = useState("");
-  const [lastTopic, setLastTopic] = useState(null); // New state to track the last topic
+  const [lastTopic, setLastTopic] = useState(null); 
 
   const chatContainerRef = useRef(null);
   const fileInputRef = useRef(null);
@@ -320,7 +321,7 @@ const QuestionAnyTopic = () => {
                   role: "user",
                   parts: [
                     {
-                      text: `Generate a detailed and student-friendly definition of '${query}' that encompasses all key aspects, subtopics, and related concepts. Include relatable examples or practical applications to illustrate the topic, and address common doubts, misconceptions, or frequently asked questions associated with '${query}' to ensure a thorough and engaging understanding.`,
+                      text: `'${query}'`,
                     },
                   ],
                 },
@@ -911,7 +912,7 @@ If the user requests an explanation (e.g., by saying 'Explain it,' 'I don’t kn
             {isLoading && (
               <div className="flex items-center gap-2 text-white">
                 <Loader className="animate-spin py-5" size={20} />
-                <span>Loading...</span>
+                <span><Image src={loading} className="w-20" /></span>
               </div>
             )}
             {isCheckingAnswer && (
@@ -967,7 +968,7 @@ If the user requests an explanation (e.g., by saying 'Explain it,' 'I don’t kn
                                   whileTap={{ scale: 0.9 }}
                                   className="p-3 text-white rounded-full transition-colors"
                                 >
-                                  <RiPsychotherapyFill 
+                                  <RiPsychotherapyFill
                                     size={20}
                                     className="inline"
                                   />
