@@ -77,7 +77,12 @@ export default function WillpowerMonitor() {
         <p className="mt-4 text-gray-800 font-bold">🔥 Final Thoughts:</p>
         <p className="text-gray-700">A simple test that enhances focus, reaction speed, and mental agility!</p>
       </div>
-      
+      {/* <div>
+      <p className="relative inline-block w-full text-[18px] cursor-pointer overflow-hidden group">
+        Menu Text
+        <span className="absolute bottom-0 left-0 w-full h-[3px] bg-[#00a2ff] rounded-[10px] scale-x-0 origin-right transition-transform duration-400 ease-in-out group-hover:scale-x-100 group-hover:origin-left"></span>
+      </p>
+    </div> */}
       
     </div>
   );
