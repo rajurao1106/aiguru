@@ -14,7 +14,10 @@ import Tesseract from "tesseract.js";
 import Link from "next/link";
 import { RiPsychotherapyFill } from "react-icons/ri";
 import loading from '../images/loading.gif';
-import question from '../images/question.png';
+import loading2 from '../images/loading2.gif';
+import question from '../images/question.gif';
+import test from '../images/test.gif';
+import writing_ai from '../images/writing_ai.gif';
 import Image from "next/image";
 
 const QuestionAnyTopic = () => {
@@ -959,7 +962,7 @@ If the user requests an explanation (e.g., by saying 'Explain it,' 'I don’t kn
                             animate={{ opacity: 1 }}
                             className=" inset-0 bg-opacity-50 flex items-center justify-center z-50"
                           >
-                            <div className="bg-gray-800 flex-col gap-5 rounded-lg shadow-lg flex">
+                            <div onClick={() => setIsUploadModalOpen((prev) => !prev)} className="bg-gray-800 flex-col gap-5 rounded-lg shadow-lg flex">
                               <Link
                                 href={"/Councilor"}
                                 aria-label={"Speed Test"}
@@ -1029,9 +1032,9 @@ If the user requests an explanation (e.g., by saying 'Explain it,' 'I don’t kn
                     <motion.button
                       onClick={fetchAIQuestion}
                       disabled={isLoading || !conversationHistory.length}
-                      className="w-full border border-gray-500 rounded-full text-sm font-medium hover:bg-gray-700 transition-colors disabled:bg-gray-400 disabled:cursor-not-allowed"
+                      className=" border bg-white border-gray-500 rounded-full text-sm font-medium hover:bg-gray-300 transition-colors disabled:bg-gray-400 disabled:cursor-not-allowed"
                     >
-                      {isLoading ? "Loading..." : "Ask Questions"}
+                      {isLoading ? <Image src={loading2} className="w-12 h-8"/>  : <Image src={question} className="w-12 h-10" alt="" />}
                     </motion.button>
                     <motion.button
                       onClick={generateMCQ}
@@ -1041,9 +1044,9 @@ If the user requests an explanation (e.g., by saying 'Explain it,' 'I don’t kn
                           (item) => item.type === "definition"
                         )
                       }
-                      className="w-full border border-gray-500 rounded-full text-sm font-medium hover:bg-gray-700 transition-colors disabled:bg-gray-400 disabled:cursor-not-allowed"
+                      className=" border border-gray-500 rounded-full text-sm font-medium hover:bg-gray-300 transition-colors bg-white disabled:bg-gray-400 disabled:cursor-not-allowed"
                     >
-                      {isLoading ? "Loading..." : "Generate MCQ"}
+                      {isLoading ? <Image src={loading2} className="w-12 h-8"/> : <Image src={test} className="w-12 h-8"/>}
                     </motion.button>
                   </div>
                   <motion.button

@@ -2,6 +2,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import { FaMicrophone, FaMicrophoneSlash } from "react-icons/fa";
 import { MdVolumeUp, MdVolumeOff } from "react-icons/md";
+import ReactMarkdown from "react-markdown"; // Import react-markdown
 
 export default function Councilor() {
   const [userInput, setUserInput] = useState("");
@@ -89,8 +90,7 @@ export default function Councilor() {
 
       const data = await response.json();
       const generatedText = data?.candidates?.[0]?.content?.parts?.[0]?.text;
-      const cleanText = formatMarkdown(generatedText);
-      setAiResponse(cleanText);
+      setAiResponse(generatedText);
 
       if (voiceOutput && generatedText) {
         await speakWithElevenLabs(generatedText);
@@ -101,13 +101,6 @@ export default function Councilor() {
     } finally {
       setLoading(false);
     }
-  };
-
-  const formatMarkdown = (text = "") => {
-    return text
-      .replace(/\*\*(.*?)\*\*/g, "<strong>$1</strong>")
-      .replace(/\*(.*?)\*/g, "<em>$1</em>")
-      .replace(/\n/g, "<br />");
   };
 
   const toggleVoiceInput = () => {
@@ -167,10 +160,9 @@ export default function Councilor() {
       {aiResponse && (
         <div className="bg-gray-100 p-4 rounded shadow-inner mt-4">
           <strong className="text-blue-700">Counselor says:</strong>
-          <div
-            className="mt-2 text-gray-800 text-sm whitespace-pre-wrap"
-            dangerouslySetInnerHTML={{ __html: aiResponse }}
-          />
+          <div className="mt-2 text-gray-800 text-sm whitespace-pre-wrap">
+            <ReactMarkdown>{aiResponse}</ReactMarkdown> {/* Render markdown response */}
+          </div>
         </div>
       )}
     </div>
