@@ -3,7 +3,7 @@
 import React, { useState, useCallback, useEffect, useRef } from "react";
 import { motion } from "framer-motion";
 import { Loader } from "lucide-react";
-import { FaArrowUp, FaCamera, FaImage, FaPlus } from "react-icons/fa6";
+import { FaArrowUp, FaCamera, FaImage, FaPlus, FaMicrophone } from "react-icons/fa6";
 import { RxCross2 } from "react-icons/rx";
 import { IoCreateOutline } from "react-icons/io5";
 import { MdRefresh } from "react-icons/md";
@@ -13,14 +13,20 @@ import { saveAs } from "file-saver";
 import Tesseract from "tesseract.js";
 import Link from "next/link";
 import { RiPsychotherapyFill } from "react-icons/ri";
-import loading from '../images/loading.gif';
-import loading2 from '../images/loading2.gif';
-import question from '../images/question.gif';
-import test from '../images/test.gif';
-import writing_ai from '../images/writing_ai.gif';
+import loading from "../images/loading.gif";
+import loading2 from "../images/loading2.gif";
+import question from "../images/question.gif";
+import test from "../images/test.gif";
+import writing_ai from "../images/writing_ai.gif";
 import Image from "next/image";
 
 const QuestionAnyTopic = () => {
+  // Removed duplicate fetchDefinition function to avoid redeclaration error.
+
+  const startVoiceRecognition = () => {
+    console.log("Voice recognition started..."); // implement later
+  };
+
   const [input, setInput] = useState("");
   const [conversationHistory, setConversationHistory] = useState([]);
   const [error, setError] = useState(null);
@@ -37,7 +43,7 @@ const QuestionAnyTopic = () => {
   const [previousMcqQuestions, setPreviousMcqQuestions] = useState([]);
   const [currentQuestion, setCurrentQuestion] = useState(null);
   const [userName, setUserName] = useState("");
-  const [lastTopic, setLastTopic] = useState(null); 
+  const [lastTopic, setLastTopic] = useState(null);
 
   const chatContainerRef = useRef(null);
   const fileInputRef = useRef(null);
@@ -915,7 +921,9 @@ If the user requests an explanation (e.g., by saying 'Explain it,' 'I don’t kn
             {isLoading && (
               <div className="flex items-center gap-2 text-white">
                 <Loader className="animate-spin py-5" size={20} />
-                <span><Image src={loading} className="w-20" /></span>
+                <span>
+                  <Image src={loading} className="w-20" />
+                </span>
               </div>
             )}
             {isCheckingAnswer && (
@@ -962,10 +970,13 @@ If the user requests an explanation (e.g., by saying 'Explain it,' 'I don’t kn
                             animate={{ opacity: 1 }}
                             className=" inset-0 bg-opacity-50 flex items-center justify-center z-50"
                           >
-                            <div onClick={() => setIsUploadModalOpen((prev) => !prev)} className="bg-gray-800 flex-col gap-5 rounded-lg shadow-lg flex">
+                            <div className="bg-gray-800 flex-col gap-5 rounded-lg shadow-lg flex">
                               <Link
                                 href={"/Councilor"}
                                 aria-label={"Speed Test"}
+                                onClick={() =>
+                                  setIsUploadModalOpen((prev) => !prev)
+                                }
                               >
                                 <motion.button
                                   whileTap={{ scale: 0.9 }}
@@ -978,21 +989,30 @@ If the user requests an explanation (e.g., by saying 'Explain it,' 'I don’t kn
                                 </motion.button>
                               </Link>
                               <motion.button
-                                onClick={() => fileInputRef.current.click()}
+                                onClick={() => {
+                                  fileInputRef.current.click();
+                                  setIsUploadModalOpen((prev) => !prev);
+                                }}
                                 whileTap={{ scale: 0.9 }}
                                 className="p-3 text-white rounded-full transition-colors"
                               >
                                 <FaImage size={20} className="inline" />
                               </motion.button>
                               <motion.button
-                                onClick={() => cameraInputRef.current.click()}
+                                onClick={() => {
+                                  cameraInputRef.current.click();
+                                  setIsUploadModalOpen((prev) => !prev);
+                                }}
                                 whileTap={{ scale: 0.9 }}
                                 className="p-3 text-white rounded-full transition-colors"
                               >
                                 <FaCamera size={20} className="inline" />
                               </motion.button>
                               <motion.button
-                                onClick={refreshConversation}
+                                onClick={() => {
+                                  refreshConversation();
+                                  setIsUploadModalOpen((prev) => !prev);
+                                }}
                                 whileTap={{ scale: 0.9 }}
                                 className="p-3 text-white rounded-full transition-colors"
                               >
@@ -1032,9 +1052,13 @@ If the user requests an explanation (e.g., by saying 'Explain it,' 'I don’t kn
                     <motion.button
                       onClick={fetchAIQuestion}
                       disabled={isLoading || !conversationHistory.length}
-                      className=" border bg-white border-gray-500 rounded-full text-sm font-medium hover:bg-gray-300 transition-colors disabled:bg-gray-400 disabled:cursor-not-allowed"
+                      className=" border w-[45px] h-[45px] bg-white border-gray-500 rounded-full text-sm font-medium hover:bg-gray-300 transition-colors disabled:bg-gray-400 disabled:cursor-not-allowed"
                     >
-                      {isLoading ? <Image src={loading2} className="w-12 h-8"/>  : <Image src={question} className="w-12 h-10" alt="" />}
+                      {isLoading ? (
+                        <Image src={loading2} className="w-12 h-8" />
+                      ) : (
+                        <Image src={question} className="" alt="" />
+                      )}
                     </motion.button>
                     <motion.button
                       onClick={generateMCQ}
@@ -1044,20 +1068,39 @@ If the user requests an explanation (e.g., by saying 'Explain it,' 'I don’t kn
                           (item) => item.type === "definition"
                         )
                       }
-                      className=" border border-gray-500 rounded-full text-sm font-medium hover:bg-gray-300 transition-colors bg-white disabled:bg-gray-400 disabled:cursor-not-allowed"
+                      className=" border w-[45px] h-[45px] border-gray-500 rounded-full text-sm font-medium hover:bg-gray-300 transition-colors bg-white disabled:bg-gray-400 disabled:cursor-not-allowed"
                     >
-                      {isLoading ? <Image src={loading2} className="w-12 h-8"/> : <Image src={test} className="w-12 h-8"/>}
+                      {isLoading ? (
+                        <Image src={loading2} className="w-12 h-8" />
+                      ) : (
+                        <Image src={test} className="" />
+                      )}
                     </motion.button>
                   </div>
                   <motion.button
-                    onClick={() => fetchDefinition()}
+                    
                     disabled={isLoading}
-                    className=" p-3 border border-gray-500 bg-white text-black rounded-full font-medium disabled:bg-gray-400 disabled:cursor-not-allowed"
+                    className="w-[45px] max-lg:w-[50px] h-[45px] flex items-center flex-col justify-center border border-gray-500 bg-white text-black rounded-full font-medium disabled:bg-gray-400 disabled:cursor-not-allowed"
                   >
-                    {isLoading ? <IoCreateOutline /> : <FaArrowUp />}
+                    
+                    {input.trim() === "" ? (
+                            <motion.button
+                              onClick={startVoiceRecognition}
+                             >
+                              <FaMicrophone />
+                            </motion.button>
+                          ) : (
+                            <motion.button
+                              onClick={fetchDefinition}
+                              disabled={isLoading}
+                             >
+                              {isLoading ? <IoCreateOutline /> : <FaArrowUp onClick={() => fetchDefinition()}/>}
+                            </motion.button>
+                          )}
                   </motion.button>
                 </div>
               </div>
+              <input type="file" name="" id="" />
               <p className="text-xs text-center text-gray-400 hidden max-lg:block">
                 Explore AI and education with our artificial intelligence in
                 education platform! Solve doubts instantly using our math
