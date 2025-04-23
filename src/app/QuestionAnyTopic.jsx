@@ -988,23 +988,20 @@ If the user requests an explanation (e.g., by saying 'Explain it,' 'I don’t kn
                                   />
                                 </motion.button>
                               </Link>
-                              <label className="cursor-pointer">
-  <motion.div
-    whileTap={{ scale: 0.9 }}
-    className="p-3 bg-gray-700 text-white rounded-full transition-colors inline-block"
-    onClick={() => setIsUploadModalOpen(prev => !prev)}
-  >
-    <FaImage size={20} />
-  </motion.div>
-
-  <input
-    type="file"
-    ref={fileInputRef}
-    style={{ display: "none" }}
-  />
-</label>
-
-                              {/* <motion.button
+                              <motion.button
+                                
+                                whileTap={{ scale: 0.9 }}
+                                className="p-3 text-white rounded-full transition-colors"
+                              >
+                                <FaImage size={20} className="inline" />
+                              </motion.button>
+                              <input type="file" name="" id="" onClick={() => {
+                                  fileInputRef.current.click();
+                                  
+                                }}
+                                
+                                />
+                              <motion.button
                                 onClick={() => {
                                   cameraInputRef.current.click();
                                   setIsUploadModalOpen((prev) => !prev);
@@ -1013,7 +1010,7 @@ If the user requests an explanation (e.g., by saying 'Explain it,' 'I don’t kn
                                 className="p-3 text-white rounded-full transition-colors"
                               >
                                 <FaCamera size={20} className="inline" />
-                              </motion.button> */}
+                              </motion.button>
                               <motion.button
                                 onClick={() => {
                                   refreshConversation();
