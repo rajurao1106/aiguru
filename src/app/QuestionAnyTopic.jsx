@@ -3,7 +3,13 @@
 import React, { useState, useCallback, useEffect, useRef } from "react";
 import { motion } from "framer-motion";
 import { Loader } from "lucide-react";
-import { FaArrowUp, FaCamera, FaImage, FaPlus, FaMicrophone } from "react-icons/fa6";
+import {
+  FaArrowUp,
+  FaCamera,
+  FaImage,
+  FaPlus,
+  FaMicrophone,
+} from "react-icons/fa6";
 import { RxCross2 } from "react-icons/rx";
 import { IoCreateOutline } from "react-icons/io5";
 import { MdRefresh } from "react-icons/md";
@@ -971,36 +977,16 @@ If the user requests an explanation (e.g., by saying 'Explain it,' 'I don’t kn
                             className=" inset-0 bg-opacity-50 flex items-center justify-center z-50"
                           >
                             <div className="bg-gray-800 flex-col gap-5 rounded-lg shadow-lg flex">
-                              <Link
-                                href={"/Councilor"}
-                                aria-label={"Speed Test"}
-                                onClick={() =>
-                                  setIsUploadModalOpen((prev) => !prev)
-                                }
-                              >
-                                <motion.button
-                                  whileTap={{ scale: 0.9 }}
-                                  className="p-3 text-white rounded-full transition-colors"
-                                >
-                                  <RiPsychotherapyFill
-                                    size={20}
-                                    className="inline"
-                                  />
-                                </motion.button>
-                              </Link>
                               <motion.button
-                                
+                                onClick={() => {
+                                  fileInputRef.current.click();
+                                  setIsUploadModalOpen((prev) => !prev);
+                                }}
                                 whileTap={{ scale: 0.9 }}
                                 className="p-3 text-white rounded-full transition-colors"
                               >
                                 <FaImage size={20} className="inline" />
                               </motion.button>
-                              <input type="file" name="" id="" onClick={() => {
-                                  fileInputRef.current.click();
-                                  
-                                }}
-                                
-                                />
                               <motion.button
                                 onClick={() => {
                                   cameraInputRef.current.click();
@@ -1011,16 +997,7 @@ If the user requests an explanation (e.g., by saying 'Explain it,' 'I don’t kn
                               >
                                 <FaCamera size={20} className="inline" />
                               </motion.button>
-                              <motion.button
-                                onClick={() => {
-                                  refreshConversation();
-                                  setIsUploadModalOpen((prev) => !prev);
-                                }}
-                                whileTap={{ scale: 0.9 }}
-                                className="p-3 text-white rounded-full transition-colors"
-                              >
-                                <MdRefresh size={20} />
-                              </motion.button>
+
                               <input
                                 type="file"
                                 ref={fileInputRef}
@@ -1079,31 +1056,57 @@ If the user requests an explanation (e.g., by saying 'Explain it,' 'I don’t kn
                         <Image src={test} className="" />
                       )}
                     </motion.button>
+                    <motion.button
+                      onClick={() => setIsUploadModalOpen((prev) => !prev)}
+                      disabled={isLoading || !conversationHistory.length}
+                      className=" border w-[45px] h-[45px] bg-white border-gray-500 rounded-full text-sm font-medium hover:bg-gray-300 transition-colors disabled:bg-gray-400 disabled:cursor-not-allowed"
+                    >
+                      <Link href={"/Councilor"} aria-label={"Speed Test"}>
+                        <motion.button
+                          whileTap={{ scale: 0.9 }}
+                          className="p-3 text-black rounded-full transition-colors"
+                        >
+                          <RiPsychotherapyFill size={20} className="inline" />
+                        </motion.button>
+                      </Link>
+                    </motion.button>
+                    <motion.button
+                      onClick={() => {
+                        refreshConversation();
+                      }}
+                      whileTap={{ scale: 0.9 }}
+                      disabled={isLoading || !conversationHistory.length}
+                      className=" border w-[45px] h-[45px] bg-white border-gray-500 rounded-full text-sm font-medium hover:bg-gray-300 transition-colors disabled:bg-gray-400 disabled:cursor-not-allowed"
+                    >
+                      <motion.button className="p-3 text-black rounded-full transition-colors">
+                        <MdRefresh size={20} />
+                      </motion.button>
+                    </motion.button>
                   </div>
                   <motion.button
-                    
                     disabled={isLoading}
                     className="w-[45px] max-lg:w-[50px] h-[45px] flex items-center flex-col justify-center border border-gray-500 bg-white text-black rounded-full font-medium disabled:bg-gray-400 disabled:cursor-not-allowed"
                   >
-                    
                     {input.trim() === "" ? (
-                            <motion.button
-                              onClick={startVoiceRecognition}
-                             >
-                              <FaMicrophone />
-                            </motion.button>
-                          ) : (
-                            <motion.button
-                              onClick={fetchDefinition}
-                              disabled={isLoading}
-                             >
-                              {isLoading ? <IoCreateOutline /> : <FaArrowUp onClick={() => fetchDefinition()}/>}
-                            </motion.button>
-                          )}
+                      <motion.button onClick={startVoiceRecognition}>
+                        <FaMicrophone />
+                      </motion.button>
+                    ) : (
+                      <motion.button
+                        onClick={fetchDefinition}
+                        disabled={isLoading}
+                      >
+                        {isLoading ? (
+                          <IoCreateOutline />
+                        ) : (
+                          <FaArrowUp onClick={() => fetchDefinition()} />
+                        )}
+                      </motion.button>
+                    )}
                   </motion.button>
                 </div>
               </div>
-             
+
               <p className="text-xs text-center text-gray-400 hidden max-lg:block">
                 Explore AI and education with our artificial intelligence in
                 education platform! Solve doubts instantly using our math
