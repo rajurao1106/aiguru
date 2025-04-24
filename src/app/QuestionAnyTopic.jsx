@@ -22,17 +22,13 @@ import { RiPsychotherapyFill } from "react-icons/ri";
 import loading from "../images/loading.gif";
 import loading2 from "../images/loading2.gif";
 import question from "../images/question.gif";
-import test from "../images/test.gif";
-import writing_ai from "../images/writing_ai.gif";
+import test from "../images/mcq.gif";
+import camera from "../images/camera.gif";
+import image_file from "../images/image_file.gif";
+import student_councilor from "../images/student_councilor.gif";
 import Image from "next/image";
 
 const QuestionAnyTopic = () => {
-  // Removed duplicate fetchDefinition function to avoid redeclaration error.
-
-  const startVoiceRecognition = () => {
-    console.log("Voice recognition started..."); // implement later
-  };
-
   const [input, setInput] = useState("");
   const [conversationHistory, setConversationHistory] = useState([]);
   const [error, setError] = useState(null);
@@ -1008,7 +1004,7 @@ If the user requests an explanation (e.g., by saying 'Explain it,' 'I don’t kn
               />
               <div className="w-full">
                 <div
-                  className={`flex relative w-full gap-[6px] items-center justify-between mb-2 `}
+                  className={`flex relative w-full items-center justify-between mb-2 `}
                 >
                   <button
                     disabled={isLoading || !conversationHistory.length}
@@ -1029,26 +1025,6 @@ If the user requests an explanation (e.g., by saying 'Explain it,' 'I don’t kn
                       </motion.button>
                     </motion.button>
 
-                    {/* upload photo */}
-                    <motion.button
-                      onClick={() => {
-                        fileInputRef.current.click();
-                        setIsUploadModalOpen((prev) => !prev);
-                      }}
-                      disabled={isLoading || !conversationHistory.length}
-                      whileTap={{ scale: 0.9 }}
-                      className=" w-[45px] h-[45px] bg-white text-gray-500 rounded-full text-sm font-medium transition-colors disabled:bg-gray-400 disabled:cursor-not-allowed"
-                    >
-                      <FaImage size={20} className="inline" />
-                      <input
-                        type="file"
-                        ref={fileInputRef}
-                        onChange={handleImageUpload}
-                        accept="image/*"
-                        className="hidden"
-                      />
-                    </motion.button>
-
                     {/* open camera */}
                     <motion.button
                       onClick={() => {
@@ -1057,9 +1033,9 @@ If the user requests an explanation (e.g., by saying 'Explain it,' 'I don’t kn
                       }}
                       disabled={isLoading || !conversationHistory.length}
                       whileTap={{ scale: 0.9 }}
-                      className="w-[45px] h-[45px] text-black bg-white rounded-full text-sm font-medium transition-colors disabled:bg-gray-400 disabled:cursor-not-allowed"
+                      className="w-[40px] h-[45px] text-black bg-white rounded-full text-sm font-medium transition-colors disabled:bg-gray-400 disabled:cursor-not-allowed"
                     >
-                      <FaCamera size={20} className="inline" />
+                      <Image src={camera} className="" />
                       <input
                         type="file"
                         ref={cameraInputRef}
@@ -1070,17 +1046,44 @@ If the user requests an explanation (e.g., by saying 'Explain it,' 'I don’t kn
                       />
                     </motion.button>
 
+                    {/* upload image */}
+                    <motion.button
+                      onClick={() => {
+                        fileInputRef.current.click();
+                        setIsUploadModalOpen((prev) => !prev);
+                      }}
+                      disabled={isLoading || !conversationHistory.length}
+                      whileTap={{ scale: 0.9 }}
+                      className=" w-[40px] h-[45px] bg-white text-gray-500 rounded-full text-sm font-medium transition-colors disabled:bg-gray-400 disabled:cursor-not-allowed"
+                    >
+                      <Image src={image_file} className="" />
+                      <input
+                        type="file"
+                        ref={fileInputRef}
+                        onChange={handleImageUpload}
+                        accept="image/*"
+                        className="hidden"
+                      />
+                    </motion.button>
+
+                    {/* student councilor */}
+                    <motion.button
+                      onClick={() => setIsUploadModalOpen((prev) => !prev)}
+                      disabled={isLoading || !conversationHistory.length}
+                      className=" w-[45px] h-[45px] bg-white border-gray-500 rounded-full text-sm font-medium hover:bg-gray-300 transition-colors disabled:bg-gray-400 disabled:cursor-not-allowed"
+                    >
+                      <Link href={"/Councilor"} aria-label={"Speed Test"}>
+                      <Image src={student_councilor} className="" />
+                      </Link>
+                    </motion.button>
+
                     {/* ask questions */}
                     <motion.button
                       onClick={fetchAIQuestion}
                       disabled={isLoading || !conversationHistory.length}
                       className=" w-[45px] h-[45px]  bg-white rounded-full text-sm font-medium transition-colors disabled:bg-gray-400 disabled:cursor-not-allowed"
                     >
-                      {isLoading ? (
-                        <Image src={loading2} className="w-12 h-8" />
-                      ) : (
-                        <Image src={question} className="" alt="" />
-                      )}
+                     <Image src={question} className="" alt="" />
                     </motion.button>
 
                     {/* generate MCQ */}
@@ -1092,32 +1095,13 @@ If the user requests an explanation (e.g., by saying 'Explain it,' 'I don’t kn
                           (item) => item.type === "definition"
                         )
                       }
-                      className=" w-[45px] h-[45px] rounded-full text-sm font-medium hover:bg-gray-300 transition-colors bg-white disabled:bg-gray-400 disabled:cursor-not-allowed"
+                      className=" w-[40px] h-[45px] rounded-full text-sm font-medium hover:bg-gray-300 transition-colors bg-white disabled:bg-gray-400 disabled:cursor-not-allowed"
                     >
-                      {isLoading ? (
-                        <Image src={loading2} className="w-12 h-8" />
-                      ) : (
-                        <Image src={test} className="" />
-                      )}
-                    </motion.button>
-
-                    {/* student councilor */}
-                    <motion.button
-                      onClick={() => setIsUploadModalOpen((prev) => !prev)}
-                      disabled={isLoading || !conversationHistory.length}
-                      className=" w-[45px] h-[45px] bg-white border-gray-500 rounded-full text-sm font-medium hover:bg-gray-300 transition-colors disabled:bg-gray-400 disabled:cursor-not-allowed"
-                    >
-                      <Link href={"/Councilor"} aria-label={"Speed Test"}>
-                        <motion.button
-                          whileTap={{ scale: 0.9 }}
-                          className="p-3 text-black rounded-full transition-colors"
-                        >
-                          <RiPsychotherapyFill size={20} className="inline" />
-                        </motion.button>
-                      </Link>
+                      <Image src={test} className="" />
                     </motion.button>
                   </button>
 
+                  {/* search button */}
                   <motion.button
                     disabled={isLoading}
                     className="w-[45px] absolute right-1 h-[45px] flex items-center
