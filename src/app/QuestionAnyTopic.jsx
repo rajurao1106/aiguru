@@ -940,8 +940,7 @@ If the user requests an explanation (e.g., by saying 'Explain it,' 'I don’t kn
   };
 
   return (
-    <div className="h-screen overflow-hidden flex flex-col items-center justify-center bg-gradient-to-b
-     from-[#1D1E20] to-[#2A2B2D] text-white font-sans">
+    <div className="h-screen overflow-hidden flex flex-col items-center justify-center font-sans">
       <div className={`relative top-[40%] ${titleName ? "hidden" : "block"}`}>
         <h1 className="text-2xl md:text-4xl text-center font-bold max-md:mb-2 tracking-tight">
           👩‍🎓 Hello {userName || "Student"} 🧑‍🎓
@@ -963,7 +962,7 @@ If the user requests an explanation (e.g., by saying 'Explain it,' 'I don’t kn
           <div className="flex flex-col justify-center items-center w-3xl">
             {conversationHistory.map(renderConversationItem)}
             {isLoading && (
-              <div className="flex items-center gap-2 text-white">
+              <div className="flex items-center gap-2">
                 <Loader className="animate-spin py-5" size={20} />
                 <span>
                   <Image src={loading} className="w-20" />
@@ -971,7 +970,7 @@ If the user requests an explanation (e.g., by saying 'Explain it,' 'I don’t kn
               </div>
             )}
             {isCheckingAnswer && (
-              <div className="flex items-center gap-2 text-white">
+              <div className="flex items-center gap-2">
                 <Loader className="animate-spin py-5" size={20} />
                 <span>Checking Answer...</span>
               </div>
@@ -982,7 +981,7 @@ If the user requests an explanation (e.g., by saying 'Explain it,' 'I don’t kn
 
             {/* Search bar */}
         <div className="justify-center flex items-center">
-          <div className="bg-white border-gray-500 lg:rounded-3xl rounded-t-3xl px-4 py-2 shadow-xl w-3xl">
+          <div className="bg-white border-gray-500 lg:rounded-3xl rounded-t-3xl px-4 py-2 shadow-[0px_0px_10px_gray] w-3xl">
             <div className="flex relative items-center flex-col justify-between gap-2 max-md:flex-col">
               <input
                 type="text"
