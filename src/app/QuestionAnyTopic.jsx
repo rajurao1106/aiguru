@@ -1009,7 +1009,7 @@ If the user requests an explanation (e.g., by saying 'Explain it,' 'I don’t kn
                 >
                   <button
                     disabled={isLoading || !conversationHistory.length}
-                    className="rounded-full p-1 bg-[#b1b1b1] disabled:cursor-not-allowed relative flex w-full max-lg:w-[100%] gap-[6px]"
+                    className="rounded-full p-1 bg-[#8f8f8f] disabled:cursor-not-allowed relative flex w-full max-lg:w-[100%] gap-[6px]"
                   >
                     {/* refresh button */}
                     <motion.button
@@ -1019,9 +1019,9 @@ If the user requests an explanation (e.g., by saying 'Explain it,' 'I don’t kn
                       whileTap={{ scale: 0.9 }}
                       disabled={isLoading || !conversationHistory.length}
                       className="  w-[45px] h-[45px]  rounded-full text-sm 
-                      font-medium transition-colors border border-gray-500 disabled:cursor-not-allowed"
+                      font-medium transition-colors border border-gray-300 disabled:cursor-not-allowed"
                     >
-                      <motion.button className="p-3 text-blue-800 rounded-full transition-colors">
+                      <motion.button className="p-3 text-white rounded-full transition-colors">
                         <MdRefresh size={20} />
                       </motion.button>
                     </motion.button>
