@@ -1008,7 +1008,7 @@ If the user requests an explanation (e.g., by saying 'Explain it,' 'I don’t kn
               />
               <div className="w-full">
                 <div
-                  className={`flex relative w-full items-center justify-between mb-2 `}
+                  className={`flex relative w-full gap-[6px] items-center justify-between mb-2 `}
                 >
                   <button
                     disabled={isLoading || !conversationHistory.length}
