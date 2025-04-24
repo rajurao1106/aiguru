@@ -1010,7 +1010,7 @@ If the user requests an explanation (e.g., by saying 'Explain it,' 'I don’t kn
                 >
                   <button
                     disabled={isLoading || !conversationHistory.length}
-                    className="rounded-full p-1 bg-white disabled:bg-gray-200 disabled:cursor-not-allowed relative flex w-[70%] max-lg:w-[100%] gap-[6px]"
+                    className="rounded-full p-1 bg-gray-200 disabled:cursor-not-allowed relative flex w-[70%] max-lg:w-[100%] gap-[6px]"
                   >
                     {/* refresh button */}
                     <motion.button
@@ -1135,11 +1135,11 @@ If the user requests an explanation (e.g., by saying 'Explain it,' 'I don’t kn
                 </div>
               </div>
 
-              <p className="text-xs text-center text-gray-500 hidden max-lg:block">
+              {/* <p className="text-xs text-center text-gray-500 hidden max-lg:block">
                 Explore AI and education with our artificial intelligence in
                 education platform! Solve doubts instantly using our math
                 problem solver powered by artificial intelligence on education.
-              </p>
+              </p> */}
             </div>
           </div>
         </div>
