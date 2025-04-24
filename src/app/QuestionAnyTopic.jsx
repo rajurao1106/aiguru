@@ -940,7 +940,8 @@ If the user requests an explanation (e.g., by saying 'Explain it,' 'I don’t kn
   };
 
   return (
-    <div className="h-screen overflow-hidden flex flex-col items-center justify-center bg-gradient-to-b from-[#1D1E20] to-[#2A2B2D] text-white font-sans">
+    <div className="h-screen overflow-hidden flex flex-col items-center justify-center bg-gradient-to-b
+     from-[#1D1E20] to-[#2A2B2D] text-white font-sans">
       <div className={`relative top-[40%] ${titleName ? "hidden" : "block"}`}>
         <h1 className="text-2xl md:text-4xl text-center font-bold max-md:mb-2 tracking-tight">
           👩‍🎓 Hello {userName || "Student"} 🧑‍🎓
@@ -979,8 +980,9 @@ If the user requests an explanation (e.g., by saying 'Explain it,' 'I don’t kn
           </div>
         </div>
 
+            {/* Search bar */}
         <div className="justify-center flex items-center">
-          <div className="bg-[#36383A] border-gray-500 lg:rounded-3xl rounded-t-3xl px-4 py-2 shadow-xl w-3xl">
+          <div className="bg-white border-gray-500 lg:rounded-3xl rounded-t-3xl px-4 py-2 shadow-xl w-3xl">
             <div className="flex relative items-center flex-col justify-between gap-2 max-md:flex-col">
               <input
                 type="text"
@@ -991,7 +993,7 @@ If the user requests an explanation (e.g., by saying 'Explain it,' 'I don’t kn
                     ? "Enter a Topic or Doubt..."
                     : "Your answer..."
                 }
-                className="w-full p-3 rounded-xl text-white placeholder-gray-300 border-none outline-none transition-all duration-200"
+                className="w-full p-3 rounded-xl text-black border-none outline-none transition-all duration-200"
                 onKeyDown={(e) => {
                   if (e.key === "Enter") {
                     if (inputMode === "topic") {
@@ -1008,7 +1010,7 @@ If the user requests an explanation (e.g., by saying 'Explain it,' 'I don’t kn
                 >
                   <button
                     disabled={isLoading || !conversationHistory.length}
-                    className="rounded-full p-1 bg-white disabled:bg-gray-400 disabled:cursor-not-allowed relative flex w-[70%] max-lg:w-[100%] gap-[6px]"
+                    className="rounded-full p-1 bg-white disabled:bg-gray-200 disabled:cursor-not-allowed relative flex w-[70%] max-lg:w-[100%] gap-[6px]"
                   >
                     {/* refresh button */}
                     <motion.button
@@ -1017,8 +1019,8 @@ If the user requests an explanation (e.g., by saying 'Explain it,' 'I don’t kn
                       }}
                       whileTap={{ scale: 0.9 }}
                       disabled={isLoading || !conversationHistory.length}
-                      className="border border-gray-500 w-[45px] h-[45px] bg-white rounded-full text-sm 
-                      font-medium transition-colors disabled:bg-gray-400 disabled:cursor-not-allowed"
+                      className="  w-[45px] h-[45px]  rounded-full text-sm 
+                      font-medium transition-colors border border-gray-500 disabled:cursor-not-allowed"
                     >
                       <motion.button className="p-3 text-black rounded-full transition-colors">
                         <MdRefresh size={20} />
@@ -1033,7 +1035,8 @@ If the user requests an explanation (e.g., by saying 'Explain it,' 'I don’t kn
                       }}
                       disabled={isLoading || !conversationHistory.length}
                       whileTap={{ scale: 0.9 }}
-                      className="w-[40px] h-[45px] text-black bg-white rounded-full text-sm font-medium transition-colors disabled:bg-gray-400 disabled:cursor-not-allowed"
+                      className="w-[40px] h-[45px] text-black rounded-full text-sm 
+                      font-medium transition-colors  disabled:cursor-not-allowed"
                     >
                       <Image src={camera} className="" />
                       <input
@@ -1054,7 +1057,8 @@ If the user requests an explanation (e.g., by saying 'Explain it,' 'I don’t kn
                       }}
                       disabled={isLoading || !conversationHistory.length}
                       whileTap={{ scale: 0.9 }}
-                      className=" w-[40px] h-[45px] bg-white text-gray-500 rounded-full text-sm font-medium transition-colors disabled:bg-gray-400 disabled:cursor-not-allowed"
+                      className=" w-[40px] h-[45px] text-gray-500 rounded-full
+                       text-sm font-medium transition-colors  disabled:cursor-not-allowed"
                     >
                       <Image src={image_file} className="" />
                       <input
@@ -1070,7 +1074,8 @@ If the user requests an explanation (e.g., by saying 'Explain it,' 'I don’t kn
                     <motion.button
                       onClick={() => setIsUploadModalOpen((prev) => !prev)}
                       disabled={isLoading || !conversationHistory.length}
-                      className=" w-[45px] h-[45px] bg-white border-gray-500 rounded-full text-sm font-medium hover:bg-gray-300 transition-colors disabled:bg-gray-400 disabled:cursor-not-allowed"
+                      className=" w-[45px] h-[45px]  border-gray-500 rounded-full text-sm font-medium
+                       hover:bg-gray-300 transition-colors  disabled:cursor-not-allowed"
                     >
                       <Link href={"/Councilor"} aria-label={"Speed Test"}>
                       <Image src={student_councilor} className="" />
@@ -1081,7 +1086,8 @@ If the user requests an explanation (e.g., by saying 'Explain it,' 'I don’t kn
                     <motion.button
                       onClick={fetchAIQuestion}
                       disabled={isLoading || !conversationHistory.length}
-                      className=" w-[45px] h-[45px]  bg-white rounded-full text-sm font-medium transition-colors disabled:bg-gray-400 disabled:cursor-not-allowed"
+                      className=" w-[45px] h-[45px]  rounded-full text-sm font-medium transition-colors
+                       disabled:cursor-not-allowed"
                     >
                      <Image src={question} className="" alt="" />
                     </motion.button>
@@ -1095,7 +1101,8 @@ If the user requests an explanation (e.g., by saying 'Explain it,' 'I don’t kn
                           (item) => item.type === "definition"
                         )
                       }
-                      className=" w-[40px] h-[45px] rounded-full text-sm font-medium hover:bg-gray-300 transition-colors bg-white disabled:bg-gray-400 disabled:cursor-not-allowed"
+                      className=" w-[40px] h-[45px] rounded-full text-sm font-medium hover:bg-gray-300
+                       transition-colors disabled:cursor-not-allowed"
                     >
                       <Image src={test} className="" />
                     </motion.button>
@@ -1128,7 +1135,7 @@ If the user requests an explanation (e.g., by saying 'Explain it,' 'I don’t kn
                 </div>
               </div>
 
-              <p className="text-xs text-center text-gray-400 hidden max-lg:block">
+              <p className="text-xs text-center text-gray-500 hidden max-lg:block">
                 Explore AI and education with our artificial intelligence in
                 education platform! Solve doubts instantly using our math
                 problem solver powered by artificial intelligence on education.
