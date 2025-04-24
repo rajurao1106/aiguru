@@ -1007,8 +1007,8 @@ If the user requests an explanation (e.g., by saying 'Explain it,' 'I don’t kn
                 }}
               />
               <div className="w-full">
-                <div className="flex w-full gap-3 items-center justify-between mb-2">
-                  <div className="flex w-[70%] max-lg:w-[100%] gap-1">
+                <div className="flex w-full items-center justify-between mb-2">
+                  <div className="flex w-[70%] max-lg:w-[100%] gap-[6px]">
                     <div className="relative">
                       <div className="absolute z-0 right-[0px] bottom-32">
                         {isUploadModalOpen && (
