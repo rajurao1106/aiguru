@@ -74,13 +74,14 @@ const QuestionAnyTopic = () => {
     
       recognition.onstart = () => {
         setListening(true);
-        setInput((prev) => prev + '"use client"; ');
       };
     
       recognition.onresult = (event) => {
         const transcript = event.results[0][0].transcript;
+        // Append the transcript and "use client"; to the input field
+        setInput((prev) => prev + transcript + input);
+        // Optionally add to conversations if you still want to track spoken text separately
         setConversations((prev) => [...prev, transcript]);
-        setInput((prev) => prev + transcript);
       };
     
       recognition.onerror = (event) => {
