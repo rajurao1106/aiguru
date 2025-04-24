@@ -1037,7 +1037,7 @@ If the user requests an explanation (e.g., by saying 'Explain it,' 'I don’t kn
                       }}
                       disabled={isLoading || !conversationHistory.length}
                       whileTap={{ scale: 0.9 }}
-                      className="border w-[45px] h-[45px] bg-white text-black rounded-full text-sm font-medium transition-colors disabled:bg-gray-400 disabled:cursor-not-allowed"
+                      className="border w-[45px] h-[45px] bg-white text-gray-500 rounded-full text-sm font-medium transition-colors disabled:bg-gray-400 disabled:cursor-not-allowed"
                     >
                       <FaImage size={20} className="inline" />
                       <input
@@ -1074,7 +1074,7 @@ If the user requests an explanation (e.g., by saying 'Explain it,' 'I don’t kn
                     <motion.button
                       onClick={fetchAIQuestion}
                       disabled={isLoading || !conversationHistory.length}
-                      className=" border w-[45px] h-[45px] bg-white rounded-full text-sm font-medium transition-colors disabled:bg-gray-400 disabled:cursor-not-allowed"
+                      className=" border w-[45px] h-[45px] text-gray-500 bg-white rounded-full text-sm font-medium transition-colors disabled:bg-gray-400 disabled:cursor-not-allowed"
                     >
                       {isLoading ? (
                         <Image src={loading2} className="w-12 h-8" />
