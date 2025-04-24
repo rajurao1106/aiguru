@@ -985,7 +985,7 @@ If the user requests an explanation (e.g., by saying 'Explain it,' 'I don’t kn
 
         <div className="justify-center flex items-center">
           <div className="bg-[#36383A] border-gray-500 lg:rounded-3xl rounded-t-3xl px-4 py-2 shadow-xl w-3xl">
-            <div className="flex items-center flex-col justify-between gap-2 max-md:flex-col">
+            <div className="flex relative items-center flex-col justify-between gap-2 max-md:flex-col">
               <input
                 type="text"
                 value={input}
@@ -1008,41 +1008,73 @@ If the user requests an explanation (e.g., by saying 'Explain it,' 'I don’t kn
               />
               <div className="w-full">
                 <div
-                  disabled={isLoading || !conversationHistory.length}
-                  className={`flex relative w-full items-center justify-between mb-2 bg-white rounded-full p-1`}
+                  className={`flex relative w-full items-center justify-between mb-2 `}
                 >
-                  <div className="flex w-[70%] max-lg:w-[100%] gap-[6px]">
-                    <div className="relative">
-                      <div className="absolute z-0 right-[0px] bottom-32">
-                        {isUploadModalOpen && (
-                          <motion.div
-                            initial={{ opacity: 0 }}
-                            animate={{ opacity: 1 }}
-                            className=" inset-0 bg-opacity-50 flex items-center justify-center z-50"
-                          >
-                            <div className="bg-gray-800 flex-col gap-5 rounded-lg shadow-lg flex"></div>
-                          </motion.div>
-                        )}
-                      </div>
-
-                      {/* refresh button */}
-                      <motion.button
-                        onClick={() => {
-                          refreshConversation();
-                        }}
-                        whileTap={{ scale: 0.9 }}
-                        disabled={isLoading || !conversationHistory.length}
-                        className=" border w-[45px] h-[45px] bg-white border-gray-500 rounded-full text-sm font-medium hover:bg-gray-300 transition-colors disabled:bg-gray-400 disabled:cursor-not-allowed"
-                      >
-                        <motion.button className="p-3 text-black rounded-full transition-colors">
-                          <MdRefresh size={20} />
-                        </motion.button>
+                  <button
+                    disabled={isLoading || !conversationHistory.length}
+                    className="rounded-full p-1 bg-white disabled:bg-gray-400 disabled:cursor-not-allowed relative flex w-[70%] max-lg:w-[100%] gap-[6px]"
+                  >
+                    {/* refresh button */}
+                    <motion.button
+                      onClick={() => {
+                        refreshConversation();
+                      }}
+                      whileTap={{ scale: 0.9 }}
+                      disabled={isLoading || !conversationHistory.length}
+                      className=" border w-[45px] h-[45px] bg-white rounded-full text-sm 
+                      font-medium transition-colors disabled:bg-gray-400 disabled:cursor-not-allowed"
+                    >
+                      <motion.button className="p-3 text-black rounded-full transition-colors">
+                        <MdRefresh size={20} />
                       </motion.button>
-                    </div>
+                    </motion.button>
+
+                    {/* upload photo */}
+                    <motion.button
+                      onClick={() => {
+                        fileInputRef.current.click();
+                        setIsUploadModalOpen((prev) => !prev);
+                      }}
+                      disabled={isLoading || !conversationHistory.length}
+                      whileTap={{ scale: 0.9 }}
+                      className="border w-[45px] h-[45px] bg-white text-black rounded-full text-sm font-medium transition-colors disabled:bg-gray-400 disabled:cursor-not-allowed"
+                    >
+                      <FaImage size={20} className="inline" />
+                      <input
+                        type="file"
+                        ref={fileInputRef}
+                        onChange={handleImageUpload}
+                        accept="image/*"
+                        className="hidden"
+                      />
+                    </motion.button>
+
+                    {/* open camera */}
+                    <motion.button
+                      onClick={() => {
+                        cameraInputRef.current.click();
+                        setIsUploadModalOpen((prev) => !prev);
+                      }}
+                      disabled={isLoading || !conversationHistory.length}
+                      whileTap={{ scale: 0.9 }}
+                      className=" border w-[45px] h-[45px] text-black bg-white rounded-full text-sm font-medium transition-colors disabled:bg-gray-400 disabled:cursor-not-allowed"
+                    >
+                      <FaCamera size={20} className="inline" />
+                      <input
+                        type="file"
+                        ref={cameraInputRef}
+                        onChange={handleImageUpload}
+                        accept="image/*"
+                        capture="environment"
+                        className="hidden"
+                      />
+                    </motion.button>
+
+                    {/* ask questions */}
                     <motion.button
                       onClick={fetchAIQuestion}
                       disabled={isLoading || !conversationHistory.length}
-                      className=" border w-[45px] h-[45px] bg-white border-gray-500 rounded-full text-sm font-medium hover:bg-gray-300 transition-colors disabled:bg-gray-400 disabled:cursor-not-allowed"
+                      className=" border w-[45px] h-[45px] bg-white rounded-full text-sm font-medium transition-colors disabled:bg-gray-400 disabled:cursor-not-allowed"
                     >
                       {isLoading ? (
                         <Image src={loading2} className="w-12 h-8" />
@@ -1050,6 +1082,8 @@ If the user requests an explanation (e.g., by saying 'Explain it,' 'I don’t kn
                         <Image src={question} className="" alt="" />
                       )}
                     </motion.button>
+
+                    {/* generate MCQ */}
                     <motion.button
                       onClick={generateMCQ}
                       disabled={
@@ -1066,6 +1100,8 @@ If the user requests an explanation (e.g., by saying 'Explain it,' 'I don’t kn
                         <Image src={test} className="" />
                       )}
                     </motion.button>
+
+                    {/* student councilor */}
                     <motion.button
                       onClick={() => setIsUploadModalOpen((prev) => !prev)}
                       disabled={isLoading || !conversationHistory.length}
@@ -1080,67 +1116,13 @@ If the user requests an explanation (e.g., by saying 'Explain it,' 'I don’t kn
                         </motion.button>
                       </Link>
                     </motion.button>
+                  </button>
 
-                    <motion.button
-                      onClick={() => {
-                        fileInputRef.current.click();
-                        setIsUploadModalOpen((prev) => !prev);
-                      }}
-                      whileTap={{ scale: 0.9 }}
-                      className=" border w-[45px] h-[45px] bg-white text-black border-gray-500 rounded-full text-sm font-medium hover:bg-gray-300 transition-colors disabled:bg-gray-400 disabled:cursor-not-allowed"
-                    >
-                      <FaImage size={20} className="inline" />
-                      <input
-                        type="file"
-                        ref={fileInputRef}
-                        onChange={handleImageUpload}
-                        accept="image/*"
-                        className="hidden"
-                      />
-                    </motion.button>
-                    <motion.button
-                      onClick={() => {
-                        cameraInputRef.current.click();
-                        setIsUploadModalOpen((prev) => !prev);
-                      }}
-                      whileTap={{ scale: 0.9 }}
-                      className=" border w-[45px] h-[45px] text-black bg-white border-gray-500 rounded-full text-sm font-medium hover:bg-gray-300 transition-colors disabled:bg-gray-400 disabled:cursor-not-allowed"
-                    >
-                      <FaCamera size={20} className="inline" />
-                      <input
-                        type="file"
-                        ref={cameraInputRef}
-                        onChange={handleImageUpload}
-                        accept="image/*"
-                        capture="environment"
-                        className="hidden"
-                      />
-                    </motion.button>
-                  </div>
                   <motion.button
                     disabled={isLoading}
-                    className="w-[45px] max-lg:w-[53px] h-[45px] flex items-center flex-col justify-center border border-gray-500 bg-white text-black rounded-full font-medium disabled:bg-gray-400 disabled:cursor-not-allowed"
-                  >
-                    {input.trim() === "" ? (
-                      <motion.button onClick={handleVoiceClick}>
-                        <FaMicrophone />
-                      </motion.button>
-                    ) : (
-                      <motion.button
-                        onClick={fetchDefinition}
-                        disabled={isLoading}
-                      >
-                        {isLoading ? (
-                          <IoCreateOutline />
-                        ) : (
-                          <FaArrowUp onClick={() => fetchDefinition()} />
-                        )}
-                      </motion.button>
-                    )}
-                  </motion.button>
-                  <motion.button
-                    disabled={isLoading}
-                    className="w-[45px] absolute right-1 max-lg:w-[53px] h-[45px] flex items-center flex-col justify-center border border-gray-500 bg-white text-black rounded-full font-medium disabled:bg-gray-400 disabled:cursor-not-allowed"
+                    className="w-[45px] absolute right-1 h-[45px] flex items-center
+                     flex-col justify-center border border-gray-500 bg-white
+                      text-black rounded-full font-medium disabled:bg-gray-400 disabled:cursor-not-allowed"
                   >
                     {input.trim() === "" ? (
                       <motion.button onClick={handleVoiceClick}>
