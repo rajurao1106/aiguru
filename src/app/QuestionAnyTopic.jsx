@@ -954,7 +954,7 @@ If the user requests an explanation (e.g., by saying 'Explain it,' 'I don’t kn
       <div className="w-full flex-1 flex flex-col justify-end">
         <div
           className={`custom-scrollbar flex-1 ${
-            height ? "max-h-[76vh] max-lg:max-h-[85vh]" : "max-h-0"
+            height ? "max-h-[76vh]" : "max-h-0"
           } transition-all duration-300 
           overflow-y-scroll scrollbar scrollbar-thin scrollbar-thumb-gray-400 scrollbar-track-gray-100 
           w-full justify-center items-start flex h-64 `}
