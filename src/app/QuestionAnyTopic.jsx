@@ -1116,7 +1116,7 @@ If the user requests an explanation (e.g., by saying 'Explain it,' 'I don’t kn
                   </div>
                   <motion.button
                     disabled={isLoading}
-                    className="w-[45px] max-lg:w-[50px] h-[45px] flex items-center flex-col justify-center border border-gray-500 bg-white text-black rounded-full font-medium disabled:bg-gray-400 disabled:cursor-not-allowed"
+                    className="w-[45px] max-lg:w-[53px] h-[45px] flex items-center flex-col justify-center border border-gray-500 bg-white text-black rounded-full font-medium disabled:bg-gray-400 disabled:cursor-not-allowed"
                   >
                     {input.trim() === "" ? (
                       <motion.button onClick={handleVoiceClick}>
