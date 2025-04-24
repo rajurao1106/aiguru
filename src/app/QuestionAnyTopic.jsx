@@ -131,7 +131,7 @@ const QuestionAnyTopic = () => {
       .replace(/~~(.*?)~~/g, "<del class='line-through '>$1</del>")
       .replace(
         /`([^`]+)`/g,
-        "<code class=' text-yellow-500 px-2 py-0.5 rounded-md font-mono text-sm shadow-sm'>$1</code>"
+        "<code class=' px-2 py-0.5 rounded-md font-mono text-sm shadow-sm'>$1</code>"
       )
       .replace(
         /### (.*?)(?:\n|$)/g,
@@ -940,7 +940,7 @@ If the user requests an explanation (e.g., by saying 'Explain it,' 'I don’t kn
   };
 
   return (
-    <div className="h-screen overflow-hidden flex flex-col items-center justify-center font-sans">
+    <div className="h-screen overflow-hidden flex flex-col items-center justify-center font-sans text-white bg-[#212121]">
       <div className={`relative top-[40%] ${titleName ? "hidden" : "block"}`}>
         <h1 className="text-2xl md:text-4xl text-center font-bold max-md:mb-2 tracking-tight">
           👩‍🎓 Hello {userName || "Student"} 🧑‍🎓
@@ -981,7 +981,7 @@ If the user requests an explanation (e.g., by saying 'Explain it,' 'I don’t kn
 
             {/* Search bar */}
         <div className="justify-center flex items-center">
-          <div className="bg-white border-gray-500 lg:rounded-3xl rounded-t-3xl px-4 py-2 shadow-[0px_0px_10px_gray] w-3xl">
+          <div className="bg-[#303030]  border border-gray-600 lg:rounded-3xl rounded-t-3xl px-4 py-2 w-3xl">
             <div className="flex relative items-center flex-col justify-between gap-2 max-md:flex-col">
               <input
                 type="text"
@@ -992,7 +992,7 @@ If the user requests an explanation (e.g., by saying 'Explain it,' 'I don’t kn
                     ? "Enter a Topic or Doubt..."
                     : "Your answer..."
                 }
-                className="w-full p-3 rounded-xl text-black border-none outline-none transition-all duration-200"
+                className="w-full p-3 rounded-xl text-white border-none outline-none transition-all duration-200"
                 onKeyDown={(e) => {
                   if (e.key === "Enter") {
                     if (inputMode === "topic") {
@@ -1009,7 +1009,7 @@ If the user requests an explanation (e.g., by saying 'Explain it,' 'I don’t kn
                 >
                   <button
                     disabled={isLoading || !conversationHistory.length}
-                    className="rounded-full p-1 bg-gray-200 disabled:cursor-not-allowed relative flex w-full max-lg:w-[100%] gap-[6px]"
+                    className="rounded-full p-1 bg-[#b1b1b1] disabled:cursor-not-allowed relative flex w-full max-lg:w-[100%] gap-[6px]"
                   >
                     {/* refresh button */}
                     <motion.button
@@ -1021,7 +1021,7 @@ If the user requests an explanation (e.g., by saying 'Explain it,' 'I don’t kn
                       className="  w-[45px] h-[45px]  rounded-full text-sm 
                       font-medium transition-colors border border-gray-500 disabled:cursor-not-allowed"
                     >
-                      <motion.button className="p-3 text-black rounded-full transition-colors">
+                      <motion.button className="p-3 text-blue-800 rounded-full transition-colors">
                         <MdRefresh size={20} />
                       </motion.button>
                     </motion.button>
