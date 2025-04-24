@@ -56,45 +56,45 @@ const QuestionAnyTopic = () => {
   const cameraInputRef = useRef(null);
 
   const [listening, setListening] = useState(false);
-    const [conversations, setConversations] = useState([]);
-    const recognitionRef = useRef(null);
+  const [conversations, setConversations] = useState([]);
+  const recognitionRef = useRef(null);
 
-    const handleVoiceClick = () => {
-      if (!("webkitSpeechRecognition" in window)) {
-        alert("Your browser does not support Speech Recognition");
-        return;
-      }
-    
-      const SpeechRecognition = window.webkitSpeechRecognition;
-      const recognition = new SpeechRecognition();
-    
-      recognition.continuous = false;
-      recognition.interimResults = false;
-      recognition.lang = "en-US";
-    
-      recognition.onstart = () => {
-        setListening(true);
-      };
-    
-      recognition.onresult = (event) => {
-        const transcript = event.results[0][0].transcript;
-        // Append the transcript and "use client"; to the input field
-        setInput((prev) => prev + transcript + input);
-        // Optionally add to conversations if you still want to track spoken text separately
-        setConversations((prev) => [...prev, transcript]);
-      };
-    
-      recognition.onerror = (event) => {
-        console.error("Speech recognition error:", event.error);
-      };
-    
-      recognition.onend = () => {
-        setListening(false);
-      };
-    
-      recognitionRef.current = recognition;
-      recognition.start();
+  const handleVoiceClick = () => {
+    if (!("webkitSpeechRecognition" in window)) {
+      alert("Your browser does not support Speech Recognition");
+      return;
+    }
+
+    const SpeechRecognition = window.webkitSpeechRecognition;
+    const recognition = new SpeechRecognition();
+
+    recognition.continuous = false;
+    recognition.interimResults = false;
+    recognition.lang = "en-US";
+
+    recognition.onstart = () => {
+      setListening(true);
     };
+
+    recognition.onresult = (event) => {
+      const transcript = event.results[0][0].transcript;
+      // Append the transcript and "use client"; to the input field
+      setInput((prev) => prev + transcript + input);
+      // Optionally add to conversations if you still want to track spoken text separately
+      setConversations((prev) => [...prev, transcript]);
+    };
+
+    recognition.onerror = (event) => {
+      console.error("Speech recognition error:", event.error);
+    };
+
+    recognition.onend = () => {
+      setListening(false);
+    };
+
+    recognitionRef.current = recognition;
+    recognition.start();
+  };
 
   useEffect(() => {
     const storedName = sessionStorage.getItem("userName");
@@ -991,7 +991,7 @@ If the user requests an explanation (e.g., by saying 'Explain it,' 'I don’t kn
                 value={input}
                 onChange={(e) => setInput(e.target.value)}
                 placeholder={
-                  inputMode === "topic" 
+                  inputMode === "topic"
                     ? "Enter a Topic or Doubt..."
                     : "Your answer..."
                 }
@@ -1007,7 +1007,10 @@ If the user requests an explanation (e.g., by saying 'Explain it,' 'I don’t kn
                 }}
               />
               <div className="w-full">
-                <div className="flex w-full items-center justify-between mb-2 bg-white rounded-full p-1">
+                <div
+                  disabled={isLoading || !conversationHistory.length}
+                  className={`flex relative w-full items-center justify-between mb-2 bg-white rounded-full p-1`}
+                >
                   <div className="flex w-[70%] max-lg:w-[100%] gap-[6px]">
                     <div className="relative">
                       <div className="absolute z-0 right-[0px] bottom-32">
@@ -1022,7 +1025,7 @@ If the user requests an explanation (e.g., by saying 'Explain it,' 'I don’t kn
                         )}
                       </div>
 
-                        {/* refresh button */}
+                      {/* refresh button */}
                       <motion.button
                         onClick={() => {
                           refreshConversation();
@@ -1084,7 +1087,7 @@ If the user requests an explanation (e.g., by saying 'Explain it,' 'I don’t kn
                         setIsUploadModalOpen((prev) => !prev);
                       }}
                       whileTap={{ scale: 0.9 }}
-                      className=" border w-[45px] h-[45px] bg-white border-gray-500 rounded-full text-sm font-medium hover:bg-gray-300 transition-colors disabled:bg-gray-400 disabled:cursor-not-allowed"
+                      className=" border w-[45px] h-[45px] bg-white text-black border-gray-500 rounded-full text-sm font-medium hover:bg-gray-300 transition-colors disabled:bg-gray-400 disabled:cursor-not-allowed"
                     >
                       <FaImage size={20} className="inline" />
                       <input
@@ -1101,7 +1104,7 @@ If the user requests an explanation (e.g., by saying 'Explain it,' 'I don’t kn
                         setIsUploadModalOpen((prev) => !prev);
                       }}
                       whileTap={{ scale: 0.9 }}
-                      className=" border w-[45px] h-[45px] bg-white border-gray-500 rounded-full text-sm font-medium hover:bg-gray-300 transition-colors disabled:bg-gray-400 disabled:cursor-not-allowed"
+                      className=" border w-[45px] h-[45px] text-black bg-white border-gray-500 rounded-full text-sm font-medium hover:bg-gray-300 transition-colors disabled:bg-gray-400 disabled:cursor-not-allowed"
                     >
                       <FaCamera size={20} className="inline" />
                       <input
@@ -1117,6 +1120,27 @@ If the user requests an explanation (e.g., by saying 'Explain it,' 'I don’t kn
                   <motion.button
                     disabled={isLoading}
                     className="w-[45px] max-lg:w-[53px] h-[45px] flex items-center flex-col justify-center border border-gray-500 bg-white text-black rounded-full font-medium disabled:bg-gray-400 disabled:cursor-not-allowed"
+                  >
+                    {input.trim() === "" ? (
+                      <motion.button onClick={handleVoiceClick}>
+                        <FaMicrophone />
+                      </motion.button>
+                    ) : (
+                      <motion.button
+                        onClick={fetchDefinition}
+                        disabled={isLoading}
+                      >
+                        {isLoading ? (
+                          <IoCreateOutline />
+                        ) : (
+                          <FaArrowUp onClick={() => fetchDefinition()} />
+                        )}
+                      </motion.button>
+                    )}
+                  </motion.button>
+                  <motion.button
+                    disabled={isLoading}
+                    className="w-[45px] absolute right-1 max-lg:w-[53px] h-[45px] flex items-center flex-col justify-center border border-gray-500 bg-white text-black rounded-full font-medium disabled:bg-gray-400 disabled:cursor-not-allowed"
                   >
                     {input.trim() === "" ? (
                       <motion.button onClick={handleVoiceClick}>
