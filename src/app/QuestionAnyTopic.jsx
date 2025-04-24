@@ -119,36 +119,36 @@ const QuestionAnyTopic = () => {
     return text
       .replace(
         /\*\*(.*?)\*\*/g,
-        "<strong class='font-bold text-white'>$1</strong>"
+        "<strong class='font-bold '>$1</strong>"
       )
-      .replace(/\*(.*?)\*/g, "<em class='italic text-gray-200'>$1</em>")
-      .replace(/\*(.*?)/g, "<p class='italic text-gray-200'>$1<br/></p>")
+      .replace(/\*(.*?)\*/g, "<em class='italic '>$1</em>")
+      .replace(/\*(.*?)/g, "<p class='italic '>$1<br/></p>")
       .replace(
         /\\boxed\{([^}]+)\}/g,
         "<code class='bg-gray-800 text-yellow-200 px-2 py-0.5 rounded-md font-mono text-sm shadow-sm border border-gray-700'>$1</code>"
       )
       .replace(/__([^_]+)__/g, "<u class='underline'>$1</u>")
-      .replace(/~~(.*?)~~/g, "<del class='line-through text-gray-400'>$1</del>")
+      .replace(/~~(.*?)~~/g, "<del class='line-through '>$1</del>")
       .replace(
         /`([^`]+)`/g,
-        "<code class=' text-yellow-200 px-2 py-0.5 rounded-md font-mono text-sm shadow-sm'>$1</code>"
+        "<code class=' text-yellow-500 px-2 py-0.5 rounded-md font-mono text-sm shadow-sm'>$1</code>"
       )
       .replace(
         /### (.*?)(?:\n|$)/g,
-        "<h3 class='text-xl font-semibold text-white mt-4 mb-2'>$1</h3>"
+        "<h3 class='text-xl font-semibold  mt-4 mb-2'>$1</h3>"
       )
       .replace(
         /## (.*?)(?:\n|$)/g,
-        "<h2 class='text-2xl font-bold text-white mb-3'>$1</h2>"
+        "<h2 class='text-2xl font-bold  mb-3'>$1</h2>"
       )
       .replace(
         /# (.*?)(?:\n|$)/g,
-        "<h1 class='text-3xl font-extrabold text-white mt-8 mb-4'>$1</h1>"
+        "<h1 class='text-3xl font-extrabold  mt-8 mb-4'>$1</h1>"
       )
       .replace(
         /(?:\n|^)- (.*?)(?=\n|$)/g,
         (match, p1) =>
-          "<ul class='list-disc ml-6 text-gray-200'><li>$1</li></ul>"
+          "<ul class='list-disc ml-6 '><li>$1</li></ul>"
       )
       .replace(
         /\n>\s(.*?)(?=\n|$)/g,
@@ -159,9 +159,9 @@ const QuestionAnyTopic = () => {
         "<a href='$2' class='text-blue-400 underline hover:text-blue-300 transition-colors'>$1</a>"
       )
       .replace(/\n/g, "<br>")
-      .replace(/(<\/ul><ul class='list-disc ml-6 text-gray-200'>)+/g, "")
-      .replace(/(<\/ol><ol class='list-decimal ml-6 text-gray-200'>)+/g, "")
-      .replace(/(?:\n|^)- (.*?)(?=\n|$)/g, "<li class='text-gray-200'>$1</li>")
+      .replace(/(<\/ul><ul class='list-disc ml-6 '>)+/g, "")
+      .replace(/(<\/ol><ol class='list-decimal ml-6 '>)+/g, "")
+      .replace(/(?:\n|^)- (.*?)(?=\n|$)/g, "<li class=''>$1</li>")
       .replace(/(?:<li.*?>.*?<\/li>)+/g, "<ul class='list-disc ml-6'>$&</ul>")
       .replace(
         /\n>\s(.*?)(?=\n|$)/g,
@@ -815,7 +815,7 @@ If the user requests an explanation (e.g., by saying 'Explain it,' 'I don’t kn
             <motion.button
               onClick={downloadDefinitionAsWord}
               whileTap={{ scale: 0.9 }}
-              className="mt-4 p-2 px-4 bg-blue-500 text-white rounded-full hover:bg-blue-600 transition-colors"
+              className="mt-4 p-2 px-4 bg-blue-500  rounded-full hover:bg-blue-600 transition-colors"
             >
               Download as Word
             </motion.button>
@@ -835,7 +835,7 @@ If the user requests an explanation (e.g., by saying 'Explain it,' 'I don’t kn
                 >
                   {video.title}
                 </a>
-                <p className="text-gray-400">by {video.channel}</p>
+                <p className="">by {video.channel}</p>
               </motion.div>
             )}
           </motion.div>
@@ -846,7 +846,7 @@ If the user requests an explanation (e.g., by saying 'Explain it,' 'I don’t kn
           <motion.div
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
-            className="bg-gray-700 m-4 p-3 rounded-lg text-white"
+            className="bg-gray-700 m-4 p-3 rounded-lg "
             dangerouslySetInnerHTML={{ __html: formatText(item.text) }}
           />
         );
@@ -856,7 +856,7 @@ If the user requests an explanation (e.g., by saying 'Explain it,' 'I don’t kn
           <motion.div
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
-            className="text-left w-full p-3 rounded-lg text-white"
+            className="text-left w-full p-3 rounded-lg "
             dangerouslySetInnerHTML={{ __html: formatText(item.text) }}
           />
         );
@@ -866,7 +866,7 @@ If the user requests an explanation (e.g., by saying 'Explain it,' 'I don’t kn
           <motion.div
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
-            className="bg-gray-700 m-4 p-3 rounded-lg text-white"
+            className="bg-gray-700 m-4 p-3 rounded-lg "
             dangerouslySetInnerHTML={{ __html: formatText(item.text) }}
           />
         );
@@ -876,7 +876,7 @@ If the user requests an explanation (e.g., by saying 'Explain it,' 'I don’t kn
           <motion.div
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
-            className="bg-gray-700 m-4 p-3 rounded-lg text-white"
+            className="bg-gray-700 m-4 p-3 rounded-lg "
           >
             <p
               dangerouslySetInnerHTML={{
@@ -906,7 +906,7 @@ If the user requests an explanation (e.g., by saying 'Explain it,' 'I don’t kn
               onClick={checkMCQAnswer}
               whileTap={{ scale: 0.9 }}
               disabled={isCheckingAnswer}
-              className="mt-4 p-2 px-4 bg-blue-500 text-white rounded-full hover:bg-blue-600 transition-colors disabled:bg-gray-400 disabled:cursor-not-allowed"
+              className="mt-4 p-2 px-4 bg-blue-500  rounded-full hover:bg-blue-600 transition-colors disabled:bg-gray-400 disabled:cursor-not-allowed"
             >
               {isCheckingAnswer ? "Checking..." : "Submit MCQ Answer"}
             </motion.button>
@@ -918,7 +918,7 @@ If the user requests an explanation (e.g., by saying 'Explain it,' 'I don’t kn
           <motion.div
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
-            className="text-left w-full p-3 rounded-lg text-white"
+            className="text-left w-full p-3 rounded-lg "
             dangerouslySetInnerHTML={{ __html: formatText(item.text) }}
           />
         );
@@ -928,7 +928,7 @@ If the user requests an explanation (e.g., by saying 'Explain it,' 'I don’t kn
           <motion.div
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
-            className="text-left w-full p-3 rounded-lg text-white"
+            className="text-left w-full p-3 rounded-lg "
             dangerouslySetInnerHTML={{ __html: formatText(item.text) }}
           />
         );
@@ -945,7 +945,7 @@ If the user requests an explanation (e.g., by saying 'Explain it,' 'I don’t kn
         <h1 className="text-2xl md:text-4xl text-center font-bold max-md:mb-2 tracking-tight">
           👩‍🎓 Hello {userName || "Student"} 🧑‍🎓
         </h1>
-        <h2 className="text-2xl md:text-4xl text-center text-gray-400 font-semibold mb-16 max-md:mb-10 tracking-tight">
+        <h2 className="text-2xl md:text-4xl text-center  font-semibold mb-16 max-md:mb-10 tracking-tight">
           How can I help you today?
         </h2>
       </div>
