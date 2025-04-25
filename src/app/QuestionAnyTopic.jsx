@@ -1009,7 +1009,7 @@ If the user requests an explanation (e.g., by saying 'Explain it,' 'I don’t kn
                 >
                   <button
                     disabled={isLoading || !conversationHistory.length}
-                    className="rounded-full p-1 bg-[#8f8f8f] disabled:cursor-not-allowed relative flex w-full max-lg:w-[100%] gap-[6px]"
+                    className="rounded-full p-1 bg-[#474747] disabled:cursor-not-allowed relative flex w-full max-lg:w-[100%] gap-[6px]"
                   >
                     {/* refresh button */}
                     <motion.button
@@ -1143,6 +1143,8 @@ If the user requests an explanation (e.g., by saying 'Explain it,' 'I don’t kn
           </div>
         </div>
       </div>
+
+      
     </div>
   );
 };
