@@ -7,6 +7,8 @@ import Footer from "./components/Footer";
 import Homepage from "./homepage/homepage";
 
 export default function Page() {
+  
+  
   const [theme, setTheme] = useState(true);
 
   const themeHandle = () => {
