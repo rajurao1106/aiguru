@@ -104,7 +104,7 @@ export default function NotebookEditor() {
           className="bg-gray-200 px-4 py-2 rounded hover:bg-gray-300"
           disabled={currentPage === totalPages - 1}
         >
-          Next Page ➡️
+          Next Padxfvsdge ➡️
         </button>
       </div>
 
