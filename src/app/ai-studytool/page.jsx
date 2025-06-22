@@ -1,21 +1,30 @@
-"use client"
+"use client";
 
-import React, { useState } from 'react'
-import Navbar from '../components/Navbar'
-import Footer from '../components/Footer'
-import AiStudyTool from './AiStudyTool';
+import React, { useState } from "react";
+import Navbar from "../components/Navbar";
+import Footer from "../components/Footer";
+import ToolLayout from "./ToolLayout";
 
 export default function page() {
-      const [theme, setTheme] = useState(true);
-      
-       const themeHandle = () => {
-        setTheme((prev) => !prev);
-      };
+  const [theme, setTheme] = useState(true);
+
+  const themeHandle = () => {
+    setTheme((prev) => !prev);
+  };
+
+  const textTheme = theme
+    ? "bg-white text-black duration-300"
+    : "bg-gray-900 text-white duration-300";
+
   return (
     <div>
-     <Navbar theme={theme} themeHandle={themeHandle}/>
-     <AiStudyTool theme={theme} themeHandle={themeHandle}/>
-       <Footer/>
+      <Navbar theme={theme} themeHandle={themeHandle} />
+      <ToolLayout
+        theme={theme}
+        themeHandle={themeHandle}
+        textTheme={textTheme}
+      />
+      <Footer />
     </div>
-  )
+  );
 }

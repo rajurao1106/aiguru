@@ -9,7 +9,7 @@ export default function Navbar({ theme, themeHandle }) {
   return (
     <nav
       className={`w-full z-50 h-16 ${
-        theme ? "bg-white duration-300 text-black shadow" : " bg-gray-950 border-b duration-300 text-white"
+        theme ? "bg-white duration-300 text-black shadow" : " bg-gray-900 duration-300 text-white"
       } 
  flex justify-center items-center`}
     >
