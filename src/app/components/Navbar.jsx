@@ -18,7 +18,7 @@ export default function Navbar({ theme, themeHandle }) {
           <div className="">
             <FiMenu size={30} />
           </div>
-          <a href="/" className="text-2xl">AI Guruu</a>
+          <a href="/" className="text-2xl">AI Guru</a>
         </div>
         <div className="">
           <button onClick={themeHandle}>
