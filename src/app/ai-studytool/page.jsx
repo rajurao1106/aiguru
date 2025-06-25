@@ -1,12 +1,13 @@
-"use client";
+"use client"
 
 import React, { useState } from "react";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import ToolLayout from "./ToolLayout";
 
-export default function page() {
+export default function Page() {
   const [theme, setTheme] = useState(true);
+
 
   const themeHandle = () => {
     setTheme((prev) => !prev);
@@ -22,9 +23,8 @@ export default function page() {
       <ToolLayout
         theme={theme}
         themeHandle={themeHandle}
-        textTheme={textTheme}
       />
-      <Footer />
+      {/* <Footer /> */}
     </div>
   );
 }

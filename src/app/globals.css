@@ -3,7 +3,7 @@
 /* In your CSS file */
 .custom-scrollbar {
     overflow-y: scroll;
-    height: 16rem; /* Equivalent to h-64 in Tailwind CSS */
+    /* Equivalent to h-64 in Tailwind CSS */
   }
   
   .custom-scrollbar::-webkit-scrollbar {
@@ -29,3 +29,10 @@
   -ms-overflow-style: none; /* IE and Edge */
   scrollbar-width: none; /* Firefox */
 }
+
+/* Set line-height for EditorJS content */
+/* .ce-paragraph {
+  line-height: 1.5 !important; 
+  font-family: 'Georgia', serif;
+  font-size: 1rem;
+} */

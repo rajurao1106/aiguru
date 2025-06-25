@@ -3,6 +3,8 @@ import Head from "next/head"; // Import Head for meta tags
 import "./globals.css";
 import Script from 'next/script';
 
+import Providers from "@/redux/Providers";
+
 const geist = Geist({ subsets: ["latin"], weight: "400" });
 
 export default function RootLayout({ children }) {
@@ -90,7 +92,9 @@ export default function RootLayout({ children }) {
             style={{ display: "none", visibility: "hidden" }}
           ></iframe>
         </noscript>
-        {children}
+         <body>
+        <Providers>{children}</Providers>
+      </body>
       </body>
     </html>
   );

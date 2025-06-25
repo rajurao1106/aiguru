@@ -1,4 +1,4 @@
-"use client";
+"use client"
 import React, { useState, useEffect, useRef } from "react";
 import { FaMicrophone, FaMicrophoneSlash } from "react-icons/fa";
 import { MdVolumeUp, MdVolumeOff } from "react-icons/md";
