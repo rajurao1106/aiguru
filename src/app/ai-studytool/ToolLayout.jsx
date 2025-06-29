@@ -1,8 +1,10 @@
 "use client";
+
 import React, { useEffect, useState } from "react";
 import AddTopic from "./AddTopic";
 import AiChat from "./AiChat";
 import StudentNotebook from "../student-notebook/StudentNotebook";
+import axios from "axios";
 
 function ToolLayout({ theme, themeHandle }) {
   const [messages, setMessages] = useState([]);
@@ -17,6 +19,7 @@ function ToolLayout({ theme, themeHandle }) {
   const [input, setInput] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [notes, setNotes] = useState(true);
+  const [video, setVideo] = useState(null);
 
   const handleNotes = () => {
     setNotes((prev) => !prev);
@@ -80,11 +83,8 @@ function ToolLayout({ theme, themeHandle }) {
   const handleSend = async () => {
     let messageToSend = input;
 
-    // If topic[0] exists and not used yet, use it and remove from array
     if (topics.length > 0) {
       messageToSend = topics[0].topic;
-
-      // Remove first topic after use
       setTopics((prev) => prev.slice(1));
     }
 
@@ -94,7 +94,7 @@ function ToolLayout({ theme, themeHandle }) {
     };
 
     setMessages((prev) => [...prev, userMessage]);
-    setInput(""); // clear input if user typed
+    setInput("");
 
     setIsLoading(true);
 
@@ -113,18 +113,93 @@ function ToolLayout({ theme, themeHandle }) {
       );
 
       const data = await response.json();
+      console.log("Gemini API Response:", data); // Debug
       const aiText =
         data?.candidates?.[0]?.content?.parts?.[0]?.text ||
         "⚠️ No response from Gemini.";
-      setMessages((prev) => [...prev, { role: "ai", content: aiText }]);
+      setMessages((prev) => {
+        const newMessages = [...prev, { role: "assistant", content: aiText }];
+        console.log("New Messages:", newMessages); // Debug
+        return newMessages;
+      });
     } catch (error) {
       console.error("Gemini Error:", error);
       setMessages((prev) => [
         ...prev,
-        { role: "ai", content: "❌ Error getting response from Gemini." },
+        { role: "assistant", content: "❌ Error getting response from Gemini." },
       ]);
     } finally {
       setIsLoading(false);
+    }
+  };
+
+  const handleSendWithVideo = async () => {
+    if (!input.trim()) return;
+
+    const userInput = input;
+    setInput("");
+    await handleSend();
+
+    const videoResult = await fetchYouTubeVideo(userInput);
+    console.log("Video Result:", videoResult); // Debug
+    if (videoResult) {
+      const videoMarkdown = `🎥 **Recommended Video:** [${videoResult.title}](${videoResult.url})\n\n**Channel:** ${videoResult.channel}`;
+      const videoMessage = {
+        role: "assistant",
+        content: videoMarkdown,
+      };
+      setMessages((prev) => [...prev, videoMessage]);
+    } else {
+      setMessages((prev) => [
+        ...prev,
+        { role: "assistant", content: "⚠️ No relevant video found." },
+      ]);
+    }
+  };
+
+  const fetchYouTubeVideo = async (topic) => {
+    const apiKey = "AIzaSyDnlqKMLVXtf3_JPMwZxHePYjWTwhovoJM";
+    const baseUrl = "https://www.googleapis.com/youtube/v3/search";
+    const reputableChannels = {
+      "Traversy Media": "UC29ju8bIPH5as8OGnQzwJyA",
+      "freeCodeCamp.org": "UC8butISFwT-Wl7EV0hUK0BQ",
+      "The Net Ninja": "UCW5YeuERMmlnqo4oq8vwUpg",
+      Academind: "UCSJbGtTlrDami-tDGPUV9-w",
+    };
+
+    try {
+      const response = await axios.get(baseUrl, {
+        params: {
+          part: "snippet",
+          q: `${topic} tutorial`,
+          type: "video",
+          maxResults: 10,
+          order: "relevance",
+          key: apiKey,
+        },
+      });
+
+      console.log("YouTube API Response:", response.data); // Debug
+      const videos = response.data.items;
+      if (!videos || videos.length === 0) {
+        console.log("No videos found"); // Debug
+        return null;
+      }
+
+      const reputableVideos = videos.filter((video) =>
+        Object.values(reputableChannels).includes(video.snippet.channelId)
+      );
+      const bestVideo =
+        reputableVideos.length > 0 ? reputableVideos[0] : videos[0];
+
+      return {
+        title: bestVideo.snippet.title,
+        url: `https://www.youtube.com/watch?v=${bestVideo.id.videoId}`,
+        channel: bestVideo.snippet.channelTitle,
+      };
+    } catch (error) {
+      console.error("Error fetching YouTube video:", error.message);
+      return null;
     }
   };
 
@@ -202,10 +277,12 @@ function ToolLayout({ theme, themeHandle }) {
               setMessages={setMessages}
               isLoading={isLoading}
               handleSend={handleSend}
+              
+              handleSendWithVideo={handleSendWithVideo}
             />
           ) : (
             <div
-              className={`w-full absolute  top-0 left-0 lg:w-full  h-[33rem] rounded-xl  `}
+              className={`w-full absolute top-0 left-0 lg:w-full h-[33rem] rounded-xl`}
             >
               <StudentNotebook
                 theme={theme}

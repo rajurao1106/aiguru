@@ -1,85 +1,126 @@
-"use client"
-import React, { useState } from "react";
-import { FaArrowUp, FaMicrophone } from "react-icons/fa6";
+"use client";
+
+import React, { useState, useEffect } from "react";
+import { FaArrowUp } from "react-icons/fa";
 import ReactMarkdown from "react-markdown";
-import StudentNotebook from "../student-notebook/StudentNotebook";
+import MCQApp from "./MCQ";
+import TestApp from "./TakeTest"; // ✅ New test component
 
 export default function AiChat({
   theme,
-  themeHandle,
   textTheme,
-  clickEvent,
-  topicClick,
-  handleAdd,
-  handleUpdate,
-  openFormToEdit,
-  showForm,
-  setShowForm,
-  chapterName,
-  setChapterName,
-  topicName,
-  setTopicName,
-  isEditing,
-  setIsEditing,
-  topics,
-  selectedIndex,
-  lastChapterName,
-
-  // 👇 AI chat related
   input,
   setInput,
   messages,
   setMessages,
   isLoading,
   handleSend,
+  topics = [],
+  handleSendWithVideo,
 }) {
+  const [showMCQ, setShowMCQ] = useState(false);
+  const [showTest, setShowTest] = useState(false);
+  const [mcqPromptAvailable, setMcqPromptAvailable] = useState(false);
+  const [lastAiResponse, setLastAiResponse] = useState(""); // ✅ For test topic
 
+  // Store last AI response for MCQ/Test
+  useEffect(() => {
+    const lastMsg = messages?.[messages.length - 1];
+    if (lastMsg?.role === "assistant" && lastMsg?.content) {
+      localStorage.setItem("lastAiResponse", lastMsg.content);
+      setLastAiResponse(lastMsg.content);
+      setMcqPromptAvailable(true);
+    }
+  }, [messages]);
 
+  // Show test or MCQ screen
+  if (showTest) return <TestApp topic={lastAiResponse} onBack={() => setShowTest(false)} />;
+  if (showMCQ) return <MCQApp onBack={() => setShowMCQ(false)} />;
 
   return (
-    <section className={`w-full h-full ${textTheme} flex duration-300 flex-col justify-end`}>
-      <div className="max-w-2xl mx-auto flex flex-col w-full  ">
+    <section className={`w-full h-full ${textTheme} flex flex-col justify-end`}>
+      <div className="max-w-2xl mx-auto flex flex-col w-full">
         {/* Chat History */}
-        <div className="flex flex-col gap-3 overflow-y-auto max-h-[27rem] px-4 ">
+        <div className="flex flex-col gap-3 overflow-y-scroll custom-scrollbar max-h-[27rem] px-4 py-4">
           {messages.map((msg, index) => (
-            <div
-              key={index}
-              className={`p-3 rounded-xl text-sm w-fit max-w-[90%] duration-300 ${
-                msg.role === "user"
-                  ? "ml-auto bg-blue-600 text-white duration-300"
-                  : theme
-                  ? " text-black duration-300"
-                  : "bg-gray-800 text-white duration-300"
-              }`}
-            >
-              <ReactMarkdown>{msg.content}</ReactMarkdown>
-             
+            <div key={index} className="flex flex-col gap-2">
+              <div
+                className={`p-3 rounded-xl text-sm w-fit max-w-[90%] ${
+                  msg.role === "user"
+                    ? "ml-auto bg-blue-600 text-white"
+                    : theme
+                    ? "text-black bg-gray-100"
+                    : "bg-gray-800 text-white"
+                }`}
+              >
+                <ReactMarkdown
+                  components={{
+                    a: ({ node, ...props }) => (
+                      <a
+                        {...props}
+                        className="text-blue-500 underline hover:text-blue-600"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                      />
+                    ),
+                  }}
+                >
+                  {msg.content}
+                </ReactMarkdown>
+              </div>
             </div>
           ))}
+
+          {isLoading && <p className="text-sm text-gray-400">Loading...</p>}
+
+          {mcqPromptAvailable && (
+            <div className="flex items-center gap-4 mt-2">
+              <button
+                onClick={() => {
+                  const response = localStorage.getItem("lastAiResponse");
+                  if (response) localStorage.setItem("mcqTopic", response);
+                  setShowMCQ(true);
+                }}
+                className="bg-blue-500 px-4 py-2 cursor-pointer rounded text-sm hover:bg-blue-600 transition"
+              >
+                📝 Practice MCQs
+              </button>
+
+              <button
+                onClick={() => setShowTest(true)}
+                disabled={!lastAiResponse.trim()}
+                className={`px-4 py-2 rounded text-sm transition ${
+                  lastAiResponse.trim()
+                    ? "bg-green-500 hover:bg-green-600 text-white cursor-pointer"
+                    : "bg-gray-400 text-white cursor-not-allowed"
+                }`}
+              >
+                🧪 Take a Test
+              </button>
+            </div>
+          )}
         </div>
 
-        {/* Input Field */}
+        {/* Input box */}
         <div className="relative">
           <input
             type="text"
             value={input}
             onChange={(e) => setInput(e.target.value)}
-            placeholder="Enter a Topic or Doubt..."
-            className={`w-full p-4 pr-14 rounded-full ${
+            placeholder="Ask your doubt or enter a topic..."
+            className={`w-full p-4 pr-16 pl-4 rounded-full ${
               theme ? "bg-gray-200" : "bg-gray-950"
-            } placeholder-gray-400 outline-none transition-all`}
+            } text-white placeholder-gray-400 outline-none`}
+            onKeyDown={(e) => e.key === "Enter" && handleSendWithVideo()}
           />
           <button
-            onClick={handleSend}
-         
-            className="absolute top-1/2 right-2 -translate-y-1/2 w-10 h-10 flex items-center justify-center rounded-full bg-white text-black border border-gray-400 hover:bg-gray-200 disabled:opacity-60 disabled:cursor-not-allowed transition"
+            onClick={handleSendWithVideo}
+            className="absolute top-1/2 right-2 transform -translate-y-1/2 bg-white text-black rounded-full w-10 h-10 flex items-center justify-center"
           >
-             <FaArrowUp size={16} />
+            <FaArrowUp />
           </button>
         </div>
-        
       </div>
-      
     </section>
   );
 }
