@@ -97,26 +97,34 @@ export default function StudentNotebook({ messages = [], textTheme }) {
       const linesHTML = Array.from({ length: 20 })
         .map(
           (_, idx) =>
-            `<div style="position: absolute; top: ${
-              25 * (idx + 1)
-            }px; left: 0; right: 0; border-bottom: 1px dashed #ccc;"></div>`
+            `<div style="position: absolute;
+        
+            left: 0; right: 0; "></div>`
         )
         .join("");
 
+          //  top: ${
+          //     25 * (idx + 1)
+          //   }px; 
+          // border-bottom: 1px dashed #ccc;
+
       const pageHtml = `
-      <div style="position: relative; page-break-after: always; padding: 40px; border: 1px solid #ddd; height: 800px;
+      <div style="position: relative; page-break-after: always; padding: 40px;  height: 800px;
        box-sizing: border-box;">
         <div style="display: flex; justify-content: space-between; margin-bottom: 20px;">
           <h2 style="font-size: 20px; font-weight: bold;">📓 My Notebook</h2>
-          <span style="font-size: 14px; color: gray;">Page ${i + 1}</span>
+          <span style="font-size: 14px; ">Page ${i + 1}</span>
         </div>
 
-        <div style="position: relative; font-family: serif; font-size: 16px; line-height: 1.8; color: #333;">
+        <div style="position: relative;  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif; font-size: 16px; line-height: 1.8;">
           ${chunks[i] || ""}
           ${linesHTML}
         </div>
       </div>
     `;
+    // border: 1px solid #ddd;
+    // color: gray;
+    //  color: #333;
 
       const div = document.createElement("div");
       div.innerHTML = pageHtml;
@@ -158,11 +166,11 @@ export default function StudentNotebook({ messages = [], textTheme }) {
         />
 
         {/* Lined Background */}
-        <div className="absolute top-0 inset-0 pointer-events-none z-0">
+        <div className="absolute top-5 inset-0 pointer-events-none z-0">
           {[...Array(20)].map((_, i) => (
             <div
               key={i}
-              className="border-b  border-dashed border-gray-300 absolute w-full"
+              className=" absolute w-full"
               style={{ top: `${(i + 1) * 26}px` }}
             />
           ))}

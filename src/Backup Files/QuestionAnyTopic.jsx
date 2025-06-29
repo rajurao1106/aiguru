@@ -19,13 +19,13 @@ import { saveAs } from "file-saver";
 import Tesseract from "tesseract.js";
 import Link from "next/link";
 import { RiPsychotherapyFill } from "react-icons/ri";
-import loading from "../images/loading.gif";
-import loading2 from "../images/loading2.gif";
-import question from "../images/question.gif";
-import test from "../images/mcq.gif";
-import camera from "../images/camera.gif";
-import image_file from "../images/image_file.gif";
-import student_councilor from "../images/student_councilor.gif";
+import loading from "../../images/loading.gif";
+import loading2 from "../../images/loading2.gif";
+import question from "../../images/question.gif";
+import test from "../../images/mcq.gif";
+import camera from "../../images/camera.gif";
+import image_file from "../../images/image_file.gif";
+import student_councilor from "../../images/student_councilor.gif";
 import Image from "next/image";
 
 const QuestionAnyTopic = () => {

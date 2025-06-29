@@ -36,11 +36,11 @@ export default function AddTopic({
   const [disabledIndexes, setDisabledIndexes] = useState([]);
 
   const handleClick = (index) => {
-    // if (index === 0 && !disabledIndexes.includes(index)) {
-    //  // Call your function
-    //   setDisabledIndexes((prev) => [...prev, index]); // Mark this index as disabled
-    // }
-    handleSend();
+    if (index === 0 && !disabledIndexes.includes(index)) {
+     handleSend();
+      setDisabledIndexes((prev) => [...prev, index]); // Mark this index as disabled
+    }
+    
   };
 
   return (
