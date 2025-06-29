@@ -17,11 +17,15 @@ export default function AiChat({
   handleSend,
   topics = [],
   handleSendWithVideo,
+  disabledIndexes = [],
+  handleClick,
+  setDisabledIndexes,
 }) {
   const [showMCQ, setShowMCQ] = useState(false);
   const [showTest, setShowTest] = useState(false);
   const [mcqPromptAvailable, setMcqPromptAvailable] = useState(false);
   const [lastAiResponse, setLastAiResponse] = useState(""); // ✅ For test topic
+   const [someCondition, setSomeCondition] = useState(true); // default false
 
   // Store last AI response for MCQ/Test
   useEffect(() => {
@@ -34,14 +38,24 @@ export default function AiChat({
   }, [messages]);
 
   // Show test or MCQ screen
-  if (showTest) return <TestApp topic={lastAiResponse} onBack={() => setShowTest(false)} />;
+  if (showTest)
+    return <TestApp topic={lastAiResponse} onBack={() => setShowTest(false)} />;
   if (showMCQ) return <MCQApp onBack={() => setShowMCQ(false)} />;
+
+   const handleTopicClick = () => {
+    if (someCondition) {
+      handleClick(0);
+    } else {
+      handleClick(1);
+    }
+  };
+
 
   return (
     <section className={`w-full h-full ${textTheme} flex flex-col justify-end`}>
       <div className="max-w-2xl mx-auto flex flex-col w-full">
         {/* Chat History */}
-        <div className="flex flex-col gap-3 overflow-y-scroll custom-scrollbar max-h-[27rem] px-4 py-4">
+        <div className="flex flex-col gap-3 overflow-y-scroll custom-scrollbar max-h-[27rem] px-6 py-4">
           {messages.map((msg, index) => (
             <div key={index} className="flex flex-col gap-2">
               <div
@@ -74,29 +88,40 @@ export default function AiChat({
           {isLoading && <p className="text-sm text-gray-400">Loading...</p>}
 
           {mcqPromptAvailable && (
-            <div className="flex items-center gap-4 mt-2">
-              <button
-                onClick={() => {
-                  const response = localStorage.getItem("lastAiResponse");
-                  if (response) localStorage.setItem("mcqTopic", response);
-                  setShowMCQ(true);
-                }}
-                className="bg-blue-500 px-4 py-2 cursor-pointer rounded text-sm hover:bg-blue-600 transition"
-              >
-                📝 Practice MCQs
-              </button>
+            <div className="flex justify-between">
+              <div className="flex items-center gap-4">
+                <button
+                  onClick={() => {
+                    const response = localStorage.getItem("lastAiResponse");
+                    if (response) localStorage.setItem("mcqTopic", response);
+                    setShowMCQ(true);
+                  }}
+                  className="bg-blue-500 px-4 py-2 cursor-pointer rounded text-sm hover:bg-blue-600 transition"
+                >
+                  📝 Practice MCQs
+                </button>
 
-              <button
-                onClick={() => setShowTest(true)}
-                disabled={!lastAiResponse.trim()}
-                className={`px-4 py-2 rounded text-sm transition ${
-                  lastAiResponse.trim()
-                    ? "bg-green-500 hover:bg-green-600 text-white cursor-pointer"
-                    : "bg-gray-400 text-white cursor-not-allowed"
-                }`}
-              >
-                🧪 Take a Test
-              </button>
+                <button
+                  onClick={() => setShowTest(true)}
+                  disabled={!lastAiResponse.trim()}
+                  className={`px-4 py-2 rounded text-sm transition ${
+                    lastAiResponse.trim()
+                      ? "bg-green-500 hover:bg-green-600 text-white cursor-pointer"
+                      : "bg-gray-400 text-white cursor-not-allowed"
+                  }`}
+                >
+                  🧪 Take a Test
+                </button>
+              </div>
+             <button
+  onClick={handleTopicClick}
+  className={`bg-blue-500 px-4 py-2 cursor-pointer rounded text-sm hover:bg-blue-600 transition`}
+>
+  Next Topic
+</button>
+
+
+
             </div>
           )}
         </div>

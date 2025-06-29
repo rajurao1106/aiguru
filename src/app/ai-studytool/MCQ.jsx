@@ -130,7 +130,7 @@ Do not include explanations, numbering, or extra formatting.`
       {!quizStarted ? (
         <div className="text-center mt-10">
           <h2 className="text-xl font-bold mb-4">🧠 Practice MCQs</h2>
-          <p className="text-sm text-gray-600 mb-2">Topic: <strong>{topic}</strong></p>
+          {/* <p className="text-sm text-gray-600 mb-2">Topic: <strong>{topic}</strong></p> */}
           <button
             onClick={handleStart}
             className="bg-green-500 text-white px-5 py-2 rounded-full hover:bg-green-600"

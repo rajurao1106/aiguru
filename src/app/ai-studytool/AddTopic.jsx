@@ -25,6 +25,9 @@ export default function AddTopic({
   handleSend,
   handleNotes,
   notes,
+  disabledIndexes,
+  setDisabledIndexes,
+  handleClick,
 }) {
   const resetForm = () => {
     setShowForm(false);
@@ -33,15 +36,9 @@ export default function AddTopic({
     setIsEditing(false);
   };
 
-  const [disabledIndexes, setDisabledIndexes] = useState([]);
+ 
 
-  const handleClick = (index) => {
-    if (index === 0 && !disabledIndexes.includes(index)) {
-     handleSend();
-      setDisabledIndexes((prev) => [...prev, index]); // Mark this index as disabled
-    }
-    
-  };
+ 
 
   return (
     <div className="flex justify-between flex-col h-full">
@@ -78,12 +75,7 @@ export default function AddTopic({
                 key={index}
                 tabIndex={0}
                 className={`p-3 border border-gray-400 rounded-lg flex w-full justify-between items-end
-            ${
-              disabledIndexes.includes(index)
-                ? "opacity-50 pointer-events-none"
-                : ""
-            }
-            ${selectedIndex === index ? "" : ""}
+           
           `}
               >
                 <div>
