@@ -98,7 +98,7 @@ export default function AiChat({
                   }}
                   className="bg-blue-500 px-4 py-2 cursor-pointer rounded text-sm hover:bg-blue-600 transition"
                 >
-                  📝 Practice MCQs
+                   Practice MCQs
                 </button>
 
                 <button
@@ -110,12 +110,12 @@ export default function AiChat({
                       : "bg-gray-400 text-white cursor-not-allowed"
                   }`}
                 >
-                  🧪 Take a Test
+                   Take a Test
                 </button>
               </div>
              <button
   onClick={handleTopicClick}
-  className={`bg-blue-500 px-4 py-2 cursor-pointer rounded text-sm hover:bg-blue-600 transition`}
+  className={`bg-blue-500 max-lg:hidden px-4 py-2 cursor-pointer rounded text-sm hover:bg-blue-600 transition`}
 >
   Next Topic
 </button>
