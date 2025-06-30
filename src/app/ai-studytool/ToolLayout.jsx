@@ -20,6 +20,7 @@ function ToolLayout({ theme, themeHandle }) {
   const [isLoading, setIsLoading] = useState(false);
   const [notes, setNotes] = useState(true);
   const [video, setVideo] = useState(null);
+   const [disabledIndexes, setDisabledIndexes] = useState([]);
 
   const handleNotes = () => {
     setNotes((prev) => !prev);
@@ -203,6 +204,30 @@ function ToolLayout({ theme, themeHandle }) {
     }
   };
 
+  const handleClick = (index) => {
+  if (index === 0 ) {
+    const currentTopic = topics[0]?.topic; // Get the topic safely
+
+    if (currentTopic) {
+      handleSend();
+     
+
+      fetchYouTubeVideo(currentTopic).then((videoResult) => {
+        if (videoResult) {
+          const videoMarkdown = `🎥 **Recommended Video:** [${videoResult.title}](${videoResult.url})\n\n**Channel:** ${videoResult.channel}`;
+          setMessages((prev) => [...prev, { role: "assistant", content: videoMarkdown }]);
+        } else {
+          setMessages((prev) => [
+            ...prev,
+            { role: "assistant", content: "⚠️ No relevant video found." },
+          ]);
+        }
+      });
+    }
+  }
+};
+
+
   const containerTheme = theme
     ? "bg-[#ececec] text-black duration-300"
     : "bg-gray-950 text-white duration-300";
@@ -243,6 +268,9 @@ function ToolLayout({ theme, themeHandle }) {
             handleSend={handleSend}
             handleNotes={handleNotes}
             notes={notes}
+            disabledIndexes={disabledIndexes}
+            setDisabledIndexes={setDisabledIndexes}
+            handleClick={handleClick}
           />
         </div>
 
@@ -277,8 +305,9 @@ function ToolLayout({ theme, themeHandle }) {
               setMessages={setMessages}
               isLoading={isLoading}
               handleSend={handleSend}
-              
+              handleClick={handleClick}
               handleSendWithVideo={handleSendWithVideo}
+              setDisabledIndexes={setDisabledIndexes}
             />
           ) : (
             <div

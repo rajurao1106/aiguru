@@ -1,7 +1,7 @@
-'use client';
+"use client";
 
-import React from 'react';
-import { motion } from 'framer-motion';
+import React from "react";
+import { motion } from "framer-motion";
 
 // Animation Variants
 const fadeInUp = {
@@ -12,7 +12,7 @@ const fadeInUp = {
     transition: {
       delay: i * 0.2,
       duration: 0.6,
-      ease: 'easeOut',
+      ease: "easeOut",
     },
   }),
 };
@@ -20,65 +20,97 @@ const fadeInUp = {
 // Content Sections with SEO-Optimized Text
 const sections = [
   {
-    title: 'About AI Guru',
-    content: `AI Guru is a cutting-edge AI-powered education platform revolutionizing how students learn. We provide instant doubt resolution, personalized learning paths, and comprehensive academic support. Our advanced AI tools, including the AI Math Solver and AI Counselor Bot, empower students to excel academically with tailored guidance and real-time solutions.`,
+    title: "Discover AI Guru",
+    content: `AI Guru transforms education with cutting-edge AI tools. Our platform offers instant doubt resolution, personalized learning paths, and real-time academic support. From AI Math Solvers to Counselor Bots, we empower students and educators to achieve excellence with tailored, secure solutions.`,
   },
   {
-    title: 'Why Choose AI Guru?',
+    title: "Why AI Guru Stands Out",
     list: [
-      'Instant doubt resolution with our AI Question Solver for quick answers.',
-      'Snap and solve: Upload a photo of any problem for real-time solutions.',
-      'AI Counselor Bot offers personalized academic guidance and study tips.',
-      'Auto-generated quizzes to assess knowledge and boost performance.',
+      "Instant answers with our AI Question Solver for all subjects.",
+      "Snap & Solve: Upload problem images for quick, accurate solutions.",
+      "AI Counselor Bot provides 24/7 personalized study guidance.",
+      "Auto-generated quizzes to boost retention and track progress.",
     ],
   },
   {
-    title: 'AI-Powered Services',
+    title: "Advanced AI Tools",
     list: [
-      '🔍 AI Math Solver: Step-by-step explanations for complex math problems.',
-      '📸 Image-Based Scanning: Capture or upload questions for instant answers.',
-      '🤖 AI Counselor Bot: 24/7 academic support and personalized advice.',
-      '📝 MCQ Test Generator: Create custom quizzes to enhance retention.',
+      "🔍 AI Math Solver: Clear, step-by-step solutions for math challenges.",
+      "📸 Image Scanning: Upload or capture questions for instant answers.",
+      "🤖 AI Counselor Bot: Round-the-clock academic and study support.",
+      "📝 Quiz Generator: Custom quizzes tailored to your learning level.",
     ],
   },
   {
-    title: 'Benefits for Students',
+    title: "Student Success Benefits",
     list: [
-      'Personalized learning journeys tailored to individual needs.',
-      '24/7 access to academic support from any device, anywhere.',
-      'Real-time progress tracking with actionable insights for improvement.',
-      'Smart tools that simplify complex concepts in seconds.',
+      "Customized learning paths for every student's unique needs.",
+      "Access support anytime, anywhere, on any device.",
+      "Real-time insights to track and improve academic performance.",
+      "Simplified complex concepts with smart, AI-driven tools.",
     ],
   },
   {
-    title: 'Exclusive Features',
+    title: "Unique AI Features",
     list: [
-      '📷 Camera Integration: Capture queries instantly with your device.',
-      '🖼️ Image Upload: Fast, accurate solutions for uploaded questions.',
-      '💬 AI-Powered Chatbot: On-demand study tips and counseling.',
-      '🧠 Dynamic Quiz Builder: Practice with quizzes designed for your level.',
+      "📷 Camera Integration: Instantly capture and solve queries.",
+      "🖼️ Image Upload: Fast solutions for uploaded questions.",
+      "💬 AI Chatbot: On-demand academic advice and study tips.",
+      "🧠 Dynamic Quizzes: Practice塞尔, Practice with tailored assessments.",
     ],
   },
 ];
 
-export default function homepage() {
+export default function Homepage() {
   return (
-    <div className="font-sans text-gray-800">
-      
-
+    <div className="font-sans text-gray-800 bg-gray-50">
       {/* Hero Section */}
-      <section className="bg-[#F3F0FF] py-20 text-center">
-        <div className="max-w-4xl mx-auto px-4">
-          <h2 className="text-4xl font-bold mb-4">The magic of AI to help schools with saving time</h2>
-          <p className="text-lg mb-6">The most loved, secure, and trusted AI platform for educators and students.</p>
-          <div className="space-x-4">
-            <button className="bg-[#8B5CF6] text-white px-6 py-3 rounded-md">Teachers sign up free</button>
-            <button className="border border-[#8B5CF6] text-[#8B5CF6] px-6 py-3 rounded-md">Schools learn more</button>
-          </div>
+      <section className="bg-gradient-to-b from-[#F3F0FF] to-[#EDE9FE] py-16 md:py-24 text-center min-h-[80vh] flex items-center justify-center">
+        <div className="max-w-6xl mx-auto px-6 sm:px-8">
+          <motion.h1
+            custom={0}
+            initial="hidden"
+            animate="visible"
+            variants={fadeInUp}
+            className="text-3xl sm:text-4xl md:text-5xl font-extrabold text-gray-900 mb-4 md:mb-6 leading-tight"
+          >
+            Revolutionize Learning with AI Guru
+          </motion.h1>
+          <motion.p
+            custom={1}
+            initial="hidden"
+            animate="visible"
+            variants={fadeInUp}
+            className="text-base sm:text-lg md:text-xl text-gray-700 mb-8 max-w-3xl mx-auto"
+          >
+            The leading AI platform for educators and students, offering personalized learning, instant solutions, and secure tools to save time and boost success.
+          </motion.p>
+          <motion.div
+            custom={2}
+            initial="hidden"
+            animate="visible"
+            variants={fadeInUp}
+            className="flex flex-col sm:flex-row justify-center gap-4 sm:gap-6"
+          >
+            <button
+              className="bg-purple-700 text-white px-6 py-3 sm:px-8 sm:py-4 rounded-lg font-semibold text-base sm:text-lg hover:bg-purple-800 transition-all duration-300 transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2"
+              aria-label="Sign up for teachers"
+            >
+              Start Free as a Teacher
+            </button>
+            <a href="/ai-studytool">
+              <button
+                className="border-2 border-purple-700 text-purple-700 px-6 py-3 sm:px-8 sm:py-4 rounded-lg font-semibold text-base sm:text-lg hover:bg-purple-700 hover:text-white transition-all duration-300 transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2"
+                aria-label="Explore AI study tools"
+              >
+                Discover Tools
+              </button>
+            </a>
+          </motion.div>
         </div>
       </section>
 
-      {/* Injected AI Guru Content */}
+      {/* Main Content Sections */}
       <div className="max-w-7xl mx-auto py-16 px-4 sm:px-6 lg:px-8 space-y-16">
         {sections.map((section, index) => (
           <motion.section
@@ -88,21 +120,34 @@ export default function homepage() {
             whileInView="visible"
             viewport={{ once: true }}
             variants={fadeInUp}
-            id={section.title.toLowerCase().replace(/\s/g, '-')}
-            className="bg-white rounded-2xl p-8 shadow-lg border-l-4 border-blue-500 hover:border-pink-500 transition duration-300"
+            id={section.title.toLowerCase().replace(/\s/g, "-")}
+            className="bg-white rounded-2xl p-8 shadow-md border-l-4 border-purple-600 hover:shadow-lg transition-all duration-300"
           >
-            <h2 className="text-3xl font-bold text-gray-800 mb-4">{section.title}</h2>
+            <h2 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-4">
+              {section.title}
+            </h2>
             {section.content && (
-              <p className="text-lg text-gray-600 leading-relaxed mb-4">{section.content}</p>
+              <p className="text-base sm:text-lg text-gray-600 leading-relaxed mb-4">
+                {section.content}
+              </p>
             )}
             {section.list && (
-              <ul className="list-none space-y-3">
+              <ul className="list-none space-y-4">
                 {section.list.map((item, idx) => (
                   <li key={idx} className="flex items-start">
-                    <svg className="w-5 h-5 text-blue-500 mr-2 mt-1" fill="currentColor" viewBox="0 0 20 20">
-                      <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
+                    <svg
+                      className="w-6 h-6 text-purple-600 mr-3 mt-1 flex-shrink-0"
+                      fill="currentColor"
+                      viewBox="0 0 20 20"
+                      aria-hidden="true"
+                    >
+                      <path
+                        fillRule="evenodd"
+                        d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
+                        clipRule="evenodd"
+                      />
                     </svg>
-                    <span className="text-gray-600">{item}</span>
+                    <span className="text-gray-600 text-base sm:text-lg">{item}</span>
                   </li>
                 ))}
               </ul>
@@ -112,37 +157,47 @@ export default function homepage() {
       </div>
 
       {/* Footer CTA */}
-      <section className="bg-[#8B5CF6] text-white py-16 text-center">
-        <h2 className="text-2xl font-bold">Embrace responsible AI for schools</h2>
-        <p className="mt-2">Join 5M+ educators using MagicSchool to differentiate, write IEPs, and improve student outcomes.</p>
-        <button className="mt-4 bg-white text-[#8B5CF6] px-6 py-3 rounded-md font-semibold">Sign up Free</button>
+      <section className="bg-purple-700 text-white py-16 text-center">
+        <motion.h2
+          custom={0}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true }}
+          variants={fadeInUp}
+          className="text-2xl sm:text-3xl font-bold mb-4"
+        >
+          Transform Education with AI Guru
+        </motion.h2>
+        <motion.p
+          custom={1}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true }}
+          variants={fadeInUp}
+          className="text-base sm:text-lg mb-6 max-w-2xl mx-auto"
+        >
+          Join over 5 million educators and students using AI Guru to streamline learning and improve outcomes with responsible AI.
+        </motion.p>
+        <motion.button
+          custom={2}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true }}
+          variants={fadeInUp}
+          className="bg-white text-purple-700 px-6 py-3 sm:px-8 sm:py-4 rounded-lg font-semibold text-base sm:text-lg hover:bg-purple-100 transition-all duration-300 transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-purple-700"
+          aria-label="Sign up for free"
+        >
+          Get Started Free
+        </motion.button>
       </section>
 
       {/* Footer */}
-      <footer className="bg-[#1F1F2E] text-white py-8">
-        <div className="max-w-6xl mx-auto px-4 grid grid-cols-1 md:grid-cols-3 gap-6">
-          <div>
-            <h3 className="font-bold text-lg mb-2">MagicSchool</h3>
-            <p className="text-sm">The AI Operating System for Schools</p>
-          </div>
-          <div>
-            <h4 className="font-semibold mb-2">Resources</h4>
-            <ul className="space-y-1 text-sm">
-              <li><a href="#">Support</a></li>
-              <li><a href="#">Blog</a></li>
-              <li><a href="#">Case Studies</a></li>
-            </ul>
-          </div>
-          <div>
-            <h4 className="font-semibold mb-2">Legal</h4>
-            <ul className="space-y-1 text-sm">
-              <li><a href="#">Privacy Policy</a></li>
-              <li><a href="#">Terms</a></li>
-              <li><a href="#">Accessibility</a></li>
-            </ul>
-          </div>
+      <div className="bg-gray-900 text-white py-4">
+        
+        <div className="mt-8 pt-8 border-t border-gray-800 text-center text-sm text-gray-400">
+          <p>&copy; {new Date().getFullYear()} AI Guru. All rights reserved.</p>
         </div>
-      </footer>
+      </div>
     </div>
   );
 }
