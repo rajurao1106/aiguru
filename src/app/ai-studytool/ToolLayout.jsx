@@ -243,7 +243,7 @@ function ToolLayout({ theme, themeHandle }) {
       <div className="w-full max-w-[1450px] p-4 flex flex-col lg:flex-row gap-4">
         {/* Left Panel */}
         <div
-          className={`w-full lg:w-[20%] h-[33rem] rounded-xl shadow-md p-4 ${cardTheme}`}
+          className={`w-full lg:w-[20%] max-lg:hidden h-[33rem] rounded-xl shadow-md p-4 ${cardTheme}`}
         >
           <AddTopic
             theme={theme}
@@ -276,7 +276,7 @@ function ToolLayout({ theme, themeHandle }) {
 
         {/* Middle Panel */}
         <div
-          className={`w-full relative lg:w-[55%] h-[33rem] rounded-xl shadow-md p-4 ${cardTheme}`}
+          className={`w-full relative h-[33rem] max-lg:h-[89vh] rounded-xl shadow-md p-4 ${cardTheme}`}
         >
           {notes ? (
             <AiChat
@@ -325,18 +325,18 @@ function ToolLayout({ theme, themeHandle }) {
         </div>
 
         {/* Right Panel */}
-        <div className="w-full lg:w-[25%] h-[33rem] flex flex-col gap-4">
+        {/* <div className="w-full lg:w-[25%] h-[33rem] flex flex-col gap-4">
           <div
             className={`h-auto lg:h-[30%] w-full rounded-xl shadow-md p-4 ${cardTheme}`}
           >
-            {/* Future Content */}
+          
           </div>
           <div
             className={`h-auto lg:h-[70%] w-full rounded-xl shadow-md p-4 ${cardTheme}`}
           >
-            {/* Future Content */}
+          
           </div>
-        </div>
+        </div> */}
       </div>
     </section>
   );
