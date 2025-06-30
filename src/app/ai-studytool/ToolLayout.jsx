@@ -276,7 +276,7 @@ function ToolLayout({ theme, themeHandle }) {
 
         {/* Middle Panel */}
         <div
-          className={`w-full relative h-[33rem] max-lg:h-[89vh] rounded-xl shadow-md p-4 ${cardTheme}`}
+          className={`w-full relative h-[33rem] max-lg:h-[85vh] rounded-xl shadow-md p-4 ${cardTheme}`}
         >
           {notes ? (
             <AiChat

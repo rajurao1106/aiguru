@@ -55,7 +55,7 @@ export default function AiChat({
     <section className={`w-full h-full ${textTheme} flex flex-col justify-end`}>
       <div className="max-w-2xl mx-auto flex flex-col w-full">
         {/* Chat History */}
-        <div className="flex flex-col gap-3 overflow-y-scroll custom-scrollbar h-[27rem] max-lg:h-[76vh] px-6 py-4">
+        <div className="flex flex-col gap-3 overflow-y-scroll custom-scrollbar h-[27rem] max-lg:h-[72vh] px-6 py-4">
           {messages.map((msg, index) => (
             <div key={index} className="flex flex-col gap-2">
               <div
