@@ -238,7 +238,7 @@ function ToolLayout({ theme, themeHandle }) {
 
   return (
     <section
-      className={`w-full flex justify-center flex-col pt-16 items-center ${containerTheme}`}
+      className={`w-full flex justify-center flex-col pt-16 max-lg:pt-0 items-center ${containerTheme}`}
     >
       <div className="w-full max-w-[1450px] p-4 flex flex-col lg:flex-row gap-4">
         {/* Left Panel */}
@@ -276,7 +276,7 @@ function ToolLayout({ theme, themeHandle }) {
 
         {/* Middle Panel */}
         <div
-          className={`w-full relative h-[33rem] max-lg:h-[85vh] rounded-xl shadow-md p-4 ${cardTheme}`}
+          className={`w-full relative h-[33rem] max-lg:h-[95vh] rounded-xl shadow-md p-4 ${cardTheme}`}
         >
           {notes ? (
             <AiChat

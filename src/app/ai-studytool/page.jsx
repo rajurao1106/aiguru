@@ -35,7 +35,7 @@ export default function Page() {
 
   return (
     <div className={`min-h-screen ${textTheme}`}>
-      <Navbar theme={theme} themeHandle={themeHandle} />
+      <div className="max-lg:hidden"><Navbar theme={theme} themeHandle={themeHandle}  /></div>
       <ToolLayout theme={theme} themeHandle={themeHandle} />
       {/* <MCQApp /> */}
       {/* <Footer /> */}
