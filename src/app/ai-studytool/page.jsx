@@ -5,6 +5,8 @@ import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import ToolLayout from "./ToolLayout";
 import MCQApp from "./MCQ";
+import { FaSun } from "react-icons/fa6";
+import { IoIosMoon } from "react-icons/io";
 
 export default function Page() {
   const [theme, setTheme] = useState(true); // default light
@@ -34,8 +36,11 @@ export default function Page() {
   if (!isThemeLoaded) return null;
 
   return (
-    <div className={`min-h-screen ${textTheme}`}>
-      <div className="max-lg:hidden"><Navbar theme={theme} themeHandle={themeHandle}  /></div>
+    <div className={` ${textTheme} relative`}>
+     
+      <div className="max-lg:hidden">
+        <Navbar theme={theme} themeHandle={themeHandle} />
+      </div>
       <ToolLayout theme={theme} themeHandle={themeHandle} />
       {/* <MCQApp /> */}
       {/* <Footer /> */}

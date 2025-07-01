@@ -5,7 +5,7 @@ import dynamic from "next/dynamic";
 
 const EditorJS = dynamic(() => import("@editorjs/editorjs"), { ssr: false });
 
-export default function StudentNotebook({ messages = [], textTheme }) {
+export default function StudentNotebook({ messages = [], textTheme, handleNotes }) {
   const [chunks, setChunks] = useState([]);
   const [currentPage, setCurrentPage] = useState(0);
   const editorRef = useRef(null);
@@ -95,36 +95,21 @@ export default function StudentNotebook({ messages = [], textTheme }) {
 
     for (let i = 0; i < chunks.length; i++) {
       const linesHTML = Array.from({ length: 20 })
-        .map(
-          (_, idx) =>
-            `<div style="position: absolute;
-        
-            left: 0; right: 0; "></div>`
-        )
+        .map((_, idx) => `<div style="position: absolute; left: 0; right: 0;"></div>`)
         .join("");
 
-          //  top: ${
-          //     25 * (idx + 1)
-          //   }px; 
-          // border-bottom: 1px dashed #ccc;
-
       const pageHtml = `
-      <div style="position: relative; page-break-after: always; padding: 40px;  height: 800px;
-       box-sizing: border-box;">
-        <div style="display: flex; justify-content: space-between; margin-bottom: 20px;">
-          <h2 style="font-size: 20px; font-weight: bold;">📓 My Notebook</h2>
-          <span style="font-size: 14px; ">Page ${i + 1}</span>
+        <div style="position: relative; page-break-after: always; padding: 40px; height: 800px;">
+          <div style="display: flex; justify-content: space-between; margin-bottom: 20px;">
+            <h2 style="font-size: 20px; font-weight: bold;">📓 My Notebook</h2>
+            <span style="font-size: 14px;">Page ${i + 1}</span>
+          </div>
+          <div style="position: relative; font-size: 16px; line-height: 1.8;">
+            ${chunks[i] || ""}
+            ${linesHTML}
+          </div>
         </div>
-
-        <div style="position: relative;  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif; font-size: 16px; line-height: 1.8;">
-          ${chunks[i] || ""}
-          ${linesHTML}
-        </div>
-      </div>
-    `;
-    // border: 1px solid #ddd;
-    // color: gray;
-    //  color: #333;
+      `;
 
       const div = document.createElement("div");
       div.innerHTML = pageHtml;
@@ -144,67 +129,66 @@ export default function StudentNotebook({ messages = [], textTheme }) {
   };
 
   return (
-    <div
-      className={`  px-4 py-4 flex flex-col items-center ${textTheme}`}
-    >
-      {/* Header */}
-      {/* <div className="w-full max-w-3xl mb-6 flex justify-between items-center">
-        <div>
-          <h1 className="text-3xl font-bold text-gray-700">📓 My Notebook</h1>
-          <p className="text-sm text-gray-500">Page {currentPage + 1}</p>
-        </div>
-        <span className="text-sm text-gray-500">{new Date().toLocaleDateString()}</span>
-      </div> */}
+    <div className={`w-full px-4 ${textTheme}`}>
+     
 
-      {/* Editor Area with Notebook Styling */}
-      <div className="relative w-full max-w-3xl overflow-y-scroll custom-scrollbar h-[28rem] rounded-xl shadow-lg border px-4 py-5">
-        {/* EditorJS container */}
+      {/* Editor */}
+      <div className="relative w-full max-w-4xl mx-auto h-[25rem] border rounded-xl shadow overflow-y-scroll custom-scrollbar">
         <div
           id={`editor-holder-${currentPage}`}
-          className="min-h-[400px] text-base leading-relaxed font-serif relative z-10"
+          className="min-h-[400px] p-6 text-base leading-relaxed font-serif z-10 relative"
           ref={editorContainerRef}
         />
-
-        {/* Lined Background */}
+        {/* Background lines */}
         <div className="absolute top-5 inset-0 pointer-events-none z-0">
           {[...Array(20)].map((_, i) => (
-            <div
-              key={i}
-              className=" absolute w-full"
-              style={{ top: `${(i + 1) * 26}px` }}
-            />
+            <div key={i} className="absolute w-full  border-gray-200" style={{ top: `${(i + 1) * 26}px` }} />
           ))}
         </div>
       </div>
-      {/* Pagination */}
-      <div className="flex items-center py-2 justify-between w-full max-w-3xl ">
-          {/* Download Button */}
-          <button
-            onClick={handleDownloadPDF}
-            className=" bg-green-600 text-white  px-6 py-2 rounded hover:bg-green-700"
-          >
-             Download Notebook as PDF
-          </button>
 
-          <p className="text-gray-500">
-            Page {currentPage + 1} of {chunks.length}
-          </p>
+      {/* Controls */}
+      <div className="max-w-4xl mx-auto mt-6 flex flex-wrap gap-4 items-center justify-between">
+        <button
+          onClick={handleDownloadPDF}
+          className="bg-green-600 text-white px-5 py-2 rounded hover:bg-green-700 transition"
+        >
+          Download as PDF
+        </button>
+
+        <div className="flex gap-2 items-center">
           <button
             onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 0))}
             disabled={currentPage === 0}
-            className="px-4 py-2 text-sm bg-blue-500 hover:bg-blue-600 text-white rounded disabled:opacity-50"
+            className="px-4 py-2 bg-blue-500 text-white rounded disabled:opacity-50 hover:bg-blue-600"
           >
             ◀ Prev
           </button>
+
           <button
-            onClick={() =>
-              setCurrentPage((prev) => Math.min(prev + 1, chunks.length - 1))
-            }
-            className="px-4 py-2 text-sm bg-blue-500 hover:bg-blue-600 text-white rounded"
+            onClick={() => setCurrentPage((prev) => Math.min(prev + 1, chunks.length - 1))}
+            disabled={currentPage === chunks.length - 1}
+            className="px-4 py-2 bg-blue-500 text-white rounded disabled:opacity-50 hover:bg-blue-600"
           >
             Next ▶
           </button>
         </div>
+
+        <button
+          onClick={handleNotes}
+          className="bg-indigo-600 text-white px-4 py-2 rounded hover:bg-indigo-700 transition"
+        >
+          Save Notes
+        </button>
+      </div>
+       {/* Header */}
+      <div className="max-w-4xl mx-auto mb-6 flex justify-between items-center flex-wrap gap-4">
+        <div>
+          {/* <h1 className="text-2xl md:text-3xl font-bold text-gray-700">📓 My Notebook</h1> */}
+          <p className="text-sm text-gray-500">Page {currentPage + 1} of {chunks.length}</p>
+        </div>
+        <span className="text-sm text-gray-500">{new Date().toLocaleDateString()}</span>
+      </div>
     </div>
   );
 }

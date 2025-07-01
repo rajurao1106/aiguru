@@ -5,6 +5,8 @@ import AddTopic from "./AddTopic";
 import AiChat from "./AiChat";
 import StudentNotebook from "../student-notebook/StudentNotebook";
 import axios from "axios";
+import { FaSun } from "react-icons/fa6";
+import { IoIosMoon } from "react-icons/io";
 
 function ToolLayout({ theme, themeHandle }) {
   const [messages, setMessages] = useState([]);
@@ -234,13 +236,13 @@ function ToolLayout({ theme, themeHandle }) {
 
   const cardTheme = theme
     ? "bg-white text-black duration-300"
-    : "bg-gray-900 text-white duration-300";
+    : "bg-gray-900 max-lg:bg-gray-900 text-white duration-300";
 
   return (
     <section
       className={`w-full flex justify-center flex-col pt-16 max-lg:pt-0 items-center ${containerTheme}`}
     >
-      <div className="w-full max-w-[1450px] p-4 flex flex-col lg:flex-row gap-4">
+      <div className="w-full max-w-[1450px] flex flex-col lg:flex-row gap-4">
         {/* Left Panel */}
         <div
           className={`w-full lg:w-[20%] max-lg:hidden h-[33rem] rounded-xl shadow-md p-4 ${cardTheme}`}
@@ -276,8 +278,17 @@ function ToolLayout({ theme, themeHandle }) {
 
         {/* Middle Panel */}
         <div
-          className={`w-full relative h-[33rem] max-lg:h-[95vh] rounded-xl shadow-md p-4 ${cardTheme}`}
+          className={`w-full relative h-[33rem] max-lg:h-[91vh] rounded-xl shadow-md ${cardTheme}`}
         >
+          <div className="flex absolute w-[100%] justify-between items-center p-4">
+            <h1 className="text-xl font-bold">AI Guru</h1>
+            
+             <button className="" onClick={themeHandle}>
+                  {" "}
+                  {theme ? <FaSun size={30} /> : <IoIosMoon size={30} />}
+                </button>
+          </div>
+        
           {notes ? (
             <AiChat
               theme={theme}
@@ -308,6 +319,7 @@ function ToolLayout({ theme, themeHandle }) {
               handleClick={handleClick}
               handleSendWithVideo={handleSendWithVideo}
               setDisabledIndexes={setDisabledIndexes}
+              handleNotes={handleNotes}
             />
           ) : (
             <div
@@ -319,6 +331,7 @@ function ToolLayout({ theme, themeHandle }) {
                 textTheme={theme ? "text-black" : "text-white"}
                 messages={messages}
                 setMessages={setMessages}
+                handleNotes={handleNotes}
               />
             </div>
           )}
