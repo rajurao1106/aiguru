@@ -1,210 +1,210 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
-import dynamic from "next/dynamic";
+import { useState, useEffect, useRef } from "react";
+import { jsPDF } from "jspdf";
+import ReactMarkdown from "react-markdown";
+import remarkGfm from "remark-gfm";
 
-const EditorJS = dynamic(() => import("@editorjs/editorjs"), { ssr: false });
+export default function StudentNotebook({ messages = [], handleNotes }) {
+  const initializePages = () => {
+    const combinedContent = messages
+      .map((msg) =>
+        typeof msg === "object" && "content" in msg
+          ? String(msg.content || "").trim()
+          : String(msg || "").trim()
+      )
+      .filter((content) => content.length > 0)
+      .join("\n\n");
 
-export default function StudentNotebook({ messages = [], textTheme }) {
-  const [chunks, setChunks] = useState([]);
+    if (!combinedContent) return [{ content: "", id: "page-0" }];
+    return [{ content: combinedContent, id: "page-0" }];
+  };
+
+  const [pages, setPages] = useState(initializePages());
   const [currentPage, setCurrentPage] = useState(0);
-  const editorRef = useRef(null);
-  const editorContainerRef = useRef(null);
-  const WORDS_PER_PAGE = 100;
+  const contentRef = useRef(null);
 
-  const formatText = (text) => {
-    return text
-      .replace(/\*\*(.*?)\*\*/g, "<strong>$1</strong>")
-      .replace(/\*(.*?)\*/g, "<em>$1</em>")
-      .replace(/`([^`]+)`/g, "<code>$1</code>")
-      .replace(/\n/g, "<br>");
-  };
+  useEffect(() => {
+    const splitPagesByHeight = () => {
+      if (!contentRef.current) return;
+      const containerHeight = contentRef.current.offsetHeight;
+      const lines = pages[0].content.split("\n");
+      let currentPageContent = "";
+      const newPages = [];
+      let currentHeight = 0;
+      const lineHeightPx = 16;
 
-  const splitMessagesIntoChunks = () => {
-    const markdownText = messages
-      .map((msg) => {
-        const role = msg.role === "user" ? "🧑 User:" : "🤖 AI:";
-        const rawContent = msg.content?.trim() || "";
-        const formatted = formatText(rawContent);
-        return `${role}<br><br>${formatted}`;
-      })
-      .join("<br><br>");
+      lines.forEach((line) => {
+        const estimatedLineHeight = line.startsWith("# ")
+          ? 1.5 * lineHeightPx
+          : line.startsWith("## ")
+          ? 1.3 * lineHeightPx
+          : lineHeightPx;
+        currentHeight += estimatedLineHeight;
 
-    const words = markdownText.trim().split(/\s+/);
-    const pages = [];
-
-    for (let i = 0; i < words.length; i += WORDS_PER_PAGE) {
-      pages.push(words.slice(i, i + WORDS_PER_PAGE).join(" "));
-    }
-
-    return pages;
-  };
-
-  const initEditor = async (text) => {
-    if (editorRef.current) {
-      await editorRef.current.destroy();
-      editorRef.current = null;
-    }
-
-    if (typeof window !== "undefined" && editorContainerRef.current) {
-      const { default: Editor } = await import("@editorjs/editorjs");
-
-      const instance = new Editor({
-        holder: `editor-holder-${currentPage}`,
-        data: {
-          blocks: [
-            {
-              type: "paragraph",
-              data: { text },
-            },
-          ],
-        },
-        autofocus: true,
-        onReady: () => {
-          editorRef.current = instance;
-        },
+        if (currentHeight <= containerHeight) {
+          currentPageContent += (currentPageContent ? "\n" : "") + line;
+        } else {
+          if (currentPageContent) {
+            newPages.push({ content: currentPageContent, id: `page-${newPages.length}` });
+          }
+          currentPageContent = line;
+          currentHeight = estimatedLineHeight;
+        }
       });
-    }
-  };
 
-  useEffect(() => {
-    const pages = splitMessagesIntoChunks();
-    setChunks(pages);
-    setCurrentPage(0);
-  }, [messages]);
+      if (currentPageContent) {
+        newPages.push({ content: currentPageContent, id: `page-${newPages.length}` });
+      }
 
-  useEffect(() => {
-    if (chunks.length > 0 && typeof window !== "undefined") {
-      const text = chunks[currentPage] || "";
-      initEditor(text);
-    }
+      if (newPages.length === 0) newPages.push({ content: "", id: "page-0" });
 
-    return () => {
-      if (editorRef.current) {
-        editorRef.current.destroy();
-        editorRef.current = null;
+      setPages(newPages);
+      if (currentPage >= newPages.length) {
+        setCurrentPage(newPages.length - 1);
       }
     };
-  }, [currentPage, chunks]);
 
-  const handleDownloadPDF = async () => {
-    if (typeof window === "undefined") return;
+    splitPagesByHeight();
+  }, [messages]);
 
-    const { default: html2pdf } = await import("html2pdf.js");
-    const contentContainer = document.createElement("div");
+  const handlePrevPage = () => currentPage > 0 && setCurrentPage(currentPage - 1);
+  const handleNextPage = () => currentPage < pages.length - 1 && setCurrentPage(currentPage + 1);
 
-    for (let i = 0; i < chunks.length; i++) {
-      const linesHTML = Array.from({ length: 20 })
-        .map(
-          (_, idx) =>
-            `<div style="position: absolute;
-        
-            left: 0; right: 0; "></div>`
-        )
-        .join("");
+  const renderMarkdownToPDF = (doc, text, x, y, maxWidth, lineHeight, pageHeight) => {
+    const lines = text.split("\n");
+    let currentY = y;
 
-          //  top: ${
-          //     25 * (idx + 1)
-          //   }px; 
-          // border-bottom: 1px dashed #ccc;
+    lines.forEach((line) => {
+      let fontSize = 12;
+      let fontStyle = "normal";
+      let textContent = line;
 
-      const pageHtml = `
-      <div style="position: relative; page-break-after: always; padding: 40px;  height: 800px;
-       box-sizing: border-box;">
-        <div style="display: flex; justify-content: space-between; margin-bottom: 20px;">
-          <h2 style="font-size: 20px; font-weight: bold;">📓 My Notebook</h2>
-          <span style="font-size: 14px; ">Page ${i + 1}</span>
-        </div>
+      if (line.startsWith("# ")) {
+        fontSize = 16;
+        fontStyle = "bold";
+        textContent = line.slice(2);
+      } else if (line.startsWith("## ")) {
+        fontSize = 14;
+        fontStyle = "bold";
+        textContent = line.slice(3);
+      }
 
-        <div style="position: relative;  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif; font-size: 16px; line-height: 1.8;">
-          ${chunks[i] || ""}
-          ${linesHTML}
-        </div>
-      </div>
-    `;
-    // border: 1px solid #ddd;
-    // color: gray;
-    //  color: #333;
+      doc.setFontSize(fontSize);
+      doc.setFont("times", fontStyle);
 
-      const div = document.createElement("div");
-      div.innerHTML = pageHtml;
-      contentContainer.appendChild(div);
-    }
+      // Remove markdown-style bold for rendering
+      const cleanText = textContent.replace(/\*\*(.*?)\*\*/g, "$1");
+      const wrappedLines = doc.splitTextToSize(cleanText, maxWidth);
 
-    html2pdf()
-      .set({
-        margin: 0,
-        filename: "notebook.pdf",
-        image: { type: "jpeg", quality: 0.98 },
-        html2canvas: { scale: 2 },
-        jsPDF: { unit: "in", format: "letter", orientation: "portrait" },
-      })
-      .from(contentContainer)
-      .save();
+      wrappedLines.forEach((wrappedLine) => {
+        if (currentY + lineHeight > pageHeight + y) {
+          doc.addPage();
+          currentY = y;
+        }
+        doc.text(wrappedLine, x, currentY);
+        currentY += lineHeight;
+      });
+    });
+
+    return currentY;
+  };
+
+  const handleDownload = () => {
+    const doc = new jsPDF({
+      format: "a5",
+      unit: "mm",
+    });
+
+    const margin = 15;
+    const maxLineWidth = doc.internal.pageSize.width - 2 * margin;
+    const lineHeight = 6;
+    const pageHeight = doc.internal.pageSize.height - 2 * margin;
+
+    doc.setFontSize(12);
+    doc.setFont("times", "normal");
+
+    pages.forEach((page, index) => {
+      if (index > 0) doc.addPage();
+      renderMarkdownToPDF(doc, page.content, margin, margin, maxLineWidth, lineHeight, pageHeight);
+    });
+
+    doc.save("notebook.pdf");
+  };
+
+  const markdownComponents = {
+    h1: ({ children }) => <h1 className="text-xl font-bold mb-2">{children}</h1>,
+    h2: ({ children }) => <h2 className="text-lg font-semibold mb-1.5">{children}</h2>,
+    strong: ({ children }) => <strong className="font-bold">{children}</strong>,
+    ul: ({ children }) => <ul className="ml-4 list-disc">{children}</ul>,
+    ol: ({ children }) => <ol className="ml-4 list-decimal">{children}</ol>,
+    a: ({ children, href }) => (
+      <a href={href} className="text-blue-600 hover:underline">{children}</a>
+    ),
   };
 
   return (
-    <div
-      className={`  px-4 py-4 flex flex-col items-center ${textTheme}`}
-    >
-      {/* Header */}
-      {/* <div className="w-full max-w-3xl mb-6 flex justify-between items-center">
-        <div>
-          <h1 className="text-3xl font-bold text-gray-700">📓 My Notebook</h1>
-          <p className="text-sm text-gray-500">Page {currentPage + 1}</p>
+    <div className="flex flex-col max-lg:mt-[4rem] justify-center items-center">
+      <div className="rounded-xl shadow-2xl flex flex-col gap-2 w-full max-w-lg">
+        <div className="flex justify-between items-center">
+          <span className="text-sm font-medium text-gray-700">
+            Page {currentPage + 1} of {pages.length}
+          </span>
+          <button
+            onClick={handleNotes}
+            className="bg-blue-600 px-5 text-white py-2 rounded-md hover:bg-blue-700 transition-colors disabled:bg-blue-400 text-base font-medium"
+          >
+            Back
+          </button>
         </div>
-        <span className="text-sm text-gray-500">{new Date().toLocaleDateString()}</span>
-      </div> */}
 
-      {/* Editor Area with Notebook Styling */}
-      <div className="relative w-full max-w-3xl overflow-y-scroll custom-scrollbar h-[28rem] rounded-xl shadow-lg border px-4 py-5">
-        {/* EditorJS container */}
-        <div
-          id={`editor-holder-${currentPage}`}
-          className="min-h-[400px] text-base leading-relaxed font-serif relative z-10"
-          ref={editorContainerRef}
-        />
-
-        {/* Lined Background */}
-        <div className="absolute top-5 inset-0 pointer-events-none z-0">
-          {[...Array(20)].map((_, i) => (
+        <div className="relative border border-gray-300 rounded-lg h-[26rem] max-lg:h-[38rem] overflow-hidden shadow-inner">
+          {pages.map((page, index) => (
             <div
-              key={i}
-              className=" absolute w-full"
-              style={{ top: `${(i + 1) * 26}px` }}
-            />
+              key={page.id}
+              className={`absolute w-full h-full p-4 transition-opacity duration-300 ${
+                index === currentPage ? "opacity-100" : "opacity-0 pointer-events-none"
+              }`}
+              style={{ aspectRatio: "1 / 1.414" }}
+            >
+              <div
+                className="h-full overflow-auto prose prose-sm text-xs max-w-none"
+                ref={index === 0 ? contentRef : null}
+              >
+                <ReactMarkdown remarkPlugins={[remarkGfm]} components={markdownComponents}>
+                  {page.content}
+                </ReactMarkdown>
+              </div>
+            </div>
           ))}
         </div>
-      </div>
-      {/* Pagination */}
-      <div className="flex items-center py-2 justify-between w-full max-w-3xl ">
-          {/* Download Button */}
-          <button
-            onClick={handleDownloadPDF}
-            className=" bg-green-600 text-white  px-6 py-2 rounded hover:bg-green-700"
-          >
-             Download Notebook as PDF
-          </button>
 
-          <p className="text-gray-500">
-            Page {currentPage + 1} of {chunks.length}
-          </p>
+        <div className="flex justify-between items-center">
           <button
-            onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 0))}
-            disabled={currentPage === 0}
-            className="px-4 py-2 text-sm bg-blue-500 hover:bg-blue-600 text-white rounded disabled:opacity-50"
+            onClick={handleDownload}
+            className="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 transition-colors disabled:bg-blue-400 text-base font-medium"
+            disabled={pages.every((page) => !page.content.trim())}
           >
-            ◀ Prev
+            Download PDF
           </button>
-          <button
-            onClick={() =>
-              setCurrentPage((prev) => Math.min(prev + 1, chunks.length - 1))
-            }
-            className="px-4 py-2 text-sm bg-blue-500 hover:bg-blue-600 text-white rounded"
-          >
-            Next ▶
-          </button>
+          <div className="flex gap-4">
+            <button
+              onClick={handlePrevPage}
+              className="bg-gray-600 text-white py-2 px-4 rounded-md hover:bg-gray-700 transition-colors disabled:bg-gray-400 text-sm"
+              disabled={currentPage === 0}
+            >
+              Previous
+            </button>
+            <button
+              onClick={handleNextPage}
+              className="bg-gray-600 text-white py-2 px-4 rounded-md hover:bg-gray-700 transition-colors disabled:bg-gray-400 text-sm"
+              disabled={currentPage === pages.length - 1}
+            >
+              Next
+            </button>
+          </div>
         </div>
+      </div>
     </div>
   );
 }

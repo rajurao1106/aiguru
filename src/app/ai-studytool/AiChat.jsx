@@ -5,6 +5,7 @@ import { FaArrowUp } from "react-icons/fa";
 import ReactMarkdown from "react-markdown";
 import MCQApp from "./MCQ";
 import TestApp from "./TakeTest"; // ✅ New test component
+import { FaNotesMedical } from "react-icons/fa6";
 
 export default function AiChat({
   theme,
@@ -20,12 +21,14 @@ export default function AiChat({
   disabledIndexes = [],
   handleClick,
   setDisabledIndexes,
+  handleNotes,
+  handleTopicClick
 }) {
   const [showMCQ, setShowMCQ] = useState(false);
   const [showTest, setShowTest] = useState(false);
   const [mcqPromptAvailable, setMcqPromptAvailable] = useState(false);
   const [lastAiResponse, setLastAiResponse] = useState(""); // ✅ For test topic
-   const [someCondition, setSomeCondition] = useState(true); // default false
+
 
   // Store last AI response for MCQ/Test
   useEffect(() => {
@@ -42,24 +45,17 @@ export default function AiChat({
     return <TestApp topic={lastAiResponse} onBack={() => setShowTest(false)} />;
   if (showMCQ) return <MCQApp onBack={() => setShowMCQ(false)} />;
 
-   const handleTopicClick = () => {
-    if (someCondition) {
-      handleClick(0);
-    } else {
-      handleClick(1);
-    }
-  };
-
+  
 
   return (
     <section className={`w-full h-full ${textTheme} flex flex-col justify-end`}>
       <div className="max-w-2xl mx-auto flex flex-col w-full">
         {/* Chat History */}
-        <div className="flex flex-col gap-3 overflow-y-scroll custom-scrollbar h-[27rem] max-lg:h-[76vh] px-6 py-4">
+        <div className="flex flex-col gap-3 overflow-scroll custom-scrollbar h-[27rem] max-lg:h-[77vh] px-6 py-4">
           {messages.map((msg, index) => (
-            <div key={index} className="flex flex-col gap-2">
+            <div key={index} className="flex flex-col gap-2 ">
               <div
-                className={`p-3  rounded-xl text-sm w-fit max-w-[90%] ${
+                className={`p-3  rounded-xl text-sm w-fit max-w-[100%]  ${
                   msg.role === "user"
                     ? "ml-auto bg-blue-600 text-white"
                     : theme
@@ -98,7 +94,7 @@ export default function AiChat({
                   }}
                   className="bg-blue-500 px-4 py-2 cursor-pointer rounded text-sm hover:bg-blue-600 transition"
                 >
-                  📝 Practice MCQs
+                  Practice MCQs
                 </button>
 
                 <button
@@ -110,37 +106,42 @@ export default function AiChat({
                       : "bg-gray-400 text-white cursor-not-allowed"
                   }`}
                 >
-                  🧪 Take a Test
+                  Take a Test
                 </button>
               </div>
-             <button
-  onClick={handleTopicClick}
-  className={`bg-blue-500 px-4 py-2 cursor-pointer rounded text-sm hover:bg-blue-600 transition`}
->
-  Next Topic
-</button>
-
-
-
+              <button
+                onClick={handleTopicClick}
+                className={`bg-blue-500 max-lg:hidden px-4 py-2 cursor-pointer rounded text-sm hover:bg-blue-600 transition`}
+              >
+                Next Topic
+              </button>
             </div>
           )}
         </div>
 
         {/* Input box */}
-        <div className="relative">
+        <div
+          className={`relative max-lg:border max-lg:mx-1 ${
+            theme ? "bg-gray-200" : "bg-gray-950"
+          }  lg:mb-2 rounded-full border-gray-700`}
+        >
           <input
             type="text"
             value={input}
             onChange={(e) => setInput(e.target.value)}
             placeholder="Ask your doubt or enter a topic..."
-            className={`w-full p-4 pr-16 pl-4 rounded-full ${
-              theme ? "bg-gray-200" : "bg-gray-950"
-            } text-white placeholder-gray-400 outline-none`}
+            className={`w-[93%] max-xl:w-[85%]  p-4 pr-16 pl-4 rounded-full duration-300 placeholder-gray-400 outline-none`}
             onKeyDown={(e) => e.key === "Enter" && handleSendWithVideo()}
           />
           <button
+            className="absolute top-2 right-14 text-gray-500 text-2xl rounded-full p-2"
+            onClick={handleNotes}
+          >
+            <FaNotesMedical />
+          </button>
+          <button
             onClick={handleSendWithVideo}
-            className="absolute top-1/2 right-2 transform -translate-y-1/2 bg-white text-black rounded-full w-10 h-10 flex items-center justify-center"
+            className="absolute top-1/2 right-1 transform -translate-y-1/2 bg-white text-black rounded-full w-10 h-10 flex items-center justify-center"
           >
             <FaArrowUp />
           </button>
