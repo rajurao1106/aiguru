@@ -4,13 +4,13 @@ import React, { useEffect, useState } from "react";
 
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
-import Homepage from "./homepage/homepage";
+import Homepage from "./homepage/Homepage";
 
 export default function Page() {
   
   
    const [theme, setTheme] = useState(true); // default light
-   const [isThemeLoaded, setIsThemeLoaded] = useState(false); // ⛔ prevent early render
+   const [isThemeLoaded, setIsThemeLoaded] = useState(true); // ⛔ prevent early render
  
    const themeHandle = () => {
      setTheme((prev) => {

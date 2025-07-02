@@ -70,10 +70,11 @@ export default function TakeTest({ topic, onBack }) {
   };
 
   return (
-    <div className="max-w-2xl mx-auto px-4 py-6 space-y-6  h-[31rem] custom-scrollbar">
+    <div className="max-w-2xl mx-auto px-4 py-6 space-y-6  h-[43rem]  max-xl:mt-[4rem] custom-scrollbar">
       {/* <h2 className="text-2xl font-bold text-blue-600 text-center">
         🧪 Test on: {topic}
       </h2> */}
+      <button onClick={onBack}>Back</button>
 
       {loading ? (
         <p className="text-gray-500 text-center">⏳ Generating questions...</p>

@@ -23,6 +23,7 @@ function ToolLayout({ theme, themeHandle }) {
   const [notes, setNotes] = useState(true);
   const [video, setVideo] = useState(null);
    const [disabledIndexes, setDisabledIndexes] = useState([]);
+     const [someCondition, setSomeCondition] = useState(true); // default false
 
   const handleNotes = () => {
     setNotes((prev) => !prev);
@@ -229,6 +230,13 @@ function ToolLayout({ theme, themeHandle }) {
   }
 };
 
+const handleTopicClick = () => {
+    if (someCondition) {
+      handleClick(0);
+    } else {
+      handleClick(1);
+    }
+  };
 
   const containerTheme = theme
     ? "bg-[#ececec] text-black duration-300"
@@ -280,7 +288,9 @@ function ToolLayout({ theme, themeHandle }) {
         <div
           className={`w-full relative h-[33rem] max-lg:h-[91vh] rounded-xl shadow-md ${cardTheme}`}
         >
-          <div className="flex absolute w-[100%] justify-between items-center p-4">
+
+          <div className="flex lg:hidden absolute w-[100%] justify-between items-center p-4">
+
             <h1 className="text-xl font-bold">AI Guru</h1>
             
              <button className="" onClick={themeHandle}>
@@ -320,6 +330,9 @@ function ToolLayout({ theme, themeHandle }) {
               handleSendWithVideo={handleSendWithVideo}
               setDisabledIndexes={setDisabledIndexes}
               handleNotes={handleNotes}
+
+              handleTopicClick={handleTopicClick}
+
             />
           ) : (
             <div
