@@ -4,7 +4,7 @@ import React, { useEffect, useState } from "react";
 
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
-import Homepage from "./homepage/Homepage";
+import Homepage from "./homepage/homepage";
 
 export default function Page() {
   

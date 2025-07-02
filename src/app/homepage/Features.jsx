@@ -69,7 +69,7 @@ const features = [
   },
 ];
 
-export default function AiFeatures() {
+export default function Features() {
   return (
     <section className="w-full py-12 px-4 bg-[#F5FBFF] flex flex-col items-center">
       {/* Section heading */}

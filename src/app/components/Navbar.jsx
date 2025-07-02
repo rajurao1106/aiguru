@@ -15,17 +15,17 @@ export default function Navbar({ theme, themeHandle }) {
     >
       <div className="w-full max-w-[1200px] max-lg:w-[90%] flex justify-between items-center">
         <div className="flex gap-5">
-          {/* <div className="">
+          <div className="">
             <FiMenu size={30} />
-          </div> */}
+          </div>
           <a href="/" className="text-2xl">AI Guru</a>
         </div>
-        {/* <div className="">
+        <div className="">
           <button onClick={themeHandle}>
             {" "}
             {theme ? <FaSun size={30} /> : <IoIosMoon size={30} />}
           </button>
-        </div> */}
+        </div>
       </div>
     </nav>
   );
