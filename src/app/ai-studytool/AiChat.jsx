@@ -21,12 +21,14 @@ export default function AiChat({
   disabledIndexes = [],
   handleClick,
   setDisabledIndexes,
+  handleNotes,
+
+  handleTopicClick,
 }) {
   const [showMCQ, setShowMCQ] = useState(false);
   const [showTest, setShowTest] = useState(false);
   const [mcqPromptAvailable, setMcqPromptAvailable] = useState(false);
   const [lastAiResponse, setLastAiResponse] = useState(""); // ✅ For test topic
-   const [someCondition, setSomeCondition] = useState(true); // default false
 
   // Store last AI response for MCQ/Test
   useEffect(() => {
@@ -43,20 +45,12 @@ export default function AiChat({
     return <TestApp topic={lastAiResponse} onBack={() => setShowTest(false)} />;
   if (showMCQ) return <MCQApp onBack={() => setShowMCQ(false)} />;
 
-   const handleTopicClick = () => {
-    if (someCondition) {
-      handleClick(0);
-    } else {
-      handleClick(1);
-    }
-  };
-
-
   return (
     <section className={`w-full h-full ${textTheme} flex flex-col justify-end`}>
       <div className="max-w-2xl mx-auto flex flex-col w-full">
         {/* Chat History */}
-        <div className="flex flex-col gap-3 overflow-y-scroll custom-scrollbar h-[27rem] max-lg:h-[76vh] px-6 py-4">
+
+        <div className="flex flex-col gap-3 overflow-scroll custom-scrollbar h-[27rem] max-lg:h-[77vh] px-6 py-4">
           {messages.map((msg, index) => (
             <div key={index} className="flex flex-col gap-2 ">
               <div
