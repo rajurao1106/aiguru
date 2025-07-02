@@ -5,22 +5,8 @@ import { jsPDF } from "jspdf";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 
-export default function StudentNotebook({ messages = [], handleNotes }) {
-  const initializePages = () => {
-    const combinedContent = messages
-      .map((msg) =>
-        typeof msg === "object" && "content" in msg
-          ? String(msg.content || "").trim()
-          : String(msg || "").trim()
-      )
-      .filter((content) => content.length > 0)
-      .join("\n\n");
-
-    if (!combinedContent) return [{ content: "", id: "page-0" }];
-    return [{ content: combinedContent, id: "page-0" }];
-  };
-
-  const [pages, setPages] = useState(initializePages());
+export default function StudentNotebook({ messages = [], textTheme }) {
+  const [chunks, setChunks] = useState([]);
   const [currentPage, setCurrentPage] = useState(0);
   const contentRef = useRef(null);
 
@@ -71,63 +57,49 @@ export default function StudentNotebook({ messages = [], handleNotes }) {
   const handlePrevPage = () => currentPage > 0 && setCurrentPage(currentPage - 1);
   const handleNextPage = () => currentPage < pages.length - 1 && setCurrentPage(currentPage + 1);
 
-  const renderMarkdownToPDF = (doc, text, x, y, maxWidth, lineHeight, pageHeight) => {
-    const lines = text.split("\n");
-    let currentY = y;
+  const handleDownloadPDF = async () => {
+    if (typeof window === "undefined") return;
 
-    lines.forEach((line) => {
-      let fontSize = 12;
-      let fontStyle = "normal";
-      let textContent = line;
+    const { default: html2pdf } = await import("html2pdf.js");
+    const contentContainer = document.createElement("div");
 
-      if (line.startsWith("# ")) {
-        fontSize = 16;
-        fontStyle = "bold";
-        textContent = line.slice(2);
-      } else if (line.startsWith("## ")) {
-        fontSize = 14;
-        fontStyle = "bold";
-        textContent = line.slice(3);
-      }
+    for (let i = 0; i < chunks.length; i++) {
+      const linesHTML = Array.from({ length: 20 })
+        .map(
+          (_, idx) =>
+            `<div style="position: absolute;
+        
+            left: 0; right: 0; "></div>`
+        )
+        .join("");
 
-      doc.setFontSize(fontSize);
-      doc.setFont("times", fontStyle);
+          //  top: ${
+          //     25 * (idx + 1)
+          //   }px; 
+          // border-bottom: 1px dashed #ccc;
 
-      // Remove markdown-style bold for rendering
-      const cleanText = textContent.replace(/\*\*(.*?)\*\*/g, "$1");
-      const wrappedLines = doc.splitTextToSize(cleanText, maxWidth);
+      const pageHtml = `
+      <div style="position: relative; page-break-after: always; padding: 40px;  height: 800px;
+       box-sizing: border-box;">
+        <div style="display: flex; justify-content: space-between; margin-bottom: 20px;">
+          <h2 style="font-size: 20px; font-weight: bold;">📓 My Notebook</h2>
+          <span style="font-size: 14px; ">Page ${i + 1}</span>
+        </div>
 
-      wrappedLines.forEach((wrappedLine) => {
-        if (currentY + lineHeight > pageHeight + y) {
-          doc.addPage();
-          currentY = y;
-        }
-        doc.text(wrappedLine, x, currentY);
-        currentY += lineHeight;
-      });
-    });
+        <div style="position: relative;  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif; font-size: 16px; line-height: 1.8;">
+          ${chunks[i] || ""}
+          ${linesHTML}
+        </div>
+      </div>
+    `;
+    // border: 1px solid #ddd;
+    // color: gray;
+    //  color: #333;
 
-    return currentY;
-  };
-
-  const handleDownload = () => {
-    const doc = new jsPDF({
-      format: "a5",
-      unit: "mm",
-    });
-
-    const margin = 15;
-    const maxLineWidth = doc.internal.pageSize.width - 2 * margin;
-    const lineHeight = 6;
-    const pageHeight = doc.internal.pageSize.height - 2 * margin;
-
-    doc.setFontSize(12);
-    doc.setFont("times", "normal");
-
-    pages.forEach((page, index) => {
-      if (index > 0) doc.addPage();
-      renderMarkdownToPDF(doc, page.content, margin, margin, maxLineWidth, lineHeight, pageHeight);
-    });
+      const div = document.createElement("div");
+      div.innerHTML = pageHtml;
+      contentContainer.appendChild(div);
+    }
 
     doc.save("notebook.pdf");
   };
@@ -144,67 +116,67 @@ export default function StudentNotebook({ messages = [], handleNotes }) {
   };
 
   return (
-    <div className="flex flex-col max-lg:mt-[4rem] justify-center items-center">
-      <div className="rounded-xl shadow-2xl flex flex-col gap-2 w-full max-w-lg">
-        <div className="flex justify-between items-center">
-          <span className="text-sm font-medium text-gray-700">
-            Page {currentPage + 1} of {pages.length}
-          </span>
-          <button
-            onClick={handleNotes}
-            className="bg-blue-600 px-5 text-white py-2 rounded-md hover:bg-blue-700 transition-colors disabled:bg-blue-400 text-base font-medium"
-          >
-            Back
-          </button>
+    <div
+      className={`  px-4 py-4 flex flex-col items-center ${textTheme}`}
+    >
+      {/* Header */}
+      {/* <div className="w-full max-w-3xl mb-6 flex justify-between items-center">
+        <div>
+          <h1 className="text-3xl font-bold text-gray-700">📓 My Notebook</h1>
+          <p className="text-sm text-gray-500">Page {currentPage + 1}</p>
         </div>
+        <span className="text-sm text-gray-500">{new Date().toLocaleDateString()}</span>
+      </div> */}
 
-        <div className="relative border border-gray-300 rounded-lg h-[26rem] max-lg:h-[38rem] overflow-hidden shadow-inner">
-          {pages.map((page, index) => (
+      {/* Editor Area with Notebook Styling */}
+      <div className="relative w-full max-w-3xl overflow-y-scroll custom-scrollbar h-[28rem] rounded-xl shadow-lg border px-4 py-5">
+        {/* EditorJS container */}
+        <div
+          id={`editor-holder-${currentPage}`}
+          className="min-h-[400px] text-base leading-relaxed font-serif relative z-10"
+          ref={editorContainerRef}
+        />
+
+        {/* Lined Background */}
+        <div className="absolute top-5 inset-0 pointer-events-none z-0">
+          {[...Array(20)].map((_, i) => (
             <div
-              key={page.id}
-              className={`absolute w-full h-full p-4 transition-opacity duration-300 ${
-                index === currentPage ? "opacity-100" : "opacity-0 pointer-events-none"
-              }`}
-              style={{ aspectRatio: "1 / 1.414" }}
-            >
-              <div
-                className="h-full overflow-auto prose prose-sm text-xs max-w-none"
-                ref={index === 0 ? contentRef : null}
-              >
-                <ReactMarkdown remarkPlugins={[remarkGfm]} components={markdownComponents}>
-                  {page.content}
-                </ReactMarkdown>
-              </div>
-            </div>
+              key={i}
+              className=" absolute w-full"
+              style={{ top: `${(i + 1) * 26}px` }}
+            />
           ))}
         </div>
-
-        <div className="flex justify-between items-center">
-          <button
-            onClick={handleDownload}
-            className="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 transition-colors disabled:bg-blue-400 text-base font-medium"
-            disabled={pages.every((page) => !page.content.trim())}
-          >
-            Download PDF
-          </button>
-          <div className="flex gap-4">
-            <button
-              onClick={handlePrevPage}
-              className="bg-gray-600 text-white py-2 px-4 rounded-md hover:bg-gray-700 transition-colors disabled:bg-gray-400 text-sm"
-              disabled={currentPage === 0}
-            >
-              Previous
-            </button>
-            <button
-              onClick={handleNextPage}
-              className="bg-gray-600 text-white py-2 px-4 rounded-md hover:bg-gray-700 transition-colors disabled:bg-gray-400 text-sm"
-              disabled={currentPage === pages.length - 1}
-            >
-              Next
-            </button>
-          </div>
-        </div>
       </div>
+      {/* Pagination */}
+      <div className="flex items-center py-2 justify-between w-full max-w-3xl ">
+          {/* Download Button */}
+          <button
+            onClick={handleDownloadPDF}
+            className=" bg-green-600 text-white  px-6 py-2 rounded hover:bg-green-700"
+          >
+             Download Notebook as PDF
+          </button>
+
+          <p className="text-gray-500">
+            Page {currentPage + 1} of {chunks.length}
+          </p>
+          <button
+            onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 0))}
+            disabled={currentPage === 0}
+            className="px-4 py-2 text-sm bg-blue-500 hover:bg-blue-600 text-white rounded disabled:opacity-50"
+          >
+            ◀ Prev
+          </button>
+          <button
+            onClick={() =>
+              setCurrentPage((prev) => Math.min(prev + 1, chunks.length - 1))
+            }
+            className="px-4 py-2 text-sm bg-blue-500 hover:bg-blue-600 text-white rounded"
+          >
+            Next ▶
+          </button>
+        </div>
     </div>
   );
 }

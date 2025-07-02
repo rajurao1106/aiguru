@@ -82,7 +82,7 @@ export default function RootLayout({ children }) {
         <meta property="og:site_name" content="AI Guru" />
         <meta property="og:social" content="https://www.instagram.com/aiguru_for_learning/" />
       </head>
-      <body className={`${geist.className}`}>
+      <body className={geist.className}>
          {/* Google Tag Manager (noscript) - Must be inside <body> */}
         <noscript>
           <iframe

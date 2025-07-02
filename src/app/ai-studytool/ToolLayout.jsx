@@ -288,15 +288,6 @@ const handleTopicClick = () => {
         <div
           className={`w-full relative h-[33rem] max-lg:h-[91vh] rounded-xl shadow-md ${cardTheme}`}
         >
-          <div className="flex lg:hidden absolute w-[100%] justify-between items-center p-4">
-            <h1 className="text-xl font-bold">AI Guru</h1>
-            
-             <button className="" onClick={themeHandle}>
-                  {" "}
-                  {theme ? <FaSun size={30} /> : <IoIosMoon size={30} />}
-                </button>
-          </div>
-        
           {notes ? (
             <AiChat
               theme={theme}
@@ -327,8 +318,6 @@ const handleTopicClick = () => {
               handleClick={handleClick}
               handleSendWithVideo={handleSendWithVideo}
               setDisabledIndexes={setDisabledIndexes}
-              handleNotes={handleNotes}
-              handleTopicClick={handleTopicClick}
             />
           ) : (
             <div
