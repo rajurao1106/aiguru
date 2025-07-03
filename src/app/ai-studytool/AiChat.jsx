@@ -46,7 +46,7 @@ export default function AiChat({
   if (showMCQ) return <MCQApp onBack={() => setShowMCQ(false)} />;
 
   return (
-    <section className={`w-full h-full ${textTheme} flex flex-col justify-end pb-2`}>
+    <section className={`w-full h-full ${textTheme} flex flex-col justify-end`}>
       <div className="max-w-2xl mx-auto flex flex-col w-full">
         {/* Chat History */}
 
@@ -145,6 +145,11 @@ export default function AiChat({
             <FaArrowUp />
           </button>
         </div>
+        <p className="text-xs text-center text-gray-400 py-2">
+          The leading AI platform for educators and students. Experience
+          personalized learning, instant solutions, and smart tools to save time
+          and boost academic success.
+        </p>
       </div>
     </section>
   );
