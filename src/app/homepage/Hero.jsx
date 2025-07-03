@@ -41,7 +41,7 @@ export default function Hero() {
           >
             The leading AI platform for educators and students. Experience
             personalized learning, instant solutions, and smart tools to save
-            time and boost academic success.
+            time and boost academic success..
           </motion.p>
           <motion.div
             custom={2}
