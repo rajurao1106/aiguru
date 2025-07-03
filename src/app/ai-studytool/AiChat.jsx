@@ -140,7 +140,7 @@ export default function AiChat({
           </button>
           <button
             onClick={handleSendWithVideo}
-            className="absolute top-1/2 right-1 transform -translate-y-1/2 bg-white text-black rounded-full w-10 h-10 flex items-center justify-center"
+            className="absolute top-1/2 right-2 transform -translate-y-1/2 bg-white text-black rounded-full w-10 h-10 flex items-center justify-center"
           >
             <FaArrowUp />
           </button>
