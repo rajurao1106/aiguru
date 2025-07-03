@@ -18,8 +18,10 @@ export default function Hero() {
   return (
     <section className="flex justify-center items-center">
       {/* Hero Section */}
-      <div className=" py-16 md:py-24 text-left 
-       flex items-center justify-center max-w-[1200px] max-lg:flex-col-reverse max-lg:text-center">
+      <div
+        className=" py-16 md:py-24 text-left 
+       flex items-center justify-center max-w-[1200px] max-lg:flex-col-reverse max-lg:text-center"
+      >
         <div className="flex justify-center items-start flex-col max-lg:items-center">
           <motion.h1
             custom={0}
@@ -28,7 +30,7 @@ export default function Hero() {
             variants={fadeInUp}
             className="text-3xl sm:text-4xl md:text-5xl font-extrabold text-gray-900 mb-4 md:mb-6 leading-tight"
           >
-            Revolutionize Learning with AI Guru
+            Transform Online Education with AI Guru’s Smart Learning Tools
           </motion.h1>
           <motion.p
             custom={1}
@@ -37,9 +39,9 @@ export default function Hero() {
             variants={fadeInUp}
             className="text-base sm:text-lg md:text-xl text-gray-700 mb-8 max-w-3xl mx-auto"
           >
-            The leading AI platform for educators and students, offering
-            personalized learning, instant solutions, and secure tools to save
-            time and boost success.
+            The leading AI platform for educators and students. Experience
+            personalized learning, instant solutions, and smart tools to save
+            time and boost academic success.
           </motion.p>
           <motion.div
             custom={2}
@@ -48,13 +50,14 @@ export default function Hero() {
             variants={fadeInUp}
             className="flex flex-col sm:flex-row justify-center gap-4 sm:gap-6"
           >
-           <a href="/ai-studytool">
-            <button
-              className="bg-purple-700 text-white px-6 py-3 sm:px-8 sm:py-4 rounded-full font-semibold text-base sm:text-lg hover:bg-purple-800 transition-all duration-300 transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2"
-              aria-label="Sign up for teachers"
-            >
-              Discover Tools
-            </button></a>
+            <a href="/ai-studytool">
+              <button
+                className="bg-purple-700 text-white px-6 py-3 sm:px-8 sm:py-4 rounded-full font-semibold text-base sm:text-lg hover:bg-purple-800 transition-all duration-300 transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2"
+                aria-label="Sign up for teachers"
+              >
+                Discover Tools
+              </button>
+            </a>
             {/* <a href="/ai-studytool">
               <button
                 className="border-2 border-purple-700 text-purple-700 px-6 py-3 sm:px-8 sm:py-4 rounded-lg font-semibold text-base sm:text-lg hover:bg-purple-700 hover:text-white transition-all duration-300 transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2"
@@ -68,8 +71,7 @@ export default function Hero() {
         <Image
           src="/images/homepage/hero.png"
           alt="AI Guru Hero"
-          
-          width={700}
+          width={630}
           height={475}
           className=""
         />
