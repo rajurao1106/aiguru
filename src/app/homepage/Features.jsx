@@ -7,7 +7,7 @@ const features = [
     image: "/images/homepage/feature3.jpg",
     bgColor: "bg-[#F5F9FF]",
     description:
-      "AI Topic Definition is a smart tool that explains topics in a clear and simple way. It helps students learn and prepare for exams by making any subject easy to understand.",
+      "AI Topic Definition is an AI-powered learning tool that explains topics in a clear and simple way. This educational AI platform supports personalized education and helps students prepare for exams by making any subject easy to understand.",
     points: [
       "✅ Get topic explanations in simple, easy-to-understand language.",
       "✅ Useful for school, college, and competitive exam prep.",
@@ -20,7 +20,7 @@ const features = [
     image: "/images/homepage/feature2.jpg",
     bgColor: "bg-[#FFF8F3]",
     description:
-      "AI Notes Builder helps you turn your thoughts or answers into well-organized notes. It makes studying easier by creating clear, easy-to-read summaries for any topic.",
+      "AI Notes Builder is an AI-powered edtech tool that helps you turn your thoughts or answers into well-organized notes. Designed for personalized learning and digital classrooms, it makes studying easier by generating clear, easy-to-read summaries for any topic using smart educational technology.",
     points: [
       "✅ Auto-generate study notes from any topic or text.",
       "✅ Manually edit and add your own points anytime.",
@@ -33,7 +33,7 @@ const features = [
     image: "/images/homepage/feature4.jpg",
     bgColor: "bg-[#F3FFF8]",
     description:
-      "AI Smart Learning Path creates a personalized study plan based on what you know and what you need to improve. It guides your learning step-by-step to help you progress faster.",
+      "AI Smart Learning Path is an educational technology tool that uses artificial intelligence in education to create a personalized learning plan tailored to your strengths and weaknesses. This smart edtech system provides a step-by-step, personalized instruction system to guide your progress faster, making it ideal for modern classrooms and digital learning environments.",
     points: [
       "✅ Automatically group topics into chapters and subjects.",
       "✅ Practice topic-based or full subject tests.",
@@ -46,7 +46,7 @@ const features = [
     image: "/images/homepage/feature5.jpg",
     bgColor: "bg-[#F0F7FF]",
     description:
-      "AI MCQ Practice gives you multiple-choice questions to test your knowledge. It adapts to your level and helps you learn better by showing the right answers with explanations.",
+      "AI MCQ Practice is an AI quiz generator and edtech tool that provides personalized multiple-choice questions to test your knowledge. Using artificial intelligence in education, it adapts to your level and supports personalized learning by showing the right answers with clear explanations — ideal for smart classrooms and computer-assisted learning.",
     points: [
       "✅ Practice unlimited MCQs generated from your topic.",
       "✅ Instant answer feedback with explanations.",
@@ -59,7 +59,7 @@ const features = [
     image: "/images/homepage/feature6.jpg",
     bgColor: "bg-[#FFF5F8]",
     description:
-      "YouTube Video Link suggests helpful videos related to your topic. It lets you learn by watching trusted content, making hard concepts easier to understand through visual explanation.",
+      "YouTube Video Link suggests helpful videos related to your topic. It lets you learn by watching trusted content, making hard concepts easier to understand through visual explanation, relates well to educational technology, electronic learning, ICT tools, and personalized learning.",
     points: [
       "✅ Get the best YouTube video based on your topic instantly.",
       "✅ Helps visual learners with real-world examples.",
