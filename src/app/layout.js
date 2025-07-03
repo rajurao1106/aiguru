@@ -20,17 +20,8 @@ export default function RootLayout({ children }) {
           name="description"
           content="Explore AI and education with our artificial intelligence in education platform! Solve doubts instantly using our math problem solver powered by artificial intelligence on education."
         />
-        <meta name="keywords" content="AI Guru, AI learning tools,
-         AI topic definition, AI notes builder, AI smart learning path, 
-         AI MCQ practice, AI quiz generator, AI test maker, AI generated quiz, 
-         personalized learning, personalised learning, personal learning environment, 
-         personalized instruction system, personalized education, personalised education, 
-         artificial intelligence in education, educational technology, edtech, edtech platform, 
-         smart classroom, technology and education, use of technology in education, 
-         future of technology in education, tech in education, ed technology, ICT tools, 
-         information and communication technology in education, computer assisted learning, 
-         electronic learning, smart learning assistant, AI-powered education, AI study tools, 
-         MCQ generator, digital classroom tools"/>
+       <meta name="keywords" content="AI Guru, AI quiz generator, AI test maker, personalized learning, educational technology, edtech platform, smart classroom, AI-powered study tools, computer assisted learning, digital classroom, electronic learning, ICT in education"/>
+
 
         {/* Moved to the first meta tag */}
         <meta
