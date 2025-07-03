@@ -67,7 +67,7 @@ export default function RootLayout({ children }) {
         />
         <meta
           property="og:description"
-          content="Explore AI and education with our artificial intelligence in education platform! Solve doubts instantly using our math problem solver powered by artificial intelligence on education."
+          content="The leading AI platform for educators and students. Experience personalized learning, instant solutions, and smart tools to save time and boost academic success."
         />
         <meta property="og:url" content="https://aiguru.vercel.app/" />
         <meta property="og:type" content="website" />
