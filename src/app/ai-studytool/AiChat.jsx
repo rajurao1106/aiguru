@@ -46,7 +46,7 @@ export default function AiChat({
   if (showMCQ) return <MCQApp onBack={() => setShowMCQ(false)} />;
 
   return (
-    <section className={`w-full h-full ${textTheme} flex flex-col justify-end`}>
+    <section className={`w-full h-full ${textTheme} flex flex-col justify-end pb-2`}>
       <div className="max-w-2xl mx-auto flex flex-col w-full">
         {/* Chat History */}
 

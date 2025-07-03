@@ -248,12 +248,12 @@ const handleTopicClick = () => {
 
   return (
     <section
-      className={`w-full flex justify-center flex-col pt-16 max-lg:pt-0 items-center ${containerTheme}`}
+      className={`w-full h-[100vh] flex justify-center flex-col pt-16 max-lg:pt-0 items-center ${containerTheme}`}
     >
       <div className="w-full max-w-[1450px] flex flex-col lg:flex-row gap-4">
         {/* Left Panel */}
         <div
-          className={`w-full lg:w-[20%] max-lg:hidden h-[33rem] rounded-xl shadow-md p-4 ${cardTheme}`}
+          className={`w-full lg:w-[20%] max-lg:hidden h-full rounded-xl shadow-md p-4 ${cardTheme}`}
         >
           <AddTopic
             theme={theme}
@@ -286,7 +286,7 @@ const handleTopicClick = () => {
 
         {/* Middle Panel */}
         <div
-          className={`w-full relative h-[33rem] max-lg:h-[91vh] rounded-xl shadow-md ${cardTheme}`}
+          className={`w-full relative max-lg:h-[100vh] rounded-xl shadow-md ${cardTheme}`}
         >
 
           <div className="flex lg:hidden absolute w-[100%] justify-between items-center p-4">
@@ -336,7 +336,7 @@ const handleTopicClick = () => {
             />
           ) : (
             <div
-              className={`w-full absolute top-0 left-0 lg:w-full h-[33rem] rounded-xl`}
+              className={`w-full absolute top-0 left-0 lg:w-full h-full rounded-xl`}
             >
               <StudentNotebook
                 theme={theme}
@@ -351,7 +351,7 @@ const handleTopicClick = () => {
         </div>
 
         {/* Right Panel */}
-        {/* <div className="w-full lg:w-[25%] h-[33rem] flex flex-col gap-4">
+        {/* <div className="w-full lg:w-[25%] h-full flex flex-col gap-4">
           <div
             className={`h-auto lg:h-[30%] w-full rounded-xl shadow-md p-4 ${cardTheme}`}
           >

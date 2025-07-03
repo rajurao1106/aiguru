@@ -36,7 +36,7 @@ export default function Page() {
   if (!isThemeLoaded) return null;
 
   return (
-    <div className={` ${textTheme} relative`}>
+    <div className={` ${textTheme} relative h-[100vh]`}>
      
       <div className="max-lg:hidden">
         <Navbar theme={theme} themeHandle={themeHandle} />
