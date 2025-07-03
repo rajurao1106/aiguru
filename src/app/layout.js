@@ -14,16 +14,24 @@ export default function RootLayout({ children }) {
         <meta charSet="UTF-8" /> 
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <link rel="canonical" href="https://aiguru.vercel.app/" />
-        <title>AI Guru - AI Learning Assistant</title>
+        <title>AI Guru – Smart AI Learning Tools for Personalized Education</title>
         <link rel="icon" href="/favicon.ico" />
         <meta
           name="description"
           content="Explore AI and education with our artificial intelligence in education platform! Solve doubts instantly using our math problem solver powered by artificial intelligence on education."
         />
-        <meta
-          name="keywords"
-          content="ai in education, education in ai, ai on education, ai for education, artificial intelligence in education, ai and education, artificial intelligence and education, artificial intelligence on education, math problem solver"
-        />
+        <meta name="keywords" content="AI Guru, AI learning tools,
+         AI topic definition, AI notes builder, AI smart learning path, 
+         AI MCQ practice, AI quiz generator, AI test maker, AI generated quiz, 
+         personalized learning, personalised learning, personal learning environment, 
+         personalized instruction system, personalized education, personalised education, 
+         artificial intelligence in education, educational technology, edtech, edtech platform, 
+         smart classroom, technology and education, use of technology in education, 
+         future of technology in education, tech in education, ed technology, ICT tools, 
+         information and communication technology in education, computer assisted learning, 
+         electronic learning, smart learning assistant, AI-powered education, AI study tools, 
+         MCQ generator, digital classroom tools"/>
+
         {/* Moved to the first meta tag */}
         <meta
           name="google-site-verification"
