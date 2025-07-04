@@ -23,7 +23,14 @@ export default function StudentNotebook({ messages = [], handleNotes }) {
 
   const [pages, setPages] = useState(initializePages());
   const [currentPage, setCurrentPage] = useState(0);
+  const [isEditing, setIsEditing] = useState(false);
   const contentRef = useRef(null);
+
+  const handleContentChange = (e) => {
+    const updatedPages = [...pages];
+    updatedPages[currentPage].content = e.target.value;
+    setPages(updatedPages);
+  };
 
   useEffect(() => {
     const splitPagesByHeight = () => {
@@ -181,26 +188,42 @@ export default function StudentNotebook({ messages = [], handleNotes }) {
               }`}
               style={{ aspectRatio: "1 / 1.414" }}
             >
-              <div
-                className="h-full overflow-auto prose prose-sm text-xs max-w-none"
-                ref={index === 0 ? contentRef : null}
-              >
-                <ReactMarkdown remarkPlugins={[remarkGfm]} components={markdownComponents}>
-                  {page.content}
-                </ReactMarkdown>
-              </div>
+              {isEditing ? (
+                <textarea
+                  value={page.content}
+                  onChange={handleContentChange}
+                  className="w-full h-full bg-white text-black p-2 rounded-md text-xs resize-none"
+                />
+              ) : (
+                <div
+                  className="h-full overflow-auto prose prose-sm text-xs max-w-none"
+                  ref={index === 0 ? contentRef : null}
+                >
+                  <ReactMarkdown remarkPlugins={[remarkGfm]} components={markdownComponents}>
+                    {page.content}
+                  </ReactMarkdown>
+                </div>
+              )}
             </div>
           ))}
         </div>
 
-        <div className="flex justify-between items-center">
-          <button
-            onClick={handleDownload}
-            className="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 transition-colors text-base font-medium"
-            disabled={pages.every((page) => !page.content.trim())}
-          >
-            Download PDF
-          </button>
+        <div className="flex justify-between items-center mt-2">
+          <div className="flex gap-2">
+            <button
+              onClick={() => setIsEditing((prev) => !prev)}
+              className="bg-yellow-500 text-white px-4 py-2 rounded-md hover:bg-yellow-600 transition-colors text-sm"
+            >
+              {isEditing ? "Save" : "Edit"}
+            </button>
+            <button
+              onClick={handleDownload}
+              className="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 transition-colors text-sm"
+              disabled={pages.every((page) => !page.content.trim())}
+            >
+              Download PDF
+            </button>
+          </div>
           <div className="flex gap-4">
             <button
               onClick={handlePrevPage}

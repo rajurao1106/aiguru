@@ -1,9 +1,9 @@
-// redux/store.js
-import { configureStore } from '@reduxjs/toolkit';
-import userReducer from './messagesSlice';
+// store.js
+import { configureStore } from "@reduxjs/toolkit";
+import inputReducer from "./inputSlice";
 
 export const store = configureStore({
   reducer: {
-    user: userReducer,
+    input: inputReducer,
   },
 });

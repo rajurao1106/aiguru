@@ -9,21 +9,92 @@ import { FaSun } from "react-icons/fa6";
 import { IoIosMoon } from "react-icons/io";
 
 function ToolLayout({ theme, themeHandle }) {
-  const [messages, setMessages] = useState([]);
+  const [messages, setMessages] = useState(() => {
+    const savedMessages = localStorage.getItem("messages");
+    return savedMessages ? JSON.parse(savedMessages) : [];
+  });
   const [showForm, setShowForm] = useState(false);
-  const [chapterName, setChapterName] = useState("");
-  const [topicName, setTopicName] = useState("");
-  const [topics, setTopics] = useState([]);
-  const [selectedIndex, setSelectedIndex] = useState(null);
-  const [isEditing, setIsEditing] = useState(false);
-  const [lastChapterName, setLastChapterName] = useState("");
-  const [topicClick, setTopicClick] = useState("");
-  const [input, setInput] = useState("");
+  const [chapterName, setChapterName] = useState(() => {
+    return localStorage.getItem("chapterName") || "";
+  });
+  const [topicName, setTopicName] = useState(() => {
+    return localStorage.getItem("topicName") || "";
+  });
+  const [topics, setTopics] = useState(() => {
+    const savedTopics = localStorage.getItem("topics");
+    return savedTopics ? JSON.parse(savedTopics) : [];
+  });
+  const [selectedIndex, setSelectedIndex] = useState(() => {
+    const savedIndex = localStorage.getItem("selectedIndex");
+    return savedIndex ? JSON.parse(savedIndex) : null;
+  });
+  const [isEditing, setIsEditing] = useState(() => {
+    return localStorage.getItem("isEditing") === "true";
+  });
+  const [lastChapterName, setLastChapterName] = useState(() => {
+    return localStorage.getItem("lastChapterName") || "";
+  });
+  const [topicClick, setTopicClick] = useState(() => {
+    return localStorage.getItem("topicClick") || "";
+  });
+  const [input, setInput] = useState(() => {
+    return localStorage.getItem("input") || "";
+  });
   const [isLoading, setIsLoading] = useState(false);
-  const [notes, setNotes] = useState(true);
+  const [notes, setNotes] = useState(() => {
+    return localStorage.getItem("notes") === "true";
+  });
   const [video, setVideo] = useState(null);
-   const [disabledIndexes, setDisabledIndexes] = useState([]);
-     const [someCondition, setSomeCondition] = useState(true); // default false
+  const [disabledIndexes, setDisabledIndexes] = useState(() => {
+    const savedIndexes = localStorage.getItem("disabledIndexes");
+    return savedIndexes ? JSON.parse(savedIndexes) : [];
+  });
+  const [someCondition, setSomeCondition] = useState(true);
+
+  // Save state to localStorage whenever it changes
+  useEffect(() => {
+    localStorage.setItem("messages", JSON.stringify(messages));
+  }, [messages]);
+
+  useEffect(() => {
+    localStorage.setItem("chapterName", chapterName);
+  }, [chapterName]);
+
+  useEffect(() => {
+    localStorage.setItem("topicName", topicName);
+  }, [topicName]);
+
+  useEffect(() => {
+    localStorage.setItem("topics", JSON.stringify(topics));
+  }, [topics]);
+
+  useEffect(() => {
+    localStorage.setItem("selectedIndex", JSON.stringify(selectedIndex));
+  }, [selectedIndex]);
+
+  useEffect(() => {
+    localStorage.setItem("isEditing", isEditing);
+  }, [isEditing]);
+
+  useEffect(() => {
+    localStorage.setItem("lastChapterName", lastChapterName);
+  }, [lastChapterName]);
+
+  useEffect(() => {
+    localStorage.setItem("topicClick", topicClick);
+  }, [topicClick]);
+
+  useEffect(() => {
+    localStorage.setItem("input", input);
+  }, [input]);
+
+  useEffect(() => {
+    localStorage.setItem("notes", notes);
+  }, [notes]);
+
+  useEffect(() => {
+    localStorage.setItem("disabledIndexes", JSON.stringify(disabledIndexes));
+  }, [disabledIndexes]);
 
   const handleNotes = () => {
     setNotes((prev) => !prev);
@@ -117,13 +188,11 @@ function ToolLayout({ theme, themeHandle }) {
       );
 
       const data = await response.json();
-      console.log("Gemini API Response:", data); // Debug
       const aiText =
         data?.candidates?.[0]?.content?.parts?.[0]?.text ||
         "⚠️ No response from Gemini.";
       setMessages((prev) => {
         const newMessages = [...prev, { role: "assistant", content: aiText }];
-        console.log("New Messages:", newMessages); // Debug
         return newMessages;
       });
     } catch (error) {
@@ -145,7 +214,6 @@ function ToolLayout({ theme, themeHandle }) {
     await handleSend();
 
     const videoResult = await fetchYouTubeVideo(userInput);
-    console.log("Video Result:", videoResult); // Debug
     if (videoResult) {
       const videoMarkdown = `🎥 **Recommended Video:** [${videoResult.title}](${videoResult.url})\n\n**Channel:** ${videoResult.channel}`;
       const videoMessage = {
@@ -183,10 +251,8 @@ function ToolLayout({ theme, themeHandle }) {
         },
       });
 
-      console.log("YouTube API Response:", response.data); // Debug
       const videos = response.data.items;
       if (!videos || videos.length === 0) {
-        console.log("No videos found"); // Debug
         return null;
       }
 
@@ -208,29 +274,28 @@ function ToolLayout({ theme, themeHandle }) {
   };
 
   const handleClick = (index) => {
-  if (index === 0 ) {
-    const currentTopic = topics[0]?.topic; // Get the topic safely
+    if (index === 0) {
+      const currentTopic = topics[0]?.topic;
 
-    if (currentTopic) {
-      handleSend();
-     
+      if (currentTopic) {
+        handleSend();
 
-      fetchYouTubeVideo(currentTopic).then((videoResult) => {
-        if (videoResult) {
-          const videoMarkdown = `🎥 **Recommended Video:** [${videoResult.title}](${videoResult.url})\n\n**Channel:** ${videoResult.channel}`;
-          setMessages((prev) => [...prev, { role: "assistant", content: videoMarkdown }]);
-        } else {
-          setMessages((prev) => [
-            ...prev,
-            { role: "assistant", content: "⚠️ No relevant video found." },
-          ]);
-        }
-      });
+        fetchYouTubeVideo(currentTopic).then((videoResult) => {
+          if (videoResult) {
+            const videoMarkdown = `🎥 **Recommended Video:** [${videoResult.title}](${videoResult.url})\n\n**Channel:** ${videoResult.channel}`;
+            setMessages((prev) => [...prev, { role: "assistant", content: videoMarkdown }]);
+          } else {
+            setMessages((prev) => [
+              ...prev,
+              { role: "assistant", content: "⚠️ No relevant video found." },
+            ]);
+          }
+        });
+      }
     }
-  }
-};
+  };
 
-const handleTopicClick = () => {
+  const handleTopicClick = () => {
     if (someCondition) {
       handleClick(0);
     } else {
@@ -286,19 +351,14 @@ const handleTopicClick = () => {
 
         {/* Middle Panel */}
         <div
-          className={`w-full relative max-lg:h-[100vh]  rounded-xl shadow-md ${cardTheme}`}
+          className={`w-full relative max-lg:h-[100vh] rounded-xl shadow-md ${cardTheme}`}
         >
-
           <div className="flex lg:hidden absolute w-[100%] justify-between items-center p-4">
-
             <h1 className="text-xl font-bold">AI Guru</h1>
-            
-             <button className="" onClick={themeHandle}>
-                  {" "}
-                  {theme ? <FaSun size={30} /> : <IoIosMoon size={30} />}
-                </button>
+            <button className="" onClick={themeHandle}>
+              {theme ? <FaSun size={30} /> : <IoIosMoon size={30} />}
+            </button>
           </div>
-        
           {notes ? (
             <AiChat
               theme={theme}
@@ -330,9 +390,7 @@ const handleTopicClick = () => {
               handleSendWithVideo={handleSendWithVideo}
               setDisabledIndexes={setDisabledIndexes}
               handleNotes={handleNotes}
-
               handleTopicClick={handleTopicClick}
-
             />
           ) : (
             <div
@@ -349,20 +407,6 @@ const handleTopicClick = () => {
             </div>
           )}
         </div>
-
-        {/* Right Panel */}
-        {/* <div className="w-full lg:w-[25%] h-full flex flex-col gap-4">
-          <div
-            className={`h-auto lg:h-[30%] w-full rounded-xl shadow-md p-4 ${cardTheme}`}
-          >
-          
-          </div>
-          <div
-            className={`h-auto lg:h-[70%] w-full rounded-xl shadow-md p-4 ${cardTheme}`}
-          >
-          
-          </div>
-        </div> */}
       </div>
     </section>
   );
