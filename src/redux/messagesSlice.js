@@ -1,25 +1,23 @@
-"use client"
+// redux/userSlice.js
 import { createSlice } from '@reduxjs/toolkit';
 
-const initialState = {
-  messages: [],
-};
-
-const messagesSlice = createSlice({
-  name: 'messages',
-  initialState,
+const userSlice = createSlice({
+  name: 'user',
+  initialState: {
+    name: '',
+    age: null,
+  },
   reducers: {
-    setMessages: (state, action) => {
-      state.messages = action.payload;
+    setUser: (state, action) => {
+      state.name = action.payload.name;
+      state.age = action.payload.age;
     },
-    addMessage: (state, action) => {
-      state.messages.push(action.payload);
-    },
-    clearMessages: (state) => {
-      state.messages = [];
+    clearUser: (state) => {
+      state.name = '';
+      state.age = null;
     },
   },
 });
 
-export const { setMessages, addMessage, clearMessages } = messagesSlice.actions;
-export default messagesSlice.reducer;
+export const { setUser, clearUser } = userSlice.actions;
+export default userSlice.reducer;

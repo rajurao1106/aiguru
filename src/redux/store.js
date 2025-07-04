@@ -1,10 +1,9 @@
-// src/redux/store.js
-"use client";
-import { configureStore } from "@reduxjs/toolkit";
-import messagesReducer from "./messagesSlice";
+// redux/store.js
+import { configureStore } from '@reduxjs/toolkit';
+import userReducer from './messagesSlice';
 
 export const store = configureStore({
   reducer: {
-    messages: messagesReducer,
+    user: userReducer,
   },
 });

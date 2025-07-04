@@ -3,7 +3,7 @@ import Head from "next/head"; // Import Head for meta tags
 import "./globals.css";
 import Script from "next/script";
 
-import Providers from "@/redux/Providers";
+import Providers from "./App";
 
 const geist = Geist({ subsets: ["latin"], weight: "400" });
 
