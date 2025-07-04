@@ -21,7 +21,7 @@ function ToolLayout({ theme, themeHandle }) {
     return localStorage.getItem("topicName") || "";
   });
   const [topics, setTopics] = useState(() => {
-    const savedTopics = localStorage.getItem("topics");
+    const savedTopics = localStorage.getItem("topics") === "true" ;
     return savedTopics ? JSON.parse(savedTopics) : [];
   });
   const [selectedIndex, setSelectedIndex] = useState(() => {
