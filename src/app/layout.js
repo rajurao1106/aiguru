@@ -20,7 +20,7 @@ export default function RootLayout({ children }) {
         <link rel="icon" href="/favicon.ico" />
         <meta
           name="description"
-          content="Instantly solve study doubts with our AI-powered math problem solver. Explore smart tools designed for personalized learning and modern education using artificial intelligence."
+          content="Instantly solve study doubts with our AI-powered math solver. Personalized learning tools for modern education using artificial intelligence."
         />
         <meta
           name="keywords"
