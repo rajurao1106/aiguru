@@ -74,7 +74,9 @@ export default function AiChat({
                     ),
                   }}
                 >
-                  {msg.content}
+                  {typeof msg.content === "string"
+                    ? msg.content
+                    : msg.content.topic.replace(/"/g, "")}
                 </ReactMarkdown>
               </div>
             </div>
@@ -107,6 +109,24 @@ export default function AiChat({
                 >
                   Take a Test
                 </button>
+                 <button
+        onClick={() => {
+          // Delete last assistant message
+          setMessages((prev) => {
+            const updated = [...prev];
+            for (let i = updated.length - 1; i >= 0; i--) {
+              if (updated[i].role === "assistant") {
+                updated.splice(i, 1);
+                break;
+              }
+            }
+            return updated;
+          });
+        }}
+        className="bg-red-500 px-4 py-2 cursor-pointer rounded text-sm hover:bg-red-600 transition"
+      >
+        Delete Topic Answer
+      </button>
               </div>
               <button
                 onClick={handleTopicClick}

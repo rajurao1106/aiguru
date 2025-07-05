@@ -1,4 +1,3 @@
-const a = ["a","b","c"]
-console.log(a)
-console.log(a.splice(1))
-console.log(a)
+const str = '"Values"';
+const cleaned = str.replace(/"/g, ''); // removes all double quotes
+console.log(cleaned); // Output: Values

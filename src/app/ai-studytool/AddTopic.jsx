@@ -1,5 +1,6 @@
 "use client";
 import React, { useState, useEffect } from "react";
+import { FaPencilAlt } from "react-icons/fa";
 import { SlNotebook } from "react-icons/sl";
 
 export default function AddTopic({
@@ -61,11 +62,11 @@ export default function AddTopic({
         </button>
 
         {/* Chapter Title */}
-        {Array.isArray(topics) && topics.length > 0 && (
+        {/* {Array.isArray(topics) && topics.length > 0 && (
           <div className="text-sm font-semibold my-2">
             Chapter Name :<p className="font-normal">{topics[0].chapter}</p>
           </div>
-        )}
+        )} */}
 
         {/* Topics List */}
         <div className="mt-4 space-y-2 overflow-auto hide-scrollbar max-h-[calc(100vh-200px)] rounded-lg">
@@ -74,7 +75,7 @@ export default function AddTopic({
               <div
                 key={index}
                 tabIndex={0}
-                className={`p-3 border border-gray-400 rounded-lg flex w-full justify-between items-end
+                className={`p-3 relative border border-gray-400 rounded-lg flex w-full justify-between items-end
            
           `}
               >
@@ -85,13 +86,14 @@ export default function AddTopic({
                   >
                     {item.topic}
                   </p>
-                  <p className="text-xs ">{item.date}</p>
+                  <p className="text-xs ">{item.chapter}</p>
                 </div>
                 <p
-                  className="text-sm text-blue-600 cursor-pointer"
+                  className="text-sm text-blue-600 cursor-pointer absolute bottom-1 right-1"
                   onClick={() => openFormToEdit(index)}
                 >
-                  Update
+                  <FaPencilAlt />
+
                 </p>
               </div>
             ))}

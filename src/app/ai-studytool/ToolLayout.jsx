@@ -155,56 +155,75 @@ function ToolLayout({ theme, themeHandle }) {
     setShowForm(true);
   };
 
-  const handleSend = async () => {
-    let messageToSend = input;
+ const handleSend = async () => {
+  let messageToSend = input;
+  let chapterName = input;
 
-    if (topics.length > 0) {
-      messageToSend = topics[0].topic;
-      setTopics((prev) => prev.slice(1));
-    }
+  if (topics.length > 0) {
+    chapterName = topics[0].chapter;
+    messageToSend = topics[0].topic;
 
-    const userMessage = {
-      role: "user",
-      content: messageToSend,
-    };
+    // Remove the first topic from the list
+    setTopics((prev) => prev.slice(1));
+  }
 
-    setMessages((prev) => [...prev, userMessage]);
-    setInput("");
-
-    setIsLoading(true);
-
-    try {
-      const response = await fetch(
-        `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${process.env.NEXT_PUBLIC_GEMINI_API_KEY}`,
-        {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            contents: [
-              { role: "user", parts: [{ text: userMessage.content }] },
-            ],
-          }),
-        }
-      );
-
-      const data = await response.json();
-      const aiText =
-        data?.candidates?.[0]?.content?.parts?.[0]?.text ||
-        "⚠️ No response from Gemini.";
-      setMessages((prev) => {
-        const newMessages = [...prev, { role: "assistant", content: aiText }];
-        return newMessages;
-      });
-    } catch (error) {
-      console.error("Gemini Error:", error);
-      setMessages((prev) => [
-        ...prev,
-        { role: "assistant", content: "❌ Error getting response from Gemini." },
-      ]);
-    } finally {
-      setIsLoading(false);
-    }
+  const userMessage = {
+    role: "user",
+    content: {
+      chapter: chapterName,
+      topic: messageToSend,
+    },
   };
+
+  // Add user message to the UI
+  setMessages((prev) => [...prev, userMessage]);
+  setInput("");
+  setIsLoading(true);
+
+  // 🧠 Create a meaningful prompt for the AI
+  const prompt = `Chapter Name: ${chapterName}
+Topic: ${messageToSend}
+
+👉 First, understand the chapter context based on its name.
+👉 Then, answer the topic mentioned clearly and in simple words. If needed, give examples.`;
+
+  try {
+    const response = await fetch(
+      `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${process.env.NEXT_PUBLIC_GEMINI_API_KEY}`,
+      {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          contents: [
+            {
+              role: "user",
+              parts: [{ text: prompt }],
+            },
+          ],
+        }),
+      }
+    );
+
+    const data = await response.json();
+    const aiText =
+      data?.candidates?.[0]?.content?.parts?.[0]?.text ||
+      "⚠️ No response from Gemini.";
+
+    setMessages((prev) => [
+      ...prev,
+      { role: "assistant", content: aiText },
+    ]);
+  } catch (error) {
+    console.error("Gemini Error:", error);
+    setMessages((prev) => [
+      ...prev,
+      { role: "assistant", content: "❌ Error getting response from Gemini." },
+    ]);
+  } finally {
+    setIsLoading(false);
+  }
+};
+
 
   const handleSendWithVideo = async () => {
     if (!input.trim()) return;
