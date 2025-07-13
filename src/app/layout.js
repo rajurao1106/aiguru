@@ -15,7 +15,7 @@ export default function RootLayout({ children }) {
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <link rel="canonical" href="https://aiguru.vercel.app/" />
         <title>
-          AI Guru – Smart AI Learning Tools for Personalized Education
+          AI Guru – AI Notes Maker for Smarter, Faster Learning
         </title>
         <link rel="icon" href="/favicon.ico" />
         <meta
