@@ -39,11 +39,11 @@ export default function Hero() {
             variants={fadeInUp}
             className="text-base sm:text-lg md:text-xl text-gray-700 mb-8 max-w-3xl mx-auto"
           >
-            The leading AI platform for educators and students. Experience
-            personalized learning, instant solutions, and smart tools to save
-            time and boost academic success. <br /> Instantly summarize YouTube videos,
-            PDFs, audios. Create notes, and presentations. Supercharge your learning
-            efficiency by 10x
+            Experience personalized learning with instant note generation, smart
+            summaries, and AI-powered tools that save time, enhance
+            understanding, and accelerate academic success. <br /> Instantly
+            summarize YouTube videos, PDFs, audios. Create notes, and
+            presentations. Supercharge your learning efficiency by 10x
           </motion.p>
           <motion.div
             custom={2}
