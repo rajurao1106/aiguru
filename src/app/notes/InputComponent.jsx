@@ -3,7 +3,7 @@
 // InputComponent.jsx
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
-import { setText } from "@/redux/inputSlice";
+import { setText } from "@/redux/themeSlice";
 
 export default function InputComponent() {
   const [value, setValue] = useState("");
