@@ -24,7 +24,10 @@ export default function RootLayout({ children }) {
         />
         <meta
           name="keywords"
-          content="AI notes maker, ai for educators, ai writer AI note generator, PDF summarizer, YouTube video summarizer, audio to notes, AI-powered study tool, automatic note-taking, smart note generator, AI summarization tool, learning assistant AI, digital note maker, AI study assistant, content summarizer, AI for students, educational AI tool"
+          content="AI notes maker, ai for educators, ai writer AI note generator, PDF summarizer, 
+          YouTube video summarizer, AI note taker, Ai notes maker free,AI notes Maker from PDF, AI notes Maker from video,
+Ai notes maker online,Free AI notes Generator for students,Study notes Generator,Study notes Generator free, 
+AI-powered study tool, automatic note-taking, smart note generator, AI summarization tool, learning assistant AI"
         />
 
         {/* Moved to the first meta tag */}
