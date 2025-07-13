@@ -24,7 +24,7 @@ export default function RootLayout({ children }) {
         />
         <meta
           name="keywords"
-          content="AI notes maker, AI note generator, PDF summarizer, YouTube video summarizer, audio to notes, AI-powered study tool, automatic note-taking, smart note generator, AI summarization tool, learning assistant AI, digital note maker, AI study assistant, content summarizer, AI for students, educational AI tool"
+          content="AI notes maker, ai for educators, ai writer AI note generator, PDF summarizer, YouTube video summarizer, audio to notes, AI-powered study tool, automatic note-taking, smart note generator, AI summarization tool, learning assistant AI, digital note maker, AI study assistant, content summarizer, AI for students, educational AI tool"
         />
 
         {/* Moved to the first meta tag */}
