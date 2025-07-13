@@ -238,17 +238,17 @@ export default function AiStudyTool({ selectedSubject, setSelectedSubject }) {
   if (!hasMounted) return null;
 
   return (
-    <div className="flex h-screen">
+    <div className="flex h-[92vh] ">
       {/* Sidebar */}
-      <div className="w-2/6 max-w-sm p-5 border-r-[1px] border-gray-600 h-full overflow-y-auto bg-white dark:bg-gray-900">
+      <div className="w-2/6 max-w-sm p-5 border-r-[1px] border-gray-600 h-full overflow-y-auto  ">
         <div className="flex items-center justify-between mb-6">
           <button
             onClick={() => setSelectedSubject("")}
-            className="p-2 hover:bg-gray-600 rounded-full"
+            className="p-2 hover:bg-gray-500/20 rounded-full"
           >
             <ArrowLeft size={20} />
           </button>
-          <h2 className="text-lg font-semibold text-gray-900 dark:text-white">
+          <h2 className="text-base ">
             Subject:{" "}
             <span className="text-blue-600 dark:text-blue-400 font-normal">
               {selectedSubject
@@ -265,19 +265,19 @@ export default function AiStudyTool({ selectedSubject, setSelectedSubject }) {
             value={chapter}
             onChange={(e) => setChapter(e.target.value)}
             placeholder="Chapter name"
-            className="w-full px-3 py-2 rounded-lg border bg-gray-100 dark:bg-gray-800"
+            className="w-full px-3 py-2 rounded-lg border "
           />
           <input
             value={topic}
             onChange={(e) => setTopic(e.target.value)}
             placeholder="Topic title"
-            className="w-full px-3 py-2 rounded-lg border bg-gray-100 dark:bg-gray-800"
+            className="w-full px-3 py-2 rounded-lg border "
           />
           <button
             type="submit"
             className="w-full bg-blue-600 hover:bg-blue-700 text-white py-2 rounded-lg"
           >
-            ➕ Add Topic
+             Add Topic
           </button>
         </form>
 
@@ -298,7 +298,7 @@ export default function AiStudyTool({ selectedSubject, setSelectedSubject }) {
                               value: e.target.value,
                             }))
                           }
-                          className="px-2 py-1 border rounded"
+                          className="px-2 w-[13vw] py-1 border rounded"
                         />
                         <button onClick={saveEdit} className="text-green-600">
                           ✅
@@ -346,7 +346,7 @@ export default function AiStudyTool({ selectedSubject, setSelectedSubject }) {
           onClick={() => setShowNotebook(true)}
           className="mt-8 w-full bg-purple-600 hover:bg-purple-700 text-white py-2 rounded-lg"
         >
-          📓 Open Notebook
+           Open Notebook
         </button>
       </div>
 
@@ -376,7 +376,7 @@ export default function AiStudyTool({ selectedSubject, setSelectedSubject }) {
                   {Object.entries(tops).map(([tName, cont], idx) => (
                     <div key={idx} className="pl-4 mt-2">
                       <h4>📌 {tName}</h4>
-                      <p className="p-3 whitespace-pre-wrap">{cont}</p>
+                      <p className="p-3 whitespace-pre-wrap"><ReactMarkdown>{cont}</ReactMarkdown></p>
                     </div>
                   ))}
                 </div>
@@ -425,18 +425,18 @@ export default function AiStudyTool({ selectedSubject, setSelectedSubject }) {
             {loading ? (
               <p className="text-blue-500 animate-pulse">⏳ Loading...</p>
             ) : aiResponse ? (
-              <pre className="p-4 dark:bg-gray-900 whitespace-pre-wrap">
+              <pre className="p-4  whitespace-pre-wrap">
                 <ReactMarkdown>{aiResponse}</ReactMarkdown>
               </pre>
             ) : (
               <p className="text-red-500">No response available.</p>
             )}
-            <button
+            {/* <button
               onClick={startQuiz}
               className="mt-4 bg-green-600 hover:bg-green-700 text-white py-2 px-4 rounded"
             >
               🧪 Practice MCQs
-            </button>
+            </button> */}
           </>
         ) : (
           <p className="text-gray-600 text-lg">

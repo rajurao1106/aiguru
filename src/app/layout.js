@@ -20,11 +20,11 @@ export default function RootLayout({ children }) {
         <link rel="icon" href="/favicon.ico" />
         <meta
           name="description"
-          content="Instantly solve study doubts with our AI-powered math solver. Personalized learning tools for modern education using artificial intelligence."
+          content="AI Guru is an AI notes maker for students. Summarize PDFs & docs into clear notes. Fast, free, and secure AI-powered note-making."
         />
         <meta
           name="keywords"
-          content="AI Guru, AI quiz generator, AI test maker, personalized learning, educational technology, edtech platform, smart classroom, AI-powered study tools, computer assisted learning, digital classroom, electronic learning, ICT in education"
+          content="AI notes maker, AI note generator, PDF summarizer, YouTube video summarizer, audio to notes, AI-powered study tool, automatic note-taking, smart note generator, AI summarization tool, learning assistant AI, digital note maker, AI study assistant, content summarizer, AI for students, educational AI tool"
         />
 
         {/* Moved to the first meta tag */}

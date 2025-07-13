@@ -72,7 +72,7 @@ export default function AddSubjectName() {
   if (!isClient) return null;
 
   return (
-    <div className=" relative w-full h-[90vh] flex flex-col items-center custom-scrollbar">
+    <div className=" relative w-full h-[92vh] flex flex-col items-center custom-scrollbar">
       {selectedSubject ? (
         <div className="w-full">
           <SubjectDetailViewer

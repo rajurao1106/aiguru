@@ -27,7 +27,7 @@ export default function Asidebar({ setActive, active }) {
           <button
             onClick={() => setActive("home")}
             className={`flex items-center rounded w-full duration-200 ${
-              active === "home" ? "bg-gray-800" : "hover:bg-gray-800"
+              active === "home" ? "bg-gray-500/20" : "hover:bg-gray-500/20"
             }`}
           >
             <div className="p-2 text-2xl">
@@ -39,7 +39,7 @@ export default function Asidebar({ setActive, active }) {
           <button
             onClick={() => setActive("create")}
             className={`flex items-center rounded w-full duration-200 ${
-              active === "create" ? "bg-gray-800" : "hover:bg-gray-800"
+              active === "create" ? "bg-gray-500/20" : "hover:bg-gray-500/20"
             }`}
           >
             <div className="p-2 text-2xl">
@@ -51,7 +51,7 @@ export default function Asidebar({ setActive, active }) {
           <button
             onClick={() => setActive("notes")}
             className={`flex items-center rounded w-full duration-200 ${
-              active === "notes" ? "bg-gray-800" : "hover:bg-gray-800"
+              active === "notes" ? "bg-gray-500/20" : "hover:bg-gray-500/20"
             }`}
           >
             <div className="p-2 text-2xl">

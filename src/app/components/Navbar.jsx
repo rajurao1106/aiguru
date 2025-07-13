@@ -20,7 +20,7 @@ export default function Navbar({ theme, themeHandle }) {
           </div>
           <a href="/" className="text-2xl">AI Guru</a>
         </div>
-        <div className="">
+        <div className="hidden">
           <button onClick={themeHandle}>
             {" "}
             {theme ? <FaSun size={30} /> : <IoIosMoon size={30} />}
