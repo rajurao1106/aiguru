@@ -18,12 +18,10 @@ export default function Asidebar({ setActive, active }) {
   return (
     <aside
       className={`h-[100vh] ${
-        isAsideOpen ? "w-[16rem] p-3 bg-gray-900" : "w-0"
+        isAsideOpen ? "w-[16rem] max-lg:w-0 p-3 max-lg:p-0 bg-gray-900" : "w-0 max-lg:w-[16rem] max-lg:p-3"
       } duration-300 border-r border-gray-600 overflow-hidden `}
     >
-    <div onClick={openSidebar} className={`absolute w-[100vw] left-0 h-full -z-10 ${
-        isAsideOpen ? "max-lg:bg-gray-900/80" : "hidden"
-      }  top-0 `}></div>
+    
   <button className="text-2xl" onClick={openSidebar}>
         {isAsideOpen ? (
           <TbLayoutSidebarLeftCollapse />

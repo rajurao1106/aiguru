@@ -43,15 +43,24 @@ export default function AddSubjectName() {
     }
   }, [selectedSubject, isClient]);
 
-  const addSubjectName = (e) => {
-    e.preventDefault();
-    if (addtask.trim()) {
-      const updated = [...addtodo, addtask];
-      setAddtodo(updated);
-      setAddtask("");
-      setOpenSubjectForm(false);
-    }
-  };
+// In AddSubjectName.jsx
+const addSubjectName = (e) => {
+  e.preventDefault();
+  if (addtask.trim()) {
+    const updated = [...addtodo, addtask];
+    setAddtodo(updated);
+    setAddtask("");
+    setOpenSubjectForm(false);
+
+    // Initialize empty chapterTopics and savedResponses for the new subject
+    const allTopics = JSON.parse(localStorage.getItem("chapterTopics") || "{}");
+    const allResponses = JSON.parse(localStorage.getItem("savedResponses") || "{}");
+    allTopics[addtask] = {};
+    allResponses[addtask] = {};
+    localStorage.setItem("chapterTopics", JSON.stringify(allTopics));
+    localStorage.setItem("savedResponses", JSON.stringify(allResponses));
+  }
+};
 
   const removeSubjectName = (index) => {
     const subjectToRemove = addtodo[index];

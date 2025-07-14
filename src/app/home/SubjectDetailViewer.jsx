@@ -30,17 +30,27 @@ export default function AiStudyTool({ selectedSubject, setSelectedSubject }) {
     };
 
   // Load for current subject
-  useEffect(() => {
-    setHasMounted(true);
-    const allTopics = JSON.parse(localStorage.getItem("chapterTopics") || "{}");
-    const allResponses = JSON.parse(
-      localStorage.getItem("savedResponses") || "{}"
-    );
-    setChapterTopics(allTopics[selectedSubject] || {});
-    setSavedResponses(allResponses[selectedSubject] || {});
-    setSelected({ chapter: "", topic: "" });
-    setAiResponse("");
-  }, [selectedSubject]);
+// In AiStudyTool.jsx
+useEffect(() => {
+  setHasMounted(true);
+  const allTopics = JSON.parse(localStorage.getItem("chapterTopics") || "{}");
+  const allResponses = JSON.parse(localStorage.getItem("savedResponses") || "{}");
+
+  // Initialize chapterTopics and savedResponses for the subject if not present
+  if (!allTopics[selectedSubject]) allTopics[selectedSubject] = {};
+  if (!allResponses[selectedSubject]) allResponses[selectedSubject] = {};
+
+  setChapterTopics(allTopics[selectedSubject] || {});
+  setSavedResponses(allResponses[selectedSubject] || {});
+  setSelected({ chapter: "", topic: "" });
+  setAiResponse("");
+  setChapter(""); // Reset chapter input
+  setTopic(""); // Reset topic input
+  setShowMCQ(false); // Reset quiz state
+  setShowNotebook(false); // Reset notebook state
+  localStorage.setItem("-chapterTopics", JSON.stringify(allTopics));
+  localStorage.setItem("savedResponses", JSON.stringify(allResponses));
+}, [selectedSubject]);
 
   // Save chapterTopics
   useEffect(() => {
@@ -119,18 +129,19 @@ export default function AiStudyTool({ selectedSubject, setSelectedSubject }) {
   }, [selected.chapter, selected.topic]);
 
   // Add topic
-  const handleAddTopic = (e) => {
-    e.preventDefault();
-    if (!chapter.trim() || !topic.trim()) return;
-    setChapterTopics((prev) => {
-      const curr = { ...prev };
-      if (!curr[chapter]) curr[chapter] = [];
-      if (!curr[chapter].includes(topic)) curr[chapter].push(topic);
-      return curr;
-    });
-    setChapter("");
-    setTopic("");
-  };
+// In AiStudyTool.jsx
+const handleAddTopic = (e) => {
+  e.preventDefault();
+  if (!chapter.trim() || !topic.trim()) return;
+  setChapterTopics((prev) => {
+    const curr = { ...prev };
+    if (!curr[chapter]) curr[chapter] = [];
+    if (!curr[chapter].includes(topic)) curr[chapter].push(topic);
+    return curr;
+  });
+  setChapter(""); // Clear chapter input
+  setTopic(""); // Clear topic input
+};
 
   // Delete topic
   const handleDeleteTopic = (chapName, topicName) => {
@@ -338,7 +349,7 @@ export default function AiStudyTool({ selectedSubject, setSelectedSubject }) {
             {loading ? (
               <p className="text-blue-500 animate-pulse">⏳ Loading...</p>
             ) : aiResponse ? (
-              <pre className="p-4  whitespace-pre-wrap">
+              <pre className="p-4 whitespace-pre-wrap">
                 <ReactMarkdown>{aiResponse}</ReactMarkdown>
               </pre>
             ) : (
@@ -362,7 +373,7 @@ export default function AiStudyTool({ selectedSubject, setSelectedSubject }) {
       {/* Sidebar */}
     <div
   className={`max-w-sm border-l border-gray-600 h-full overflow-y-auto transition-all duration-300 ${
-    isSubjectbarOpen ? "w-0 overflow-hidden" : " w-1/2 p-5 absolute right-0 bg-gray-900"
+    isSubjectbarOpen ? "w-0 overflow-hidden" : " w-1/3 max-lg:w-1/2 p-5 absolute right-0 bg-gray-900"
   }`}
 >
     <div className="flex items-center justify-between mb-6">
