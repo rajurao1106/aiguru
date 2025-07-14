@@ -4,20 +4,33 @@ import { Home, Notebook } from "lucide-react";
 import React from "react";
 import { MdAdd } from "react-icons/md";
 import { useDispatch, useSelector } from "react-redux";
-import { toggleAsidebar } from "@/redux/asidebarSlice";
+import { toggleTheme } from "@/redux/themeSlice";
+import { toggleAsidebar } from "@/redux/asidebarSlice"; 
+import { TbLayoutSidebarLeftCollapse, TbLayoutSidebarRightCollapse } from "react-icons/tb";
 
 export default function Asidebar({ setActive, active }) {
-
+  const dispatch = useDispatch(); // ✅ FIXED: added dispatch
   const isAsideOpen = useSelector((state) => state.asidebar.isAsideOpen);
 
+  const openSidebar = () => {
+    dispatch(toggleAsidebar());
+  };
   return (
     <aside
       className={`h-[100vh] ${
-        isAsideOpen ? "w-[16rem] p-3" : "w-0"
+        isAsideOpen ? "w-[16rem] p-3 bg-gray-900" : "w-0"
       } duration-300 border-r border-gray-600 overflow-hidden `}
     >
-    
-
+    <div onClick={openSidebar} className={`absolute w-[100vw] left-0 h-full -z-10 ${
+        isAsideOpen ? "max-lg:bg-gray-900/80" : "hidden"
+      }  top-0 `}></div>
+  <button className="text-2xl" onClick={openSidebar}>
+        {isAsideOpen ? (
+          <TbLayoutSidebarLeftCollapse />
+        ) : (
+          <TbLayoutSidebarRightCollapse />
+        )}
+      </button>
       <div className="flex flex-col text-base">
         <a href="/" className="text-2xl mb-4">
           AI Guru

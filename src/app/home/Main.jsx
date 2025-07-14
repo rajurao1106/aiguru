@@ -12,8 +12,10 @@ export default function Layout() {
   const [active, setActive] = useState("home");
 
   return (
-    <div className="flex w-full">
-      <Asidebar setActive={setActive} active={active} />
+    <div className="flex w-full ">
+      <div className="max-lg:absolute max-lg:bg-gray-900 z-50">
+        <Asidebar setActive={setActive} active={active} />
+      </div>
 
       <div className="flex flex-col w-full">
         <Navbar/>

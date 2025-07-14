@@ -2,6 +2,9 @@
 import { ArrowLeft } from "lucide-react";
 import React, { useState, useEffect } from "react";
 import ReactMarkdown from "react-markdown";
+import { useDispatch, useSelector } from "react-redux";
+import { toggleSubjectbar } from "@/redux/subjectbar"; 
+import { TbLayoutSidebarLeftCollapse, TbLayoutSidebarRightCollapse } from "react-icons/tb";
 
 export default function AiStudyTool({ selectedSubject, setSelectedSubject }) {
   const [hasMounted, setHasMounted] = useState(false);
@@ -19,6 +22,12 @@ export default function AiStudyTool({ selectedSubject, setSelectedSubject }) {
   const [current, setCurrent] = useState(0);
   const [score, setScore] = useState(0);
   const [showNotebook, setShowNotebook] = useState(false);
+
+   const dispatch = useDispatch(); // ✅ FIXED: added dispatch
+    const isSubjectbarOpen = useSelector((state) => state.subjectbar.isSubjectbarOpen);
+   const openSubjectbar = () => {
+      dispatch(toggleSubjectbar());
+    };
 
   // Load for current subject
   useEffect(() => {
@@ -238,120 +247,24 @@ export default function AiStudyTool({ selectedSubject, setSelectedSubject }) {
   if (!hasMounted) return null;
 
   return (
-    <div className="flex h-[92vh] ">
-      {/* Sidebar */}
-      <div className="w-2/6 max-w-sm p-5 border-r-[1px] border-gray-600 h-full overflow-y-auto  ">
-        <div className="flex items-center justify-between mb-6">
-          <button
+    <div className="flex flex-row h-[92vh] ">
+       {/* Main Panel */}
+      <div className="w-full p-4 overflow-y-auto custom-scrollbar">
+      <div className="w-full flex justify-between">
+           <button
             onClick={() => setSelectedSubject("")}
             className="p-2 hover:bg-gray-500/20 rounded-full"
           >
             <ArrowLeft size={20} />
           </button>
-          <h2 className="text-base ">
-            Subject:{" "}
-            <span className="text-blue-600 dark:text-blue-400 font-normal">
-              {selectedSubject
-                .toLowerCase()
-                .split(" ")
-                .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
-                .join(" ")}
-            </span>
-          </h2>
-        </div>
-
-        <form onSubmit={handleAddTopic} className="space-y-3 mb-6">
-          <input
-            value={chapter}
-            onChange={(e) => setChapter(e.target.value)}
-            placeholder="Chapter name"
-            className="w-full px-3 py-2 rounded-lg border "
-          />
-          <input
-            value={topic}
-            onChange={(e) => setTopic(e.target.value)}
-            placeholder="Topic title"
-            className="w-full px-3 py-2 rounded-lg border "
-          />
-          <button
-            type="submit"
-            className="w-full bg-blue-600 hover:bg-blue-700 text-white py-2 rounded-lg"
-          >
-             Add Topic
-          </button>
-        </form>
-
-        <div className="space-y-6">
-          {Object.entries(chapterTopics).map(([chap, topics]) => (
-            <div key={chap}>
-              <h3 className="uppercase font-semibold mb-2">{chap}</h3>
-              <ul className="ml-3 space-y-1">
-                {topics.map((t, i) => (
-                  <li key={i} className="flex items-center gap-2">
-                    {editing.chapter === chap && editing.topic === t ? (
-                      <>
-                        <input
-                          value={editing.value}
-                          onChange={(e) =>
-                            setEditing((ed) => ({
-                              ...ed,
-                              value: e.target.value,
-                            }))
-                          }
-                          className="px-2 w-[13vw] py-1 border rounded"
-                        />
-                        <button onClick={saveEdit} className="text-green-600">
-                          ✅
-                        </button>
-                        <button
-                          onClick={() =>
-                            setEditing({ chapter: "", topic: "", value: "" })
-                          }
-                        >
-                          ❌
-                        </button>
-                      </>
+           <button className="text-2xl" onClick={openSubjectbar}>
+                    {isSubjectbarOpen ? (
+                      <TbLayoutSidebarLeftCollapse />
                     ) : (
-                      <>
-                        <span
-                          onClick={() =>
-                            setSelected({ chapter: chap, topic: t })
-                          }
-                          className="flex-1 cursor-pointer hover:text-blue-600"
-                        >
-                          {t}
-                        </span>
-                        <button
-                          onClick={() => startEdit(chap, t)}
-                          className="text-yellow-500"
-                        >
-                          ✏️
-                        </button>
-                        <button
-                          onClick={() => handleDeleteTopic(chap, t)}
-                          className="text-red-500"
-                        >
-                          ❌
-                        </button>
-                      </>
+                      <TbLayoutSidebarRightCollapse />
                     )}
-                  </li>
-                ))}
-              </ul>
-            </div>
-          ))}
-        </div>
-
-        <button
-          onClick={() => setShowNotebook(true)}
-          className="mt-8 w-full bg-purple-600 hover:bg-purple-700 text-white py-2 rounded-lg"
-        >
-           Open Notebook
-        </button>
+                  </button>
       </div>
-
-      {/* Main Panel */}
-      <div className="w-full p-6 overflow-y-auto">
         {showNotebook ? (
           <>
             <button
@@ -440,10 +353,130 @@ export default function AiStudyTool({ selectedSubject, setSelectedSubject }) {
           </>
         ) : (
           <p className="text-gray-600 text-lg">
+            
             👈 Select a topic to view explanation
+            
           </p>
         )}
       </div>
+      {/* Sidebar */}
+    <div
+  className={`max-w-sm border-l border-gray-600 h-full overflow-y-auto transition-all duration-300 ${
+    isSubjectbarOpen ? "w-0 overflow-hidden" : " w-1/2 p-5 absolute right-0 bg-gray-900"
+  }`}
+>
+    <div className="flex items-center justify-between mb-6">
+         
+          <h2 className="text-base ">
+           <button className="text-2xl" onClick={openSubjectbar}>
+                    {isSubjectbarOpen ? (
+                      <TbLayoutSidebarLeftCollapse />
+                    ) : (
+                      <TbLayoutSidebarRightCollapse />
+                    )}
+                  </button>
+            Subject:{" "}
+            <span className="text-blue-600 dark:text-blue-400 font-normal">
+              {selectedSubject
+                .toLowerCase()
+                .split(" ")
+                .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+                .join(" ")}
+            </span>
+          </h2>
+        </div>
+
+        <form onSubmit={handleAddTopic} className="space-y-3 mb-6">
+          <input
+            value={chapter}
+            onChange={(e) => setChapter(e.target.value)}
+            placeholder="Chapter name"
+            className="w-full px-3 py-2 rounded-lg border "
+          />
+          <input
+            value={topic}
+            onChange={(e) => setTopic(e.target.value)}
+            placeholder="Topic title"
+            className="w-full px-3 py-2 rounded-lg border "
+          />
+          <button
+            type="submit"
+            className="w-full bg-blue-600 hover:bg-blue-700 text-white py-2 rounded-lg"
+          >
+             Add Topic
+          </button>
+        </form>
+
+        <div className="space-y-6">
+          {Object.entries(chapterTopics).map(([chap, topics]) => (
+            <div key={chap}>
+              <h3 className="uppercase font-semibold mb-2 ">{chap}</h3>
+              <ul className="ml-3 space-y-1">
+                {topics.map((t, i) => (
+                  <li key={i} className="flex items-center gap-2">
+                    {editing.chapter === chap && editing.topic === t ? (
+                      <>
+                        <input
+                          value={editing.value}
+                          onChange={(e) =>
+                            setEditing((ed) => ({
+                              ...ed,
+                              value: e.target.value,
+                            }))
+                          }
+                          className="px-2 w-[13vw] py-1 border rounded"
+                        />
+                        <button onClick={saveEdit} className="text-green-600">
+                          ✅
+                        </button>
+                        <button
+                          onClick={() =>
+                            setEditing({ chapter: "", topic: "", value: "" })
+                          }
+                        >
+                          ❌
+                        </button>
+                      </>
+                    ) : (
+                      <>
+                        <span
+                          onClick={() =>
+                            setSelected({ chapter: chap, topic: t })
+                          }
+                          className="flex-1 cursor-pointer hover:text-blue-600"
+                        >
+                          {t}
+                        </span>
+                        <button
+                          onClick={() => startEdit(chap, t)}
+                          className="text-yellow-500"
+                        >
+                          ✏️
+                        </button>
+                        <button
+                          onClick={() => handleDeleteTopic(chap, t)}
+                          className="text-red-500"
+                        >
+                          ❌
+                        </button>
+                      </>
+                    )}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ))}
+        </div>
+
+        <button
+          onClick={() => setShowNotebook(true)}
+          className="mt-8 w-full bg-purple-600 hover:bg-purple-700 text-white py-2 rounded-lg"
+        >
+           Open Notebook
+        </button>
+      </div>
+
+     
     </div>
   );
 }

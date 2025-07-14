@@ -3,11 +3,12 @@ import themeReducer from "./themeSlice";
 import asidebarReducer from "./asidebarSlice"; // ✅ Import
 import subjectReducer from "./subjectSlice";
 import todoReducer from "./test";
-
+import subjectbarReducer from "./subjectbar"
 export const store = configureStore({
   reducer: {
     theme: themeReducer,
-    asidebar: asidebarReducer, // ✅ Must match useSelector(state => state.asidebar)
+    asidebar: asidebarReducer, 
+    subjectbar: subjectbarReducer,
     subject: subjectReducer,
     todotasks: todoReducer,
   },
