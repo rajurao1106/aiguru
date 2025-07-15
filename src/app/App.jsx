@@ -1,31 +1,41 @@
 "use client";
 
 import { store } from "@/redux/store";
-import { Provider } from "react-redux";
-
-import { useSelector } from "react-redux";
+import { Provider, useSelector } from "react-redux";
 import { useEffect, useState } from "react";
 import Navbar from "./components/Navbar";
 import Asidebar from "./components/Asidebar";
 
+// Moved useSelector into a separate component to ensure client-only logic
 function LayoutWrapper({ children }) {
-  const isDark = useSelector((state) => state.theme.isDark);
   const [mounted, setMounted] = useState(false);
+  const [isDark, setIsDark] = useState(false);
+
+  const themeSelector = useSelector((state) => state.theme.isDark);
 
   useEffect(() => {
-    // Avoid hydration mismatch
     setMounted(true);
+  }, []);
+
+  useEffect(() => {
+    if (mounted) {
+      setIsDark(themeSelector);
+    }
+  }, [mounted, themeSelector]);
+
+  useEffect(() => {
+    if (!mounted) return;
     if (isDark) {
       document.documentElement.classList.add("dark");
     } else {
       document.documentElement.classList.remove("dark");
     }
-  }, [isDark]);
+  }, [isDark, mounted]);
 
-  if (!mounted) return null; // Prevent flash on load
+  if (!mounted) return null;
 
   return (
-    <div className={`flex duration-300 ${isDark?"bg-gray-900 text-white":" "}`}>
+    <div className={`flex duration-300 ${isDark ? "bg-gray-900 text-white" : ""}`}>
       {/* Sidebar */}
       <div className="max-lg:absolute max-lg:bg-gray-900 z-50">
         <Asidebar />
@@ -34,7 +44,7 @@ function LayoutWrapper({ children }) {
       {/* Main Content */}
       <div className="flex flex-col w-full">
         <Navbar />
-        <main className="">{children}</main>
+        <main>{children}</main>
       </div>
     </div>
   );
