@@ -37,7 +37,7 @@ function LayoutWrapper({ children }) {
   return (
     <div className={`flex duration-300 ${isDark ? "bg-gray-900 text-white" : ""}`}>
       {/* Sidebar */}
-      <div className="max-lg:absolute max-lg:bg-gray-900 z-50">
+      <div className={`max-lg:absolute ${isDark ? "bg-gray-900 text-white" : "bg-white"} z-50`}>
         <Asidebar />
       </div>
 

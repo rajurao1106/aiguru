@@ -19,8 +19,9 @@ export default function Navbar() {
   };
 
   return (
-    <div className={`px-2 border-b border-gray-600 duration-300 py-2 ${isDark?"bg-gray-900 ":""} flex justify-between items-center`}>
-      <button className="text-2xl" onClick={openSidebar}>
+    <div className={`px-2 border-b border-gray-600 duration-300 py-2 ${isDark?"bg-gray-900 ":""} 
+    flex justify-end max-lg:justify-between items-center`}>
+      <button className="text-2xl lg:hidden" onClick={openSidebar}>
         {isAsideOpen ? (
           <TbLayoutSidebarLeftCollapse />
         ) : (

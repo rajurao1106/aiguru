@@ -3,8 +3,11 @@ import { ArrowLeft } from "lucide-react";
 import React, { useState, useEffect } from "react";
 import ReactMarkdown from "react-markdown";
 import { useDispatch, useSelector } from "react-redux";
-import { toggleSubjectbar } from "@/redux/subjectbar"; 
-import { TbLayoutSidebarLeftCollapse, TbLayoutSidebarRightCollapse } from "react-icons/tb";
+import { toggleSubjectbar } from "@/redux/subjectbar";
+import {
+  TbLayoutSidebarLeftCollapse,
+  TbLayoutSidebarRightCollapse,
+} from "react-icons/tb";
 
 export default function AiStudyTool({ selectedSubject, setSelectedSubject }) {
   const [hasMounted, setHasMounted] = useState(false);
@@ -23,34 +26,39 @@ export default function AiStudyTool({ selectedSubject, setSelectedSubject }) {
   const [score, setScore] = useState(0);
   const [showNotebook, setShowNotebook] = useState(false);
 
-   const dispatch = useDispatch(); // ✅ FIXED: added dispatch
-    const isSubjectbarOpen = useSelector((state) => state.subjectbar.isSubjectbarOpen);
-   const openSubjectbar = () => {
-      dispatch(toggleSubjectbar());
-    };
+  const dispatch = useDispatch(); // ✅ FIXED: added dispatch
+  const isSubjectbarOpen = useSelector(
+    (state) => state.subjectbar.isSubjectbarOpen
+  );
+  const { isDark } = useSelector((state) => state.theme);
+  const openSubjectbar = () => {
+    dispatch(toggleSubjectbar());
+  };
 
   // Load for current subject
-// In AiStudyTool.jsx
-useEffect(() => {
-  setHasMounted(true);
-  const allTopics = JSON.parse(localStorage.getItem("chapterTopics") || "{}");
-  const allResponses = JSON.parse(localStorage.getItem("savedResponses") || "{}");
+  // In AiStudyTool.jsx
+  useEffect(() => {
+    setHasMounted(true);
+    const allTopics = JSON.parse(localStorage.getItem("chapterTopics") || "{}");
+    const allResponses = JSON.parse(
+      localStorage.getItem("savedResponses") || "{}"
+    );
 
-  // Initialize chapterTopics and savedResponses for the subject if not present
-  if (!allTopics[selectedSubject]) allTopics[selectedSubject] = {};
-  if (!allResponses[selectedSubject]) allResponses[selectedSubject] = {};
+    // Initialize chapterTopics and savedResponses for the subject if not present
+    if (!allTopics[selectedSubject]) allTopics[selectedSubject] = {};
+    if (!allResponses[selectedSubject]) allResponses[selectedSubject] = {};
 
-  setChapterTopics(allTopics[selectedSubject] || {});
-  setSavedResponses(allResponses[selectedSubject] || {});
-  setSelected({ chapter: "", topic: "" });
-  setAiResponse("");
-  setChapter(""); // Reset chapter input
-  setTopic(""); // Reset topic input
-  setShowMCQ(false); // Reset quiz state
-  setShowNotebook(false); // Reset notebook state
-  localStorage.setItem("-chapterTopics", JSON.stringify(allTopics));
-  localStorage.setItem("savedResponses", JSON.stringify(allResponses));
-}, [selectedSubject]);
+    setChapterTopics(allTopics[selectedSubject] || {});
+    setSavedResponses(allResponses[selectedSubject] || {});
+    setSelected({ chapter: "", topic: "" });
+    setAiResponse("");
+    setChapter(""); // Reset chapter input
+    setTopic(""); // Reset topic input
+    setShowMCQ(false); // Reset quiz state
+    setShowNotebook(false); // Reset notebook state
+    localStorage.setItem("-chapterTopics", JSON.stringify(allTopics));
+    localStorage.setItem("savedResponses", JSON.stringify(allResponses));
+  }, [selectedSubject]);
 
   // Save chapterTopics
   useEffect(() => {
@@ -129,19 +137,19 @@ useEffect(() => {
   }, [selected.chapter, selected.topic]);
 
   // Add topic
-// In AiStudyTool.jsx
-const handleAddTopic = (e) => {
-  e.preventDefault();
-  if (!chapter.trim() || !topic.trim()) return;
-  setChapterTopics((prev) => {
-    const curr = { ...prev };
-    if (!curr[chapter]) curr[chapter] = [];
-    if (!curr[chapter].includes(topic)) curr[chapter].push(topic);
-    return curr;
-  });
-  setChapter(""); // Clear chapter input
-  setTopic(""); // Clear topic input
-};
+  // In AiStudyTool.jsx
+  const handleAddTopic = (e) => {
+    e.preventDefault();
+    if (!chapter.trim() || !topic.trim()) return;
+    setChapterTopics((prev) => {
+      const curr = { ...prev };
+      if (!curr[chapter]) curr[chapter] = [];
+      if (!curr[chapter].includes(topic)) curr[chapter].push(topic);
+      return curr;
+    });
+    setChapter(""); // Clear chapter input
+    setTopic(""); // Clear topic input
+  };
 
   // Delete topic
   const handleDeleteTopic = (chapName, topicName) => {
@@ -259,23 +267,23 @@ const handleAddTopic = (e) => {
 
   return (
     <div className="flex flex-row h-[92vh] ">
-       {/* Main Panel */}
+      {/* Main Panel */}
       <div className="w-full p-4 overflow-y-auto custom-scrollbar">
-      <div className="w-full flex justify-between">
-           <button
+        <div className="w-full flex justify-between">
+          <button
             onClick={() => setSelectedSubject("")}
             className="p-2 hover:bg-gray-500/20 rounded-full"
           >
             <ArrowLeft size={20} />
           </button>
-           <button className="text-2xl" onClick={openSubjectbar}>
-                    {isSubjectbarOpen ? (
-                      <TbLayoutSidebarLeftCollapse />
-                    ) : (
-                      <TbLayoutSidebarRightCollapse />
-                    )}
-                  </button>
-      </div>
+          <button className="text-2xl" onClick={openSubjectbar}>
+            {isSubjectbarOpen ? (
+              <TbLayoutSidebarLeftCollapse />
+            ) : (
+              <TbLayoutSidebarRightCollapse />
+            )}
+          </button>
+        </div>
         {showNotebook ? (
           <>
             <button
@@ -300,7 +308,9 @@ const handleAddTopic = (e) => {
                   {Object.entries(tops).map(([tName, cont], idx) => (
                     <div key={idx} className="pl-4 mt-2">
                       <h4>📌 {tName}</h4>
-                      <p className="p-3 whitespace-pre-wrap"><ReactMarkdown>{cont}</ReactMarkdown></p>
+                      <p className="p-3 whitespace-pre-wrap">
+                        <ReactMarkdown>{cont}</ReactMarkdown>
+                      </p>
                     </div>
                   ))}
                 </div>
@@ -364,36 +374,40 @@ const handleAddTopic = (e) => {
           </>
         ) : (
           <p className="text-gray-600 text-lg">
-            
             👈 Select a topic to view explanation
-            
           </p>
         )}
       </div>
       {/* Sidebar */}
-    <div
-  className={`max-w-sm border-l border-gray-600 h-full overflow-y-auto transition-all duration-300 ${
-    isSubjectbarOpen ? "w-0 overflow-hidden" : " w-1/3 max-lg:w-1/2 p-5 absolute right-0 bg-gray-900"
-  }`}
->
-    <div className="flex items-center justify-between mb-6">
-         
-          <h2 className="text-base ">
-           <button className="text-2xl" onClick={openSubjectbar}>
-                    {isSubjectbarOpen ? (
-                      <TbLayoutSidebarLeftCollapse />
-                    ) : (
-                      <TbLayoutSidebarRightCollapse />
-                    )}
-                  </button>
-            Subject:{" "}
-            <span className="text-blue-600 dark:text-blue-400 font-normal">
-              {selectedSubject
-                .toLowerCase()
-                .split(" ")
-                .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
-                .join(" ")}
-            </span>
+      <div
+        className={`max-w-sm border-l border-gray-600 h-full overflow-y-auto transition-all duration-300 ${
+          isSubjectbarOpen
+            ? "w-0 overflow-hidden"
+            : ` w-1/3 max-lg:w-1/2 p-3 absolute right-0 ${
+                isDark ? "bg-gray-900" : "bg-white"
+              }`
+        }`}
+      >
+        <div className="flex items-center justify-between mb-2">
+          <h2 className="text-base flex flex-col">
+            <button className="text-2xl" onClick={openSubjectbar}>
+              {isSubjectbarOpen ? (
+                <TbLayoutSidebarLeftCollapse />
+              ) : (
+                <TbLayoutSidebarRightCollapse />
+              )}
+            </button>
+            <p>
+              {" "}
+              Subject:{" "}
+              <span className="text-blue-600 dark:text-blue-400 font-normal">
+                {selectedSubject
+                  .toLowerCase()
+                  .split(" ")
+                  .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+                  .join(" ")}
+              </span>
+            </p>
           </h2>
         </div>
 
@@ -414,7 +428,7 @@ const handleAddTopic = (e) => {
             type="submit"
             className="w-full bg-blue-600 hover:bg-blue-700 text-white py-2 rounded-lg"
           >
-             Add Topic
+            Add Topic
           </button>
         </form>
 
@@ -483,11 +497,9 @@ const handleAddTopic = (e) => {
           onClick={() => setShowNotebook(true)}
           className="mt-8 w-full bg-purple-600 hover:bg-purple-700 text-white py-2 rounded-lg"
         >
-           Open Notebook
+          Open Notebook
         </button>
       </div>
-
-     
     </div>
   );
 }
