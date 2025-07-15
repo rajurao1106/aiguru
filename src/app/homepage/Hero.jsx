@@ -52,7 +52,7 @@ export default function Hero() {
             variants={fadeInUp}
             className="flex flex-col sm:flex-row justify-center gap-4 sm:gap-6"
           >
-            <a href="/ai-studytool">
+            <a href="/home">
               <button
                 className="bg-purple-700 text-white px-6 py-3 sm:px-8 sm:py-4 rounded-full font-semibold text-base sm:text-lg hover:bg-purple-800 transition-all duration-300 transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2"
                 aria-label="Sign up for teachers"

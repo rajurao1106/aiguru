@@ -17,11 +17,11 @@ export default function Layout() {
 
       <div className="flex flex-col w-full">
         {/* <Navbar/> */}
-        {/* <div className=" w-full  ">
+        <div className=" w-full  ">
           {active === "home" && <Home />}
         {active === "create" && <AddSubjectName />}
         {active === "notes" && <MyNotes />}
-        </div> */}
+        </div>
       </div>
     </div>
   );

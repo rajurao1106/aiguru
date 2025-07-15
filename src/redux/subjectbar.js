@@ -1,8 +1,8 @@
 import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
- isSubjectbarOpen: true, // default open
-  isSubjectbarLoaded: false,
+ isSubjectbarOpen: false, // default open
+  isSubjectbarLoaded: true,
 };
 
 const subjectbarSlice = createSlice({

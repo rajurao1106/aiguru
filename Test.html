@@ -1,0 +1,18 @@
+<button onclick="sendMessages()">Send WhatsApp Messages</button>
+
+<script>
+function sendMessages() {
+  const contacts = [
+    "917470578448",
+    "916267939566"
+  ];
+
+  const message = "Hello! This is a bulk test message.";
+
+  // Trigger tabs quickly, but inside user action context (button click)
+  for (let number of contacts) {
+    const url = `https://wa.me/${number}?text=${encodeURIComponent(message)}`;
+    window.open(url, '_blank');
+  }
+}
+</script>
