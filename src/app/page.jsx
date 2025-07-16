@@ -9,12 +9,12 @@ export default function Page() {
     <div className="flex items-center justify-center flex-col px-4 py-10">
       <div className=" rounded-2xl w-full text-center flex flex-col items-center justify-center">
         <h1 className="text-4xl font-bold  mb-6">
-          Welcome To The <br className='hidden max-lg:block'/> <span className="text-blue-500">AI Guru</span>
+          Welcome To The <br className='hidden max-lg:block'/> <span className="text-blue-500">DigiNote</span>
         </h1>
         <p className=" text-base leading-relaxed mb-8 lg:w-[70%]">
           Empowering educators and learners through advanced AI solutions.
           <br />
-          AI Guru delivers personalized learning paths, real-time academic assistance,
+          DigiNote delivers personalized learning paths, real-time academic assistance,
           and intelligent tools designed to streamline educational workflows and
           maximize outcomes.
         </p>

@@ -15,12 +15,12 @@ export default function RootLayout({ children }) {
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <link rel="canonical" href="https://aiguru.vercel.app/" />
         <title>
-          AI Guru – AI Notes Maker for Smarter, Faster Learning
+          DigiNote – AI Notes Maker for Smarter, Faster Learning
         </title>
         <link rel="icon" href="/favicon.ico" />
         <meta
           name="description"
-          content="AI Guru is an AI notes maker for students. Summarize PDFs & docs into clear notes. Fast, free, and secure AI-powered note-making."
+          content="DigiNote is an AI notes maker for students. Summarize PDFs & docs into clear notes. Fast, free, and secure AI-powered note-making."
         />
         <meta
           name="keywords"
@@ -69,7 +69,7 @@ AI-powered study tool, automatic note-taking, smart note generator, AI summariza
         {/* Open Graph Meta Tags */}
         <meta
           property="og:title"
-          content="AI Guru: Doubt Solver with AI for Education"
+          content="DigiNote: Doubt Solver with AI for Education"
         />
         <meta
           property="og:description"
@@ -83,9 +83,9 @@ AI-powered study tool, automatic note-taking, smart note generator, AI summariza
         />
         <meta property="og:image:width" content="1200" />
         <meta property="og:image:height" content="630" />
-        <meta property="og:image:alt" content="AI Guru" />
+        <meta property="og:image:alt" content="DigiNote" />
         {/* Instagram Link */}
-        <meta property="og:site_name" content="AI Guru" />
+        <meta property="og:site_name" content="DigiNote" />
         <meta
           property="og:url"
           content="https://www.instagram.com/aiguru_for_learning/"
