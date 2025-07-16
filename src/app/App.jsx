@@ -42,7 +42,7 @@ function LayoutWrapper({ children }) {
       </div>
 
       {/* Main Content */}
-      <div className="flex flex-col w-full">
+      <div className="flex flex-col w-full h-[100vh]">
         <Navbar />
         <main>{children}</main>
       </div>

@@ -8,6 +8,7 @@ import {
   TbLayoutSidebarLeftCollapse,
   TbLayoutSidebarRightCollapse,
 } from "react-icons/tb";
+import NotebookView from "./NotebookView";
 
 export default function AiStudyTool({ selectedSubject, setSelectedSubject }) {
   const [hasMounted, setHasMounted] = useState(false);
@@ -285,38 +286,12 @@ export default function AiStudyTool({ selectedSubject, setSelectedSubject }) {
           </button>
         </div>
         {showNotebook ? (
-          <>
-            <button
-              onClick={downloadPDF}
-              className="mt-4 bg-green-600 text-white px-4 py-2 rounded"
-            >
-              📥 Save as PDF
-            </button>
-            <button
-              onClick={() => setShowNotebook(false)}
-              className="ml-4 text-red-600"
-            >
-              ❌ Close Notebook
-            </button>
-            <h2 className="text-2xl font-bold mb-4 text-purple-700">
-              📒 My Notebook
-            </h2>
-            <div id="notebook-content">
-              {Object.entries(savedResponses).map(([chap, tops]) => (
-                <div key={chap}>
-                  <h3>{chap}</h3>
-                  {Object.entries(tops).map(([tName, cont], idx) => (
-                    <div key={idx} className="pl-4 mt-2">
-                      <h4>📌 {tName}</h4>
-                      <p className="p-3 whitespace-pre-wrap">
-                        <ReactMarkdown>{cont}</ReactMarkdown>
-                      </p>
-                    </div>
-                  ))}
-                </div>
-              ))}
-            </div>
-          </>
+        <NotebookView
+  downloadPDF={downloadPDF}
+  setShowNotebook={setShowNotebook}
+  savedResponses={savedResponses}
+/>
+
         ) : showMCQ ? (
           <>
             <h2 className="text-xl font-bold text-green-700 mb-4">
@@ -380,7 +355,7 @@ export default function AiStudyTool({ selectedSubject, setSelectedSubject }) {
       </div>
       {/* Sidebar */}
       <div
-        className={`max-w-sm border-l border-gray-600 h-full overflow-y-auto transition-all duration-300 ${
+        className={`max-w-sm border-l border-gray-600 h-[92vh] overflow-y-auto transition-all duration-300 ${
           isSubjectbarOpen
             ? "w-0 overflow-hidden"
             : ` w-1/3 max-lg:w-1/2 p-3 absolute right-0 ${
