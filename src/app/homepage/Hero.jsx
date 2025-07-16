@@ -54,7 +54,7 @@ export default function Hero() {
             variants={fadeInUp}
             className="flex flex-col sm:flex-row justify-center gap-4 sm:gap-6"
           >
-            <Link href={'/create'} className="px-6  py-3 bg-blue-600 text-white rounded-lg text-base font-medium shadow hover:bg-blue-700 transition">
+            <Link href={'/workspace/create'} className="px-6  py-3 bg-blue-600 text-white rounded-lg text-base font-medium shadow hover:bg-blue-700 transition">
           <button className='flex justify-center items-center gap-1'><Plus/> Make Digital Notebook </button>
         </Link>
             {/* <a href="/ai-studytool">

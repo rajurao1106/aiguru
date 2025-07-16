@@ -2,7 +2,7 @@
 
 import { store } from "@/redux/store";
 import { Provider, useDispatch, useSelector } from "react-redux";
-import { toggleAsidebar } from "@/redux/asidebarSlice"; 
+import { toggleAsidebar } from "@/redux/asidebarSlice";
 import { useEffect, useState } from "react";
 import Navbar from "./components/Navbar";
 import Asidebar from "./components/Asidebar";
@@ -13,7 +13,7 @@ function LayoutWrapper({ children }) {
   const [isDark, setIsDark] = useState(false);
   const dispatch = useDispatch();
   const themeSelector = useSelector((state) => state.theme.isDark);
-    const isAsideOpen = useSelector((state) => state.asidebar.isAsideOpen);
+  const isAsideOpen = useSelector((state) => state.asidebar.isAsideOpen);
 
   useEffect(() => {
     setMounted(true);
@@ -36,9 +36,9 @@ function LayoutWrapper({ children }) {
 
   if (!mounted) return null;
 
-    const openSidebar = () => {
-      dispatch(toggleAsidebar());
-    };
+  const openSidebar = () => {
+    dispatch(toggleAsidebar());
+  };
 
   return (
     <div
@@ -54,7 +54,12 @@ function LayoutWrapper({ children }) {
       >
         <Asidebar />
       </div>
-      <div onClick={openSidebar} className={`w-full z-40 h-[100vh] bg-gray-900/90 absolute ${isAsideOpen?"hidden":""}`}></div>
+      <div
+        onClick={openSidebar}
+        className={`w-full z-40 h-[100vh] bg-gray-900/90 absolute ${
+          isAsideOpen ? "hidden" : ""
+        }`}
+      ></div>
       {/* Main Content */}
       <div className="flex flex-col w-full h-[100vh]">
         <Navbar />

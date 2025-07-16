@@ -479,7 +479,7 @@ export default function AiStudyTool({ selectedSubject, setSelectedSubject }) {
         </div>
 
         <button
-          onClick={() => setShowNotebook(true)}
+          onClick={() => {setShowNotebook(true); openSubjectbar()}}
           className="mt-8 w-full bg-purple-600 hover:bg-purple-700 text-white py-2 rounded-lg"
         >
           Open Notebook

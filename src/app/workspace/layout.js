@@ -1,7 +1,9 @@
 import { Geist } from "next/font/google";
 import Head from "next/head"; // Import Head for meta tags
-import "./globals.css";
+
 import Script from "next/script";
+
+import Providers from "./App";
 
 const geist = Geist({ subsets: ["latin"], weight: "400" });
 
@@ -12,7 +14,9 @@ export default function RootLayout({ children }) {
         <meta charSet="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <link rel="canonical" href="https://aiguru.vercel.app/" />
-        <title>DigiNote – AI Notes Maker for Smarter, Faster Learning</title>
+        <title>
+          DigiNote – AI Notes Maker for Smarter, Faster Learning
+        </title>
         <link rel="icon" href="/favicon.ico" />
         <meta
           name="description"
@@ -98,7 +102,7 @@ AI-powered study tool, automatic note-taking, smart note generator, AI summariza
           ></iframe>
         </noscript>
 
-    <main> {children}</main>
+        <Providers>{children}</Providers>
       </body>
     </html>
   );

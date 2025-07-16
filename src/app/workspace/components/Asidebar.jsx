@@ -35,7 +35,7 @@ export default function Asidebar({ setActive, active }) {
 
           <div className="text-md flex flex-col gap-2">
             <Link
-              href={"/"}
+              href={"/workspace"}
               onClick={() => setActive("home")}
               className={`flex items-center rounded w-full duration-200 ${
                 active === "home" ? "bg-gray-500/20" : "hover:bg-gray-500/20"
@@ -48,7 +48,7 @@ export default function Asidebar({ setActive, active }) {
             </Link>
 
             <Link
-              href={"/create"}
+              href={"/workspace/create"}
               onClick={() => setActive("create")}
               className={`flex items-center rounded w-full duration-200 ${
                 active === "create" ? "bg-gray-500/20" : "hover:bg-gray-500/20"
@@ -61,7 +61,7 @@ export default function Asidebar({ setActive, active }) {
             </Link>
 
             <Link
-              href={"/notes"}
+              href={"/workspace/notes"}
               onClick={() => setActive("notes")}
               className={`flex items-center rounded w-full duration-200 ${
                 active === "notes" ? "bg-gray-500/20" : "hover:bg-gray-500/20"

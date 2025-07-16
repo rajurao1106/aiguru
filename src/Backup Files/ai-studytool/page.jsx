@@ -1,8 +1,8 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import Navbar from "../components/Navbar";
-import Footer from "../components/Footer";
+import Navbar from "../../app/workspace/components/Navbar";
+import Footer from "../../app/workspace/components/Footer";
 import ToolLayout from "./ToolLayout";
 import MCQApp from "./MCQ";
 import { FaSun } from "react-icons/fa6";
@@ -37,7 +37,6 @@ export default function Page() {
 
   return (
     <div className={` ${textTheme} relative  `}>
-     
       {/* <div className="max-lg:hidden">
         <Navbar theme={theme} themeHandle={themeHandle} />
       </div> */}
