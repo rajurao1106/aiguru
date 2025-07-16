@@ -20,11 +20,11 @@ const fadeInUp = {
 // Content Sections with SEO-Optimized Text
 const sections = [
   {
-    title: "Discover AI Guru",
-    content: `AI Guru transforms education with cutting-edge AI tools. Our platform offers instant doubt resolution, personalized learning paths, and real-time academic support. From AI Math Solvers to Counselor Bots, we empower students and educators to achieve excellence with tailored, secure solutions.`,
+    title: "Discover DigiNote",
+    content: `DigiNote transforms education with cutting-edge AI tools. Our platform offers instant doubt resolution, personalized learning paths, and real-time academic support. From AI Math Solvers to Counselor Bots, we empower students and educators to achieve excellence with tailored, secure solutions.`,
   },
   {
-    title: "Why AI Guru Stands Out",
+    title: "Why DigiNote Stands Out",
     list: [
       "Instant answers with our AI Question Solver for all subjects.",
       "Snap & Solve: Upload problem images for quick, accurate solutions.",
@@ -64,8 +64,6 @@ const sections = [
 export default function Homepage() {
   return (
     <div className="font-sans text-gray-800 bg-gray-50">
-   
-
       {/* Main Content Sections */}
       <div className="max-w-7xl mx-auto py-16 px-4 sm:px-6 lg:px-8 space-y-16">
         {sections.map((section, index) => (
@@ -103,7 +101,9 @@ export default function Homepage() {
                         clipRule="evenodd"
                       />
                     </svg>
-                    <span className="text-gray-600 text-base sm:text-lg">{item}</span>
+                    <span className="text-gray-600 text-base sm:text-lg">
+                      {item}
+                    </span>
                   </li>
                 ))}
               </ul>
@@ -122,7 +122,7 @@ export default function Homepage() {
           variants={fadeInUp}
           className="text-2xl sm:text-3xl font-thin mb-4"
         >
-          Transform Education with AI Guru
+          Transform Education with DigiNote
         </motion.h2>
         <motion.p
           custom={1}
@@ -132,7 +132,8 @@ export default function Homepage() {
           variants={fadeInUp}
           className="text-base sm:text-lg mb-6 max-w-2xl mx-auto"
         >
-          Join over 5 million educators and students using AI Guru to streamline learning and improve outcomes with responsible AI.
+          Join over 5 million educators and students using DigiNote to
+          streamline learning and improve outcomes with responsible AI.
         </motion.p>
         <motion.button
           custom={2}
@@ -149,9 +150,10 @@ export default function Homepage() {
 
       {/* Footer */}
       <div className="bg-gray-900 text-white py-4">
-        
         <div className="mt-8 pt-8 border-t border-gray-800 text-center text-sm text-gray-400">
-          <p>&copy; {new Date().getFullYear()} AI Guru. All rights reserved.</p>
+          <p>
+            &copy; {new Date().getFullYear()} DigiNote. All rights reserved.
+          </p>
         </div>
       </div>
     </div>

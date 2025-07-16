@@ -5,8 +5,11 @@ import React from "react";
 import { MdAdd } from "react-icons/md";
 import { useDispatch, useSelector } from "react-redux";
 import { toggleTheme } from "@/redux/themeSlice";
-import { toggleAsidebar } from "@/redux/asidebarSlice"; 
-import { TbLayoutSidebarLeftCollapse, TbLayoutSidebarRightCollapse } from "react-icons/tb";
+import { toggleAsidebar } from "@/redux/asidebarSlice";
+import {
+  TbLayoutSidebarLeftCollapse,
+  TbLayoutSidebarRightCollapse,
+} from "react-icons/tb";
 
 export default function Asidebar({ setActive, active }) {
   const dispatch = useDispatch(); // ✅ FIXED: added dispatch
@@ -18,11 +21,12 @@ export default function Asidebar({ setActive, active }) {
   return (
     <aside
       className={`h-[100vh] ${
-        isAsideOpen ? "w-[16rem] max-lg:w-0 p-3 max-lg:p-0 bg-gray-900" : "w-0 max-lg:w-[16rem] max-lg:p-3"
+        isAsideOpen
+          ? "w-[16rem] max-lg:w-0 p-3 max-lg:p-0 bg-gray-900"
+          : "w-0 max-lg:w-[16rem] max-lg:p-3"
       } duration-300 border-r border-gray-600 overflow-hidden `}
     >
-    
-  <button className="text-2xl" onClick={openSidebar}>
+      <button className="text-2xl" onClick={openSidebar}>
         {isAsideOpen ? (
           <TbLayoutSidebarLeftCollapse />
         ) : (
@@ -31,7 +35,7 @@ export default function Asidebar({ setActive, active }) {
       </button>
       <div className="flex flex-col text-base">
         <a href="/" className="text-2xl mb-4">
-          AI Guru
+          DigiNote
         </a>
 
         <div className="text-md flex flex-col gap-2">

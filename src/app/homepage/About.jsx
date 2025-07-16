@@ -27,18 +27,20 @@ export default function About() {
       >
         <div className="flex justify-center items-center gap-2 mb-6">
           <Sparkles className="text-blue-600" size={28} />
-          <h2 className="text-4xl font-extrabold text-gray-900">About AI Guru</h2>
+          <h2 className="text-4xl font-extrabold text-gray-900">
+            About DigiNote
+          </h2>
         </div>
         <p className="text-lg text-gray-700 mt-4 leading-relaxed">
-          <strong>AI Guru</strong> is your all-in-one AI notes maker designed for
-          students, professionals, educators, researchers, and creators.
+          <strong>DigiNote</strong> is your all-in-one AI notes maker designed
+          for students, professionals, educators, researchers, and creators.
           Instantly generate study notes, flashcards, proposals, reports, and
           even speech outlines with ease.
         </p>
         <p className="text-lg text-gray-700 mt-4 leading-relaxed">
-          Whether you're working on assignments, preparing for quizzes, or looking
-          for fresh creative inspiration, <strong>AI Guru</strong> boosts your
-          productivity with AI-powered precision.
+          Whether you're working on assignments, preparing for quizzes, or
+          looking for fresh creative inspiration, <strong>DigiNote</strong>{" "}
+          boosts your productivity with AI-powered precision.
         </p>
       </motion.div>
     </section>

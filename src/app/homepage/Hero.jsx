@@ -30,7 +30,7 @@ export default function Hero() {
             variants={fadeInUp}
             className="text-3xl sm:text-4xl md:text-5xl font-extrabold text-gray-900 mb-4 md:mb-6 leading-tight"
           >
-            Transform Online Education with AI Guru’s Smart Learning Tools
+            Transform Online Education with DigiNote’s Smart Learning Tools
           </motion.h1>
           <motion.p
             custom={1}
@@ -72,7 +72,7 @@ export default function Hero() {
         </div>
         <Image
           src="/images/homepage/hero.png"
-          alt="AI Guru Hero"
+          alt="DigiNote Hero"
           width={630}
           height={475}
           className=""

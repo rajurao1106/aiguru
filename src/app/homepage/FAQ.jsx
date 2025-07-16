@@ -4,27 +4,27 @@ import { ChevronDown, ChevronUp } from "lucide-react";
 export default function FAQ() {
   const faqs = [
     {
-      q: "What is AI Guru?",
-      a: "AI Guru is an AI-powered note-making tool that automatically generates summaries and structured notes from videos, audio, PDFs, and text content—designed to accelerate learning and boost retention.",
+      q: "What is DigiNote?",
+      a: "DigiNote is an AI-powered note-making tool that automatically generates summaries and structured notes from videos, audio, PDFs, and text content—designed to accelerate learning and boost retention.",
     },
     {
-      q: "How does AI Guru work?",
-      a: "AI Guru uses advanced natural language processing (NLP) to analyze your input content and generate concise, meaningful notes by extracting key points, highlights, and summaries.",
+      q: "How does DigiNote work?",
+      a: "DigiNote uses advanced natural language processing (NLP) to analyze your input content and generate concise, meaningful notes by extracting key points, highlights, and summaries.",
     },
     {
-      q: "What types of content can I use with AI Guru?",
+      q: "What types of content can I use with DigiNote?",
       a: "You can upload or paste content from YouTube videos, PDFs, audio files, Word documents, and web articles. Support for more formats is continuously being expanded.",
     },
     {
-      q: "Can AI Guru summarize YouTube videos?",
-      a: "Yes! You can paste a YouTube link and AI Guru will extract the transcript and create a clear, readable summary or structured notes.",
+      q: "Can DigiNote summarize YouTube videos?",
+      a: "Yes! You can paste a YouTube link and DigiNote will extract the transcript and create a clear, readable summary or structured notes.",
     },
     {
-      q: "Is AI Guru free to use?",
-      a: "Yes, AI Guru is free to use and offers core features like summarization, note generation, and keyword extraction at no cost.",
+      q: "Is DigiNote free to use?",
+      a: "Yes, DigiNote is free to use and offers core features like summarization, note generation, and keyword extraction at no cost.",
     },
     {
-      q: "Do I need an account to use AI Guru?",
+      q: "Do I need an account to use DigiNote?",
       a: "In most cases, you can start summarizing content without signing up. However, creating an account gives you access to saved notes, history, and more customization options.",
     },
     {
@@ -32,16 +32,16 @@ export default function FAQ() {
       a: "Absolutely. All uploaded content is encrypted and processed securely. We don’t share or store your data beyond what's necessary to generate your notes.",
     },
     {
-      q: "Can I use AI Guru during live meetings or classes?",
+      q: "Can I use DigiNote during live meetings or classes?",
       a: "Live summarization is not yet available, but it’s in development. Currently, you can upload recorded sessions or transcripts to get instant notes.",
     },
     {
       q: "Can I customize how notes are generated?",
-      a: "Yes, AI Guru lets you choose between formats like bullet points, paragraph summaries, or key takeaways. You can also adjust summary length.",
+      a: "Yes, DigiNote lets you choose between formats like bullet points, paragraph summaries, or key takeaways. You can also adjust summary length.",
     },
     {
       q: "Which platforms or extensions are available?",
-      a: "AI Guru is available via the web app and Chrome extension. The extension works with platforms like YouTube, Udemy, Coursera, and more.",
+      a: "DigiNote is available via the web app and Chrome extension. The extension works with platforms like YouTube, Udemy, Coursera, and more.",
     },
   ];
 

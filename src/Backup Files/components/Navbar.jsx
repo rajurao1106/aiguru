@@ -1,4 +1,4 @@
-"use client"
+"use client";
 
 import React, { useState } from "react";
 import { FiMenu } from "react-icons/fi";
@@ -9,7 +9,9 @@ export default function Navbar({ theme, themeHandle }) {
   return (
     <nav
       className={`w-full z-50 h-16 fixed ${
-        theme ? "bg-white duration-300 text-black shadow" : " bg-gray-900 duration-300 text-white"
+        theme
+          ? "bg-white duration-300 text-black shadow"
+          : " bg-gray-900 duration-300 text-white"
       } 
  flex justify-center items-center`}
     >
@@ -18,7 +20,9 @@ export default function Navbar({ theme, themeHandle }) {
           <div className="">
             <FiMenu size={30} />
           </div>
-          <a href="/" className="text-2xl">AI Guru</a>
+          <a href="/" className="text-2xl">
+            DigiNote
+          </a>
         </div>
         <div className="hidden">
           <button onClick={themeHandle}>
