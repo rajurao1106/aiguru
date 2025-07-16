@@ -280,7 +280,7 @@ export default function AiStudyTool({ selectedSubject, setSelectedSubject }) {
           >
             <ArrowLeft size={20} />
           </button>
-          <button className="text-2xl" onClick={openSubjectbar}>
+          <button className="text-2xl hidden max-lg:block" onClick={openSubjectbar}>
             {isSubjectbarOpen ? (
               <TbLayoutSidebarLeftCollapse />
             ) : (
@@ -342,7 +342,7 @@ export default function AiStudyTool({ selectedSubject, setSelectedSubject }) {
             </div>
 
             {loading ? (
-              <p className="text-blue-500 animate-pulse">⏳ Loading...</p>
+              <p className="text-blue-500 animate-pulse">✏️ Writing...</p>
             ) : aiResponse ? (
               <div className=" prose whitespace-pre-wrap">
                 <ReactMarkdown>{aiResponse}</ReactMarkdown>
@@ -372,8 +372,8 @@ export default function AiStudyTool({ selectedSubject, setSelectedSubject }) {
       <div
         className={`max-w-sm border-l z-30 border-gray-600 h-[92vh] overflow-y-auto ${
           isSubjectbarOpen
-            ? "w-0 overflow-hidden "
-            : ` transition-all w-1/2 max-lg:w-[60%] p-3 max-lg:absolute right-0 ${
+            ? "max-lg:w-0 overflow-hidden lg:p-3 "
+            : ` transition-all w-1/2 max-lg:w-[60%] p-3  max-lg:absolute right-0 ${
                 isDark ? "bg-gray-900" : "bg-white"
               }`
         }`}
@@ -383,7 +383,7 @@ export default function AiStudyTool({ selectedSubject, setSelectedSubject }) {
             <p>
               {" "}
               Subject:{" "}
-              <span className="text-blue-600 font-bold font-serif">
+              <span className="text-blue-600 font-bold">
                 {selectedSubject
                   .toLowerCase()
                   .split(" ")
