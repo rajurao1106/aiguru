@@ -358,7 +358,7 @@ export default function AiStudyTool({ selectedSubject, setSelectedSubject }) {
         className={`max-w-sm border-l border-gray-600 h-[92vh] overflow-y-auto transition-all duration-300 ${
           isSubjectbarOpen
             ? "w-0 overflow-hidden"
-            : ` w-1/2 max-lg:w-1/2 p-3 max-lg:absolute right-0 ${
+            : ` w-1/2 max-lg:w-[60%] p-3 max-lg:absolute right-0 ${
                 isDark ? "bg-gray-900" : "bg-white"
               }`
         }`}
