@@ -33,12 +33,12 @@ export default function NotebookView({ downloadPDF, setShowNotebook, savedRespon
       </h3>
 
             {Object.entries(tops).map(([tName, cont], idx) => (
-              <div key={idx} className="pl-4 mt-2">
+              <div key={idx} className=" mt-2">
                 <h4 className="text-lg font-semibold  mb-2">
               Topic {idx + 1}: {tName}
             </h4>
 
-                <div className="p-3 whitespace-pre-wrap">
+                <div className=" whitespace-pre-wrap text-sm">
                   <ReactMarkdown>{cont}</ReactMarkdown>
                 </div>
               </div>

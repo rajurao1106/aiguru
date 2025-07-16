@@ -98,7 +98,8 @@ export default function AiStudyTool({ selectedSubject, setSelectedSubject }) {
                 {
                   parts: [
                     {
-                      text: `Explain the topic "${selected.topic}" from the chapter "${selected.chapter}" in a simple and interesting way for students.`,
+                      text: `give standerd definition of topic "${selected.topic}" from the chapter 
+                      "${selected.chapter}" `,
                     },
                   ],
                 },
@@ -344,7 +345,7 @@ export default function AiStudyTool({ selectedSubject, setSelectedSubject }) {
             {loading ? (
               <p className="text-blue-500 animate-pulse">✏️ Writing...</p>
             ) : aiResponse ? (
-              <div className=" prose whitespace-pre-wrap">
+              <div className=" prose whitespace-pre-wrap custom-scrollbar">
                 <ReactMarkdown>{aiResponse}</ReactMarkdown>
               </div>
             ) : (
