@@ -16,7 +16,7 @@ export default function Hero() {
     }),
   };
   return (
-    <section className="flex justify-center items-center">
+    <section className="flex justify-center items-center bg-white">
       {/* Hero Section */}
       <div
         className=" py-16 md:py-24 text-left 

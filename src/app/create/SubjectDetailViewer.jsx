@@ -271,7 +271,7 @@ export default function AiStudyTool({ selectedSubject, setSelectedSubject }) {
   if (!hasMounted) return null;
 
   return (
-    <div className="flex flex-row h-[92vh] ">
+    <div className="flex flex-row h-[90vh] ">
       {/* Main Panel */}
       <div className="w-full px-4 overflow-y-auto custom-scrollbar">
         <div className="w-full flex justify-between py-2">
@@ -371,7 +371,7 @@ export default function AiStudyTool({ selectedSubject, setSelectedSubject }) {
         ${isSubjectbarOpen ? "hidden" : "max-lg:block"}`}
       ></div>
       <div
-        className={`max-w-sm border-l z-30 border-gray-600 h-[92vh] overflow-y-auto ${
+        className={`max-w-sm border-l z-30 border-gray-600 h-[90vh] overflow-y-auto ${
           isSubjectbarOpen
             ? "max-lg:w-0 overflow-hidden lg:p-3 "
             : ` transition-all w-1/2 max-lg:w-[60%] p-3  max-lg:absolute right-0 ${

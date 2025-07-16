@@ -4,7 +4,7 @@ import Features from './Features'
 import About from './About'
 import FAQ from './FAQ'
 
-export default function homepage() {
+export default function Homepage() {
   return (
     <div>
       <Hero/>

@@ -25,7 +25,7 @@ export default function NotebookView({ downloadPDF, setShowNotebook, savedRespon
    </div>
 
 
-      <div id="notebook-content">
+      <div id="notebook-content" className='overflow-x-auto'>
         {Object.entries(savedResponses).map(([chap, tops], chapIdx) => (
           <div key={chap}>
             <h3 className="text-2xl font-bold mb-4 border-b pb-1 ">
@@ -38,7 +38,7 @@ export default function NotebookView({ downloadPDF, setShowNotebook, savedRespon
               Topic {idx + 1}: {tName}
             </h4>
 
-                <div className=" whitespace-pre-wrap text-sm">
+                <div className=" whitespace-pre-wrap text-sm ">
                   <ReactMarkdown>{cont}</ReactMarkdown>
                 </div>
               </div>

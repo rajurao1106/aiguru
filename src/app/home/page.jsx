@@ -4,6 +4,7 @@ import React, { useEffect } from "react";
 
 import { useDispatch, useSelector } from "react-redux";
 import { setTheme, setThemeLoaded } from "@/redux/themeSlice";
+import Homepage from "../homepage/Homepage";
 
 export default function Page() {
   const dispatch = useDispatch();
@@ -33,6 +34,7 @@ export default function Page() {
           and boost academic success.
         </p>
       </div>
+      <Homepage/>
     </div>
   );
 }

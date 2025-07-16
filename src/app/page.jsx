@@ -3,11 +3,12 @@
 import { Plus } from 'lucide-react';
 import Link from 'next/link';
 import React from 'react';
+import Homepage from './homepage/Homepage';
 
 export default function Page() {
   return (
-    <div className="flex items-center justify-center flex-col px-4 py-10">
-      <div className=" rounded-2xl w-full text-center flex flex-col items-center justify-center">
+    <div className="custom-scrollbar h-[90vh]">
+      {/* <div className=" rounded-2xl w-full text-center flex flex-col items-center justify-center">
         <h1 className="text-4xl font-bold  mb-6">
           Welcome To The <br className='hidden max-lg:block'/> <span className="text-blue-500">DigiNote</span>
         </h1>
@@ -22,7 +23,8 @@ export default function Page() {
       </div>
       <Link href={'/create'} className="px-6  py-3 bg-blue-600 text-white rounded-lg text-base font-medium shadow hover:bg-blue-700 transition">
           <button className='flex justify-center items-center gap-1'><Plus/> Make Digital Notebook </button>
-        </Link>
+        </Link> */}
+        <Homepage/>
     </div>
   );
 }
