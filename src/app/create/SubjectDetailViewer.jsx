@@ -366,11 +366,11 @@ export default function AiStudyTool({ selectedSubject, setSelectedSubject }) {
       {/* Sidebar */}
       <div
         onClick={openSubjectbar}
-        className={`w-full max-lg:h-[90vh] z-20 max-lg:bg-gray-900/80 absolute 
+        className={`w-full max-lg:h-[92vh] z-20 max-lg:bg-gray-900/80 absolute 
         ${isSubjectbarOpen ? "hidden" : "max-lg:block"}`}
       ></div>
       <div
-        className={`max-w-sm border-l z-30 border-gray-600 h-[90vh] overflow-y-auto ${
+        className={`max-w-sm border-l z-30 border-gray-600 h-[92vh] overflow-y-auto ${
           isSubjectbarOpen
             ? "w-0 overflow-hidden "
             : ` transition-all w-1/2 max-lg:w-[60%] p-3 max-lg:absolute right-0 ${
