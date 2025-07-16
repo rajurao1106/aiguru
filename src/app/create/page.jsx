@@ -5,6 +5,7 @@ import { IoClose } from "react-icons/io5";
 import { useDispatch, useSelector } from "react-redux";
 import { setSelectedSubject } from "@/redux/subjectSlice";
 import SubjectDetailViewer from "./SubjectDetailViewer";
+import { MdOutlineDeleteForever } from "react-icons/md";
 
 export default function AddSubjectName() {
   const dispatch = useDispatch();
@@ -46,8 +47,12 @@ export default function AddSubjectName() {
       setAddtask("");
       setOpenSubjectForm(false);
 
-      const allTopics = JSON.parse(localStorage.getItem("chapterTopics") || "{}");
-      const allResponses = JSON.parse(localStorage.getItem("savedResponses") || "{}");
+      const allTopics = JSON.parse(
+        localStorage.getItem("chapterTopics") || "{}"
+      );
+      const allResponses = JSON.parse(
+        localStorage.getItem("savedResponses") || "{}"
+      );
       allTopics[addtask] = {};
       allResponses[addtask] = {};
       localStorage.setItem("chapterTopics", JSON.stringify(allTopics));
@@ -87,20 +92,27 @@ export default function AddSubjectName() {
 
   // ✅ Show subject UI by default (even if no subjects yet)
   return (
-    <div className="relative w-full h-[92vh] flex flex-col items-center custom-scrollbar">
+    <div className="relative w-full h-[90vh] flex flex-col items-center custom-scrollbar">
       {/* Empty state if no subjects */}
       {addtodo.length === 0 && (
-        <div className="flex flex-col items-center">
-          <div className="mb-4">
-            <Image src="/images/box.png" alt="no notes" width={100} height={100} />
+        <div className=" w-full h-full flex justify-center items-center">
+          <div className="flex flex-col items-center ">
+            <div className="mb-4">
+              <Image
+                src="/images/box.png"
+                alt="no notes"
+                width={100}
+                height={100}
+              />
+            </div>
+            <p className="mb-4">Oops, no notes saved yet.</p>
+            <button
+              onClick={subjecthandle}
+              className="px-22 py-4 rounded-lg text-3xl border border-gray-600 hover:bg-gray-200 hover:text-gray-900 transition"
+            >
+              +
+            </button>
           </div>
-          <p className="mb-4">Oops, no notes saved yet.</p>
-          <button
-            onClick={subjecthandle}
-            className="py-3 px-8 rounded-lg text-3xl border border-gray-600 hover:bg-gray-200 hover:text-gray-900 transition"
-          >
-            +
-          </button>
         </div>
       )}
 
@@ -141,24 +153,28 @@ export default function AddSubjectName() {
 
       {/* Subject list UI */}
       {addtodo.length > 0 && (
-        <div className="mt-10 flex flex-wrap w-2xl gap-6 flex-col items-center">
-          <div className="grid grid-cols-3 max-lg:grid-cols-1 justify-center items-center gap-6 mt-6">
+        <div className="py-10">
+          <h1 className="text-2xl sm:text-3xl font-semibold  mb-6 tracking-tight">
+            Select Your Subject
+          </h1>
+
+          <div className="grid grid-cols-3 max-lg:grid-cols-1 justify-center items-center gap-6 ">
             {addtodo.map((subject, index) => (
               <div
                 key={index}
                 onClick={() => handleClickSubject(subject)}
-                className="relative bg-gray-100 dark:bg-gray-700 px-8 py-6 rounded-lg shadow-sm min-w-[200px] text-center cursor-pointer hover:ring-2 ring-blue-400"
+                className="relative bg-blue-700 text-white px-8 py-6 rounded-lg shadow-sm min-w-[200px] text-center cursor-pointer hover:ring-2 ring-blue-400"
               >
                 <button
                   onClick={(e) => {
                     e.stopPropagation();
                     removeSubjectName(index);
                   }}
-                  className="absolute top-2 right-2 text-red-500 hover:text-red-700"
+                  className="absolute top-1 right-1 text-xl text-red-500 hover:text-red-700"
                 >
-                  <IoClose />
+                  <MdOutlineDeleteForever />
                 </button>
-                <span className="text-gray-800 dark:text-white">
+                <span className="">
                   {subject
                     .toLowerCase()
                     .split(" ")

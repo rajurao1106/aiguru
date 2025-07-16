@@ -8,6 +8,8 @@ import {
 import { useDispatch, useSelector } from "react-redux";
 import { toggleTheme } from "@/redux/themeSlice";
 import { toggleAsidebar } from "@/redux/asidebarSlice"; // ✅ Import from slice
+import { Menu } from "lucide-react";
+import { FiMenu } from "react-icons/fi";
 
 export default function Navbar() {
   const dispatch = useDispatch();
@@ -19,14 +21,11 @@ export default function Navbar() {
   };
 
   return (
-    <div className={`px-2 border-b border-gray-600 duration-300 py-2 ${isDark?"bg-gray-900 ":""} 
+    <div className={`px-4 border-b border-gray-600 duration-300 py-4 ${isDark?"bg-gray-900 ":""} 
     flex justify-end max-lg:justify-between items-center`}>
-      <button className="text-2xl lg:hidden" onClick={openSidebar}>
-        {isAsideOpen ? (
-          <TbLayoutSidebarLeftCollapse />
-        ) : (
-          <TbLayoutSidebarRightCollapse />
-        )}
+      <button className="text-3xl lg:hidden" onClick={openSidebar}>
+      
+        <FiMenu/>
       </button>
 
       <button

@@ -286,12 +286,11 @@ export default function AiStudyTool({ selectedSubject, setSelectedSubject }) {
           </button>
         </div>
         {showNotebook ? (
-        <NotebookView
-  downloadPDF={downloadPDF}
-  setShowNotebook={setShowNotebook}
-  savedResponses={savedResponses}
-/>
-
+          <NotebookView
+            downloadPDF={downloadPDF}
+            setShowNotebook={setShowNotebook}
+            savedResponses={savedResponses}
+          />
         ) : showMCQ ? (
           <>
             <h2 className="text-xl font-bold text-green-700 mb-4">
@@ -334,9 +333,10 @@ export default function AiStudyTool({ selectedSubject, setSelectedSubject }) {
             {loading ? (
               <p className="text-blue-500 animate-pulse">⏳ Loading...</p>
             ) : aiResponse ? (
-              <pre className="p-4 whitespace-pre-wrap">
-                <ReactMarkdown>{aiResponse}</ReactMarkdown>
-              </pre>
+              <div className=" prose whitespace-pre-wrap">
+  <ReactMarkdown>{aiResponse}</ReactMarkdown>
+</div>
+
             ) : (
               <p className="text-red-500">No response available.</p>
             )}
@@ -358,7 +358,7 @@ export default function AiStudyTool({ selectedSubject, setSelectedSubject }) {
         className={`max-w-sm border-l border-gray-600 h-[92vh] overflow-y-auto transition-all duration-300 ${
           isSubjectbarOpen
             ? "w-0 overflow-hidden"
-            : ` w-1/3 max-lg:w-1/2 p-3 absolute right-0 ${
+            : ` w-1/2 max-lg:w-1/2 p-3 max-lg:absolute right-0 ${
                 isDark ? "bg-gray-900" : "bg-white"
               }`
         }`}
@@ -440,9 +440,10 @@ export default function AiStudyTool({ selectedSubject, setSelectedSubject }) {
                     ) : (
                       <>
                         <span
-                          onClick={() =>
-                            setSelected({ chapter: chap, topic: t })
-                          }
+                          onClick={() => {
+                            setSelected({ chapter: chap, topic: t });
+                            openSubjectbar();
+                          }}
                           className="flex-1 cursor-pointer hover:text-blue-600"
                         >
                           {t}
