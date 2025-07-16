@@ -1,6 +1,8 @@
 import React from "react";
 import { motion } from "framer-motion";
 import Image from "next/image";
+import Link from "next/link";
+import { Plus } from "lucide-react";
 
 export default function Hero() {
   const fadeInUp = {
@@ -52,14 +54,9 @@ export default function Hero() {
             variants={fadeInUp}
             className="flex flex-col sm:flex-row justify-center gap-4 sm:gap-6"
           >
-            <a href="/home">
-              <button
-                className="bg-purple-700 text-white px-6 py-3 sm:px-8 sm:py-4 rounded-full font-semibold text-base sm:text-lg hover:bg-purple-800 transition-all duration-300 transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2"
-                aria-label="Sign up for teachers"
-              >
-                Discover Tools
-              </button>
-            </a>
+            <Link href={'/create'} className="px-6  py-3 bg-blue-600 text-white rounded-lg text-base font-medium shadow hover:bg-blue-700 transition">
+          <button className='flex justify-center items-center gap-1'><Plus/> Make Digital Notebook </button>
+        </Link>
             {/* <a href="/ai-studytool">
               <button
                 className="border-2 border-purple-700 text-purple-700 px-6 py-3 sm:px-8 sm:py-4 rounded-lg font-semibold text-base sm:text-lg hover:bg-purple-700 hover:text-white transition-all duration-300 transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2"
