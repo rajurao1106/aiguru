@@ -4,6 +4,7 @@ import React, { useState, useEffect } from "react";
 import ReactMarkdown from "react-markdown";
 import { useDispatch, useSelector } from "react-redux";
 import { toggleSubjectbar } from "@/redux/subjectbar";
+
 import {
   TbLayoutSidebarLeftCollapse,
   TbLayoutSidebarRightCollapse,
@@ -26,6 +27,8 @@ export default function AiStudyTool({ selectedSubject, setSelectedSubject }) {
   const [current, setCurrent] = useState(0);
   const [score, setScore] = useState(0);
   const [showNotebook, setShowNotebook] = useState(false);
+
+    const themeSelector = useSelector((state) => state.theme.isDark);
 
   const dispatch = useDispatch(); // ✅ FIXED: added dispatch
   const isSubjectbarOpen = useSelector(
@@ -269,11 +272,11 @@ export default function AiStudyTool({ selectedSubject, setSelectedSubject }) {
   return (
     <div className="flex flex-row h-[92vh] ">
       {/* Main Panel */}
-      <div className="w-full p-4 overflow-y-auto custom-scrollbar">
-        <div className="w-full flex justify-between">
+      <div className="w-full px-4 overflow-y-auto custom-scrollbar">
+        <div className="w-full flex justify-between py-2">
           <button
             onClick={() => setSelectedSubject("")}
-            className="p-2 hover:bg-gray-500/20 rounded-full"
+            className=" hover:bg-gray-500/20 rounded-full"
           >
             <ArrowLeft size={20} />
           </button>
@@ -327,16 +330,23 @@ export default function AiStudyTool({ selectedSubject, setSelectedSubject }) {
           </>
         ) : selected.topic ? (
           <>
-            <h2 className="text-xl font-bold text-blue-800 mb-4">
-              📘 {selected.chapter} → 🧠 {selected.topic}
-            </h2>
+            <div className="mb-6 border-b pb-3">
+              <h2 className="text-3xl max-lg:text-2xl font-bold tracking-wide ">
+                <span className="block uppercase text-primary font-semibold">
+                  {selected.chapter}
+                </span>
+                <span className="block italic font-serif text-lg text-gray-500 mt-1">
+                  {selected.topic}
+                </span>
+              </h2>
+            </div>
+
             {loading ? (
               <p className="text-blue-500 animate-pulse">⏳ Loading...</p>
             ) : aiResponse ? (
               <div className=" prose whitespace-pre-wrap">
-  <ReactMarkdown>{aiResponse}</ReactMarkdown>
-</div>
-
+                <ReactMarkdown>{aiResponse}</ReactMarkdown>
+              </div>
             ) : (
               <p className="text-red-500">No response available.</p>
             )}
@@ -349,33 +359,31 @@ export default function AiStudyTool({ selectedSubject, setSelectedSubject }) {
           </>
         ) : (
           <p className="text-gray-600 text-lg">
-            👈 Select a topic to view explanation
+             Please select a chapter and topic from the sidebar to view its AI-generated explanation. 👉
           </p>
         )}
       </div>
       {/* Sidebar */}
       <div
-        className={`max-w-sm border-l border-gray-600 h-[92vh] overflow-y-auto transition-all duration-300 ${
+        onClick={openSubjectbar}
+        className={`w-full max-lg:h-[90vh] z-20 max-lg:bg-gray-900/80 absolute 
+        ${isSubjectbarOpen ? "hidden" : "max-lg:block"}`}
+      ></div>
+      <div
+        className={`max-w-sm border-l z-30 border-gray-600 h-[90vh] overflow-y-auto ${
           isSubjectbarOpen
-            ? "w-0 overflow-hidden"
-            : ` w-1/2 max-lg:w-[60%] p-3 max-lg:absolute right-0 ${
+            ? "w-0 overflow-hidden "
+            : ` transition-all w-1/2 max-lg:w-[60%] p-3 max-lg:absolute right-0 ${
                 isDark ? "bg-gray-900" : "bg-white"
               }`
         }`}
       >
         <div className="flex items-center justify-between mb-2">
-          <h2 className="text-base flex flex-col">
-            <button className="text-2xl" onClick={openSubjectbar}>
-              {isSubjectbarOpen ? (
-                <TbLayoutSidebarLeftCollapse />
-              ) : (
-                <TbLayoutSidebarRightCollapse />
-              )}
-            </button>
+          <h2 className="text-base flex flex-col py-2">
             <p>
               {" "}
               Subject:{" "}
-              <span className="text-blue-600 dark:text-blue-400 font-normal">
+              <span className="text-blue-600 font-bold font-serif">
                 {selectedSubject
                   .toLowerCase()
                   .split(" ")
@@ -391,13 +399,13 @@ export default function AiStudyTool({ selectedSubject, setSelectedSubject }) {
             value={chapter}
             onChange={(e) => setChapter(e.target.value)}
             placeholder="Chapter name"
-            className="w-full px-3 py-2 rounded-lg border "
+            className={`w-full px-1 py-2 border-b outline-none text-gray-500`}
           />
           <input
             value={topic}
             onChange={(e) => setTopic(e.target.value)}
             placeholder="Topic title"
-            className="w-full px-3 py-2 rounded-lg border "
+            className="w-full px-1 py-2 border-b outline-none text-gray-500"
           />
           <button
             type="submit"
@@ -424,7 +432,7 @@ export default function AiStudyTool({ selectedSubject, setSelectedSubject }) {
                               value: e.target.value,
                             }))
                           }
-                          className="px-2 w-[13vw] py-1 border rounded"
+                          className="px-2 w-[13vw] max-lg:w-[30vw] py-1 border rounded"
                         />
                         <button onClick={saveEdit} className="text-green-600">
                           ✅

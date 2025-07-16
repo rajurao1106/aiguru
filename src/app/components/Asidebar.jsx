@@ -1,6 +1,6 @@
 "use client";
 
-import { Home, Notebook } from "lucide-react";
+import { Home, Notebook, PlusCircle } from "lucide-react";
 import React from "react";
 import { MdAdd } from "react-icons/md";
 import { useDispatch, useSelector } from "react-redux";
@@ -25,7 +25,7 @@ export default function Asidebar({ setActive, active }) {
         className={`h-[100vh] ${
           isAsideOpen
             ? "w-[16rem] max-lg:w-0 p-3 max-lg:p-0 "
-            : "w-0 max-lg:w-[16rem] max-lg:p-3"
+            : "w-0 max-lg:w-[14rem] max-lg:p-3"
         } duration-300 border-r border-gray-600 overflow-hidden `}
       >
         <div className="flex flex-col text-base">
@@ -41,7 +41,7 @@ export default function Asidebar({ setActive, active }) {
                 active === "home" ? "bg-gray-500/20" : "hover:bg-gray-500/20"
               }`}
             >
-              <div className="p-2 text-2xl">
+              <div className="p-2 text-base">
                 <Home />
               </div>
               <p className="w-full p-2 text-left">Home</p>
@@ -54,8 +54,8 @@ export default function Asidebar({ setActive, active }) {
                 active === "create" ? "bg-gray-500/20" : "hover:bg-gray-500/20"
               }`}
             >
-              <div className="p-2 text-2xl">
-                <MdAdd />
+              <div className="p-2 text-base">
+                <PlusCircle />
               </div>
               <p className="w-full p-2 text-left">Create</p>
             </Link>
@@ -67,7 +67,7 @@ export default function Asidebar({ setActive, active }) {
                 active === "notes" ? "bg-gray-500/20" : "hover:bg-gray-500/20"
               }`}
             >
-              <div className="p-2 text-2xl">
+              <div className="p-2 text-base">
                 <Notebook />
               </div>
               <p className="w-full p-2 text-left">My Notes</p>
